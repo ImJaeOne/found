@@ -4,10 +4,13 @@ export type AuthInputs = {
   checkPassword: string;
   nickname: string;
   bio: string;
-  category: string[];
+  address: string;
+  categories: {
+    category: string;
+  };
 };
 
-export type AuthData = {
+export type UserData = {
   id: number;
   created_at: string;
   nickname: string;
@@ -16,4 +19,5 @@ export type AuthData = {
   bio: string;
   is_finding: boolean;
   user_id: string;
+  address: string;
 };
