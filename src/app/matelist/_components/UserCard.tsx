@@ -8,10 +8,15 @@ type UserData = {
   nick_name: string;
   address: string;
   bio: string;
-  categories: string[];
 };
 
-const UserCard = ({ user }: { user: UserData }) => {
+const UserCard = ({
+  user,
+  categories,
+}: {
+  user: UserData;
+  categories: string[];
+}) => {
   return (
     <article className="flex flex-col min-w-80 max-w-80 h-96 bg-light-gray rounded-3xl p-7">
       <div className="flex flex-row w-full">
@@ -27,10 +32,12 @@ const UserCard = ({ user }: { user: UserData }) => {
       </div>
       <p className="flex text-text-md text-medium-gray pt-12">{user.bio}</p>
       <div className="flex flex-col items-center flex-1 pt-5 w-full justify-around">
-        <div className="flex flex-row w-full justify-evenly ">
-          {user.categories.map((category) => {
-            return <Button className="bg-sub1">{category}</Button>;
-          })}
+        <div className="flex flex-row w-full gap-2 flex-wrap">
+          {categories.map((category) => (
+            <Button key={category} className="bg-sub1">
+              {category}
+            </Button>
+          ))}
         </div>
         <Link href={PATH.CHATTING}>
           <Button className="bg-main1">CHAT ROOM</Button>
