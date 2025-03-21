@@ -1,5 +1,3 @@
-import { log } from 'console';
-
 const layout = ({
   children,
   login,
