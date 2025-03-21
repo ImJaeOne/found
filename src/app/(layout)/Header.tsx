@@ -1,4 +1,6 @@
+import { PATH } from '@/constants/constants';
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 const Header = () => {
@@ -14,12 +16,22 @@ const Header = () => {
       </div>
       <nav>
         <ul className="flex gap-[50px]">
-          <li>운동메이트</li>
-          <li>로그인</li>
-          <li>회원가입</li>
+          <li>
+            <Link href={PATH.MATELIST}>운동메이트</Link>
+          </li>
+          <li>
+            <Link href={PATH.LOGIN}>로그인</Link>
+          </li>
+          <li>
+            <Link href={PATH.SIGNUP}>회원가입</Link>
+          </li>
           {/* 아래는 개발 편의를 위해 만들어 둠 */}
-          <li>마이페이지</li>
-          <li>채팅</li>
+          <li>
+            <Link href={PATH.MYPAGE}>마이페이지</Link>
+          </li>
+          <li>
+            <Link href={PATH.CHATTING}>채팅</Link>
+          </li>
         </ul>
       </nav>
     </header>
