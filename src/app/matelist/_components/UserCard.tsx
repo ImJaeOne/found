@@ -2,25 +2,36 @@ import { Avatar } from '@/ui/shadcn/avatar';
 import { Button } from '@/ui/shadcn/button';
 import React from 'react';
 
-const UserCard = () => {
+type UserData = {
+  nick_name: string;
+  address: string;
+  bio: string;
+  categories: string[];
+};
+
+const UserCard = ({ user }: { user: UserData }) => {
   return (
-    <article className="flex flex-col min-w-80 w-80 bg-light-gray rounded-3xl pl-5">
-      <div className="flex flex-row w-full pt-7">
+    <article className="flex flex-col min-w-80 max-w-80 h-96 bg-light-gray rounded-3xl p-7">
+      <div className="flex flex-row w-full">
         <figure className=" flex w-20 border-main2 bg-slate-500 rounded-full items-center justify-center">
           <Avatar />
         </figure>
         <div className="flex flex-col pl-6">
-          <h3 className="text-title-md text-black">햄부기</h3>
-          <p className="text-text-md text-medium-gray">마포구 상암동</p>
+          <h3 className="text-title-md text-black font-bold">
+            {user.nick_name}
+          </h3>
+          <p className="text-text-md text-medium-gray">{user.address}</p>
         </div>
       </div>
-      <p className="text-text-md text-medium-gray pt-12">저랑 러닝 하실분!!</p>
-      <div className="flex flex-row justify-evenly pt-5">
-        <div>런닝</div>
-        <div>배드민턴</div>
-        <div>테니스</div>
+      <p className="flex text-text-md text-medium-gray pt-12">{user.bio}</p>
+      <div className="flex flex-col items-center flex-1 pt-5 w-full justify-around">
+        <div className="flex flex-row w-full justify-evenly ">
+          {user.categories.map((category) => {
+            return <Button className="bg-sub1">{category}</Button>;
+          })}
+        </div>
+        <Button className="bg-main1">CHAT ROOM</Button>
       </div>
-      <Button>CHAT ROOM</Button>
     </article>
   );
 };
