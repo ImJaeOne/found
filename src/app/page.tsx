@@ -1,39 +1,5 @@
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/ui/shadcn/carousel';
-import { Card, CardContent } from '@/ui/shadcn/card';
-
 const Home = async () => {
-  return (
-    <div className="text-sub1 text-xl">
-      <Carousel
-        opts={{
-          align: 'start',
-        }}
-        className="w-full max-w-sm"
-      >
-        <CarouselContent>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-              <div className="p-1">
-                <Card>
-                  <CardContent className="flex aspect-square items-center justify-center p-6">
-                    <span className="text-3xl font-semibold">{index + 1}</span>
-                  </CardContent>
-                </Card>
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
-    </div>
-  );
+  return <div className="text-sub1 text-xl">1석이조</div>;
 };
 
 export default Home;
