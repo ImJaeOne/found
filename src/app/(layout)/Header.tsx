@@ -1,17 +1,42 @@
+'use client';
+
 import { PATH } from '@/constants/constants';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Header = () => {
+  const [shadow, setShadow] = useState(false);
+
+  const handleScroll = () => {
+    if (window.scrollY > 0) {
+      setShadow(true);
+    } else {
+      setShadow(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <header className="w-full fixed top-0 flex justify-between text-main1 text-title-sm font-light px-[100px] h-[100px] items-center">
+    <header
+      className={`w-full fixed top-0 flex justify-between text-main1 text-title-sm font-light px-[100px] h-[100px] items-center transition-shadow duration-300 ${
+        shadow ? 'shadow-[0px_4px_10px_0px_rgba(0,_0,_0,_0.1)]' : ''
+      }`}
+    >
       <div className="relative w-[100px] h-[75px]">
         <Image
           src="/images/found_logo.png"
           alt="Found 로고"
-          layout="fill"
-          objectFit="contain"
+          fill
+          priority
+          sizes="100px"
+          style={{ objectFit: 'contain' }}
         />
       </div>
       <nav>
