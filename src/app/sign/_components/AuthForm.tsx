@@ -30,7 +30,7 @@ const AuthForm = ({ mode }: AuthFormProps) => {
         .select('nickname', { count: 'exact', head: true })
         .eq('nickname', nickname);
 
-      if (count > 0) {
+      if (!!count && count > 0) {
         setIsNickNameExisted(true);
       } else {
         setIsNickNameExisted(false);
@@ -87,6 +87,7 @@ const AuthForm = ({ mode }: AuthFormProps) => {
       if (data) {
         //홈으로 이동
         route.replace(PATH.HOME);
+        console.log('login data', data);
       }
     } catch (error) {
       console.error('로그인 error : ', error);
