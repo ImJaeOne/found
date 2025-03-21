@@ -1,7 +1,7 @@
 export const PATH = {
   HOME: '/',
-  LOGIN: '/login',
-  SIGNUP: '/signup',
+  LOGIN: '/sign/login',
+  SIGNUP: '/sign/signup',
   MYPAGE: '/mypage',
   MATELIST: '/matelist',
   CHATTING: '/chatting',
@@ -14,4 +14,11 @@ export const CATEGORIES = {
   BASKETBALL: '농구',
   SOCCER: '축구/풋살',
   BOXING: '복싱/주짓수',
+};
+
+export const QUERY_KEY = {
+  USERS: 'users',
+  MESSAGES: 'messages',
+  CHAT_ROOMS: 'chat_rooms',
+  APPOINTMENTS: 'appointments',
 };
