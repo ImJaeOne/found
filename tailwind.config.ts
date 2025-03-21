@@ -1,10 +1,10 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -30,8 +30,8 @@ const config: Config = {
         caption: '140%',
       },
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
         white: '#FFFFFF',
         black: '#121212',
         'medium-gray': '#8B8B8B',
@@ -42,8 +42,8 @@ const config: Config = {
         sub1: '#F2BA40',
       },
       backgroundColor: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
         white: '#FFFFFF',
         black: '#121212',
         'medium-gray': '#8B8B8B',
@@ -54,8 +54,8 @@ const config: Config = {
         sub1: '#F2BA40',
       },
       textColor: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
         white: '#FFFFFF',
         black: '#121212',
         'medium-gray': '#8B8B8B',
