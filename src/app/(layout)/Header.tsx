@@ -29,7 +29,7 @@ const Header = () => {
         shadow ? 'shadow-[0px_4px_10px_0px_rgba(0,_0,_0,_0.1)]' : ''
       }`}
     >
-      <div className="relative w-[100px] h-[75px]">
+      <Link href={PATH.HOME} className="relative w-[100px] h-[75px]">
         <Image
           src="/images/found_logo.png"
           alt="Found 로고"
@@ -38,7 +38,7 @@ const Header = () => {
           sizes="100px"
           style={{ objectFit: 'contain' }}
         />
-      </div>
+      </Link>
       <nav>
         <ul className="flex gap-[50px]">
           <li>
