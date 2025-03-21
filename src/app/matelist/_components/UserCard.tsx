@@ -1,5 +1,7 @@
+import { PATH } from '@/constants/constants';
 import { Avatar } from '@/ui/shadcn/avatar';
 import { Button } from '@/ui/shadcn/button';
+import Link from 'next/link';
 import React from 'react';
 
 type UserData = {
@@ -30,7 +32,9 @@ const UserCard = ({ user }: { user: UserData }) => {
             return <Button className="bg-sub1">{category}</Button>;
           })}
         </div>
-        <Button className="bg-main1">CHAT ROOM</Button>
+        <Link href={PATH.CHATTING}>
+          <Button className="bg-main1">CHAT ROOM</Button>
+        </Link>
       </div>
     </article>
   );
