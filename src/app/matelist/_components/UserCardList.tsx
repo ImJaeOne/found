@@ -13,16 +13,24 @@ import { CATEGORIES } from '@/constants/constants';
 type UserData = {
   nick_name: string;
   address: string;
+  profile: string;
   bio: string;
-  categories: string[];
 };
+
+type CategoriesData = string[];
 
 const user: UserData = {
   nick_name: '햄부기',
   address: '마포구 상암동',
+  profile: 'https://',
   bio: '저랑 러닝 하실 분!!',
-  categories: ['런닝', '배드민턴', '테니스'],
 };
+
+const categories: CategoriesData = [
+  CATEGORIES.RUNNING,
+  CATEGORIES.TENNIS,
+  CATEGORIES.SOCCER,
+];
 
 const UserCardList = () => {
   return (
@@ -43,7 +51,7 @@ const UserCardList = () => {
               key={index}
               className="md:basis-1/2 lg:basis-1/4 pl-0"
             >
-              <UserCard user={user} />
+              <UserCard user={user} categories={categories} />
             </CarouselItem>
           ))}
         </CarouselContent>
