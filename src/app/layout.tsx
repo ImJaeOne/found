@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <Header />
-        <main className="py-[100px]">{children}</main>
+        <main className="py-[100px] w-screen">{children}</main>
       </body>
     </html>
   );
