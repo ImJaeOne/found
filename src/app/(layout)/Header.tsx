@@ -18,6 +18,7 @@ const Header = () => {
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -25,17 +26,17 @@ const Header = () => {
 
   return (
     <header
-      className={`w-full fixed top-0 flex justify-between text-main1 text-title-sm font-light px-[100px] h-[100px] items-center transition-shadow duration-300 ${
+      className={`w-full fixed top-0 flex justify-between text-main1 text-title-sm font-light px-[100px] h-[100px] items-center transition-shadow duration-300 z-10 bg-white ${
         shadow ? 'shadow-[0px_4px_10px_0px_rgba(0,_0,_0,_0.1)]' : ''
       }`}
     >
-      <Link href={PATH.HOME} className="relative w-[100px] h-[75px]">
+      <Link href={PATH.HOME} className="relative w-[150px] h-[75px]">
         <Image
           src="/images/found_logo.png"
           alt="Found 로고"
           fill
           priority
-          sizes="100px"
+          sizes="150px"
           style={{ objectFit: 'contain' }}
         />
       </Link>
