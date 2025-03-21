@@ -1,5 +1,17 @@
+import { Button } from '@/ui/shadcn/button';
+
 const Home = async () => {
-  return <div className="text-sub1 text-xl">1석이조</div>;
+  return (
+    <>
+      <Button variant="button" size="button">
+        aaa
+      </Button>
+      <Button variant="label" size="label">
+        bbb
+      </Button>
+      <Button>ccc</Button>
+    </>
+  );
 };
 
 export default Home;
