@@ -1,6 +1,10 @@
 import { IoArrowForwardCircleSharp } from 'react-icons/io5';
 import MessageCard from './MessageCard';
-import { User } from '../page';
+import { UserData } from '@/types/users';
+
+const user: Pick<UserData, 'id'> = {
+  id: 1,
+};
 
 const messages = [
   {
@@ -64,7 +68,7 @@ const messages = [
   { id: 11, user_id: 1, content: '일욜에 만나', appointment: false },
 ];
 
-const Chatting = ({ user }: { user: User }) => {
+const Chatting = () => {
   return (
     <>
       <div className="h-[90%] mt-10 rounded-2xl mb-6">
@@ -73,7 +77,7 @@ const Chatting = ({ user }: { user: User }) => {
             <MessageCard
               key={message.id}
               content={message.content}
-              isMyMessage={message.user_id === user.user_id}
+              isMyMessage={message.user_id === user.id}
               isAppointment={message.appointment}
             />
           ))}
