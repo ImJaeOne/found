@@ -3,7 +3,7 @@
 import SectionHeader from '@/ui/common/SectionHeader';
 import UserProfile from '@/ui/common/UserProfile';
 import { IoArrowForwardCircleSharp } from 'react-icons/io5';
-import parse from 'html-react-parser';
+import MessageCard from './_components/MessageCard';
 
 const partner = {
   user_id: 2,
@@ -78,38 +78,6 @@ const messages = [
   { id: 11, user_id: 1, content: '일욜에 만나', appointment: false },
 ];
 
-const MessageCard = ({
-  content,
-  isMyMessage,
-  isAppointment,
-}: {
-  content: string;
-  isMyMessage: boolean;
-  isAppointment: boolean;
-}) => {
-  return (
-    <div className="flex flex-col gap-4 text-text-sm px-12 py-4 bg-slate-50 rounded-lg">
-      <div className={`flex ${isMyMessage ? 'justify-end' : 'justify-start'}`}>
-        <div
-          className={`rounded-2xl px-6 py-3 w-fit max-w-[60%] 
-        ${isMyMessage ? 'bg-sub1' : 'bg-main2'}`}
-        >
-          {isAppointment ? parse(content) : content}
-        </div>
-      </div>
-      {isAppointment && (
-        <div className="w-full flex flex-col">
-          <hr className="w-full border-main1 my-1" />
-          <div className="text-main1 text-sm flex flex-col justify-center items-center font-semibold">
-            <p>약속이 생성되었습니다!</p>
-            <p>마이페이지를 확인해주세요!</p>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
 const ChattingPage = () => {
   return (
     <div className="w-full h-full flex justify-center items-center">
@@ -140,7 +108,10 @@ const ChattingPage = () => {
               className=" w-full bg-slate-50 h-12 rounded-2xl pl-3 pr-12 placeholder:text-center"
               placeholder="채팅을 입력해주세요."
             />
-            <IoArrowForwardCircleSharp className="text-title-lg text-main2 hover:text-main1 cursor-pointer absolute right-0" />
+            <IoArrowForwardCircleSharp
+              aria-label="전송 버튼"
+              className="text-title-lg text-main2 hover:text-main1 cursor-pointer absolute right-0"
+            />
           </label>
         </div>
       </div>
