@@ -1,5 +1,3 @@
-'use client';
-
 import SectionHeader from '@/ui/common/SectionHeader';
 import UserProfile from '@/ui/common/UserProfile';
 import Chatting from './_components/Chatting';
@@ -9,14 +7,6 @@ const partner = {
   nick_name: '케빈',
   bio: '운동 좋아하는 26남',
   categories: ['런닝', '배드민턴', '축구'],
-};
-
-export type User = {
-  user_id: number;
-};
-
-const user: User = {
-  user_id: 1,
 };
 
 const ChattingPage = () => {
@@ -31,7 +21,7 @@ const ChattingPage = () => {
         </UserProfile>
         <div className="h-[90%] w-full">
           <SectionHeader />
-          <Chatting user={user} />
+          <Chatting />
         </div>
       </div>
     </div>
