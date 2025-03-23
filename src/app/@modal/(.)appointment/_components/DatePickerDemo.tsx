@@ -3,9 +3,7 @@
 import * as React from 'react';
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
-
 import { cn } from '@/utils/lib/cn';
-
 import { PopoverTrigger, Popover, PopoverContent } from '@/ui/shadcn/popover';
 import { Button } from '@/ui/shadcn/button';
 import { Calendar } from '@/ui/shadcn/calendar';
@@ -43,7 +41,7 @@ export function DatePickerDemo({
         <Calendar
           mode="single"
           selected={date}
-          onSelect={handleDateSelect} // 날짜가 선택되면 handleDateSelect 호출
+          onSelect={handleDateSelect}
           initialFocus
         />
       </PopoverContent>
