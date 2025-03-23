@@ -1,15 +1,24 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@/ui/shadcn/avatar';
 import { Button } from '@/ui/shadcn/button';
 
 const Home = async () => {
   return (
     <>
       <Button variant="button" size="button">
-        aaa
+        variant,size = button
       </Button>
       <Button variant="label" size="label">
-        bbb
+        variant, size = label
       </Button>
-      <Button>ccc</Button>
+      <Button>default</Button>
+      <Avatar size="sm">
+        <AvatarImage src="https://github.com/shadcn.png" />
+        <AvatarFallback>CN</AvatarFallback>
+      </Avatar>
+      <Avatar size="lg">
+        <AvatarImage src="https://github.com/shadcn.png" />
+        <AvatarFallback>CN</AvatarFallback>
+      </Avatar>
     </>
   );
 };

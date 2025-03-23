@@ -19,7 +19,7 @@ const buttonVariants = cva(
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         button: 'bg-main1 !text-title-sm text-light-gray',
-        label: 'bg-sub1 !text-text-lg !text-light-gray',
+        label: 'bg-sub1 !text-text-lg !text-light-gray pointer-events-none',
       },
       size: {
         default: 'px-2 py-1',
