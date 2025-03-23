@@ -1,21 +1,28 @@
+import { Input } from '../shadcn/input';
+import { Textarea } from '../shadcn/textarea';
+
 type InputProps = {
   placeholder: string;
   isTextarea?: boolean;
   height?: string;
 };
 
-const Input = ({ placeholder, isTextarea = false, height }: InputProps) => {
+const CommonInput = ({
+  placeholder,
+  isTextarea = false,
+  height,
+}: InputProps) => {
   return (
     <div>
       {isTextarea ? (
-        <textarea
-          className="w-full resize-none bg-main2 h-32 rounded-xl pl-3  placeholder:text-center scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-main2 overflow-y-auto"
-          placeholder="내용을 입력해주세요."
+        <Textarea
+          className={`w-full resize-none bg-main2 h-${height} rounded-xl pl-3 scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-main2 overflow-y-auto`}
+          placeholder={placeholder}
         />
       ) : (
-        <input
+        <Input
           type="text"
-          className={`w-full bg-main2 h-12 rounded-xl px-3 placeholder:text-center h-${height}`}
+          className={`w-full bg-main2 rounded-xl px-3 h-${height}`}
           placeholder={placeholder}
         />
       )}
@@ -23,4 +30,4 @@ const Input = ({ placeholder, isTextarea = false, height }: InputProps) => {
   );
 };
 
-export default Input;
+export default CommonInput;
