@@ -9,6 +9,8 @@ import { useFindAddess } from '@/hooks/useFindAddress';
 import { DatePickerDemo } from './_components/DatePickerDemo';
 import { format } from 'date-fns';
 import useClickOutside from '@/hooks/useClickOutside';
+import { useRouter } from 'next/navigation';
+import { PATH } from '@/constants/constants';
 
 type Appointment = {
   title: string;
@@ -18,6 +20,7 @@ type Appointment = {
 };
 
 const AppointmentPage = () => {
+  const router = useRouter();
   const [newAppointment, setNewAppointment] = useState<Appointment>({
     title: '',
     content: '',
@@ -57,6 +60,7 @@ const AppointmentPage = () => {
   // 추후 supabase upsert
   const handleAddClick = () => {
     console.log('appointment', { ...newAppointment, ...place });
+    router.back();
   };
 
   // DatePickerDemo에서 날짜가 선택될 때 상태 업데이트
@@ -113,7 +117,7 @@ const AppointmentPage = () => {
                 <CommonInput
                   placeholder="내용을 입력해주세요."
                   isTextarea={true}
-                  height={44}
+                  height={32}
                   name="content"
                   value={newAppointment.content}
                   onChange={handleChange}
