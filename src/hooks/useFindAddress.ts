@@ -7,7 +7,9 @@ declare global {
 }
 
 export const useFindAddess = (
-  setPlace: React.Dispatch<React.SetStateAction<string>>,
+  setPlace: React.Dispatch<
+    React.SetStateAction<{ place: string; detailPlace: string }>
+  >,
 ) => {
   const [roadAddress, setRoadAddress] = useState('');
 
@@ -40,10 +42,13 @@ export const useFindAddess = (
         }
 
         setRoadAddress(data.roadAddress);
-        setPlace(data.roadAddress);
+        setPlace({
+          place: data.roadAddress,
+          detailPlace: '',
+        });
       },
     }).open();
   };
 
-  return { roadAddress, handlePostcodeSearch };
+  return { handlePostcodeSearch };
 };
