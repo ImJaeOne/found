@@ -1,25 +1,12 @@
 'use client';
 
+import useClickOutside from '@/hooks/useClickOutside';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef } from 'react';
 
 const AppointmentPage = () => {
   const router = useRouter();
-  const modalRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-        router.back();
-      }
-    };
-
-    document.addEventListener('click', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [router]);
+  const modalRef = useClickOutside();
 
   return (
     <div
