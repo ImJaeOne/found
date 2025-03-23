@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import React from 'react';
 import Header from './(layout)/Header';
+import { Toaster } from '@/ui/shadcn/toaster';
 
 export const metadata: Metadata = {
   title: 'Found',
@@ -23,6 +24,7 @@ export default function RootLayout({
           {children}
           {modal}
         </main>
+        <Toaster />
       </body>
     </html>
   );
