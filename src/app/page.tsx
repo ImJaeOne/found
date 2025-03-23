@@ -1,11 +1,7 @@
-import MainCarousel from './(layout)/MainCarousel';
+import MainCarousel from './_components/MainCarousel';
 
 const Home = async () => {
-  return (
-    <>
-      <MainCarousel />
-    </>
-  );
+  return <MainCarousel />;
 };
 
 export default Home;
