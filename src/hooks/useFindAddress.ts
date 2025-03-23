@@ -1,4 +1,3 @@
-import { Appointment } from '@/types/appointments';
 import { useEffect, useState } from 'react';
 
 declare global {
