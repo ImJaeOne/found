@@ -1,5 +1,11 @@
+import AppointmentCard from './(components)/AppointmentCard';
+
 const MyPage = () => {
-  return <div></div>;
+  return (
+    <div>
+      <AppointmentCard />
+    </div>
+  );
 };
 
 export default MyPage;
