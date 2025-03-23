@@ -5,6 +5,7 @@ export const PATH = {
   MYPAGE: '/mypage',
   MATELIST: '/matelist',
   CHATTING: '/chatting',
+  APPOINTMENT: '/appointment',
 };
 
 export const CATEGORIES = {
@@ -22,5 +23,4 @@ export const QUERY_KEY = {
   MESSAGES: 'messages',
   CHAT_ROOMS: 'chat_rooms',
   APPOINTMENTS: 'appointments',
-
 };

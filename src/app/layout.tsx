@@ -11,14 +11,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="ko">
       <body>
         <Header />
-        <main className="py-[100px] w-screen">{children}</main>
+        <main className="py-[100px] w-screen">
+          {children}
+          {modal}
+        </main>
         <Toaster />
       </body>
     </html>
