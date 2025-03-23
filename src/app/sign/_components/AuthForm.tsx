@@ -4,25 +4,49 @@ import {
   AUTH_ERROR_MESSAGES,
   AUTH_INPUT_PLACEHOLDER,
   AUTH_MODE,
-} from '@/constants/auth';
+  AUTH_TOAST_MESSAGES,
+} from '@/constants/users';
 import { PATH, QUERY_KEY } from '@/constants/constants';
+import { useToast } from '@/hooks/useToast';
 import { supabase } from '@/services/supabaseClient';
 import { AuthInputs } from '@/types/users';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FieldError, RegisterOptions, useForm } from 'react-hook-form';
+import { login, signup } from '@/services/usersServices';
 
+//-----타입 지정-----
 type AuthFormProps = {
   mode: string;
 };
 
-const AuthForm = ({ mode }: AuthFormProps) => {
-  const route = useRouter();
+type InputField = {
+  title: string;
+  id: string;
+  type: string;
+  placeholder: string;
+  name: keyof AuthInputs;
+  required?: string;
+  minLength?: RegisterOptions['minLength'];
+  maxLength?: RegisterOptions['maxLength'];
+  pattern?: RegisterOptions['pattern'];
+  error?: FieldError | undefined;
+  checkButton?: boolean;
+  validate?: RegisterOptions['validate'];
+};
 
-  //nickname 중복 확인로직
+//-----컴포넌트-----
+const AuthForm = ({ mode }: AuthFormProps) => {
+  // 경로 이동을 위한 route
+  const route = useRouter();
+  // shadcn/toast
+  const { toast } = useToast();
+
+  //---닉네임---
+  // 닉네임 중복 여부 state
   const [isNicknameExisted, setIsNickNameExisted] = useState(true);
 
-  //닉네임 중복 검사
+  // 닉네임 중복 검사 로직
   const checkNicknameExsited = async (nickname: string) => {
     try {
       const { count } = await supabase
@@ -32,15 +56,22 @@ const AuthForm = ({ mode }: AuthFormProps) => {
 
       if (!!count && count > 0) {
         setIsNickNameExisted(true);
+        toast({
+          variant: 'destructive',
+          description: AUTH_ERROR_MESSAGES.NICKNAME.SAME,
+        });
       } else {
         setIsNickNameExisted(false);
+        toast({
+          description: AUTH_ERROR_MESSAGES.NICKNAME.SUCCESS,
+        });
       }
     } catch (error: any) {
       console.error('닉네임 중복 오류 발생 : ', error.message);
     }
   };
 
-  //react-hook-form
+  //---입력값 유효성 검증 : react-hook-form---
   const {
     register,
     handleSubmit,
@@ -48,6 +79,152 @@ const AuthForm = ({ mode }: AuthFormProps) => {
     getValues,
   } = useForm<AuthInputs>();
 
+  // 로그인 로직
+  const handleSubmitLogin = async (
+    data: Pick<AuthInputs, 'email' | 'password'>,
+  ) => {
+    const { email, password } = data;
+
+    // 예외처리 : 누락된 정보 확인
+    if (!email || !password) {
+      toast({
+        description: AUTH_TOAST_MESSAGES.LOGIN.FAIL.BLANK,
+      });
+      return;
+    }
+
+    //로그인하려는 유저 데이터
+    const currentUser = {
+      email,
+      password,
+    };
+
+    try {
+      //supabase 로그인
+      const { data, error } = await login(currentUser);
+
+      if (error) {
+        if (error.message === 'Invalid login credentials') {
+          toast({
+            variant: 'destructive',
+            description: AUTH_TOAST_MESSAGES.LOGIN.FAIL.WORNG,
+          });
+          return;
+        }
+      }
+
+      if (data) {
+        // 성공시 사용자 알람
+        toast({
+          description: AUTH_TOAST_MESSAGES.LOGIN.SUCCESS,
+        });
+        // 홈으로 이동
+        route.replace(PATH.HOME);
+      }
+    } catch (error) {
+      // 실패시 사용자 알람
+      toast({
+        variant: 'destructive',
+        title: AUTH_TOAST_MESSAGES.LOGIN.ERROR.TITLE,
+        description: AUTH_TOAST_MESSAGES.LOGIN.ERROR.DESCRIPTION,
+      });
+      console.error('로그인 error : ', error);
+    }
+  };
+
+  // 회원가입 로직
+  const handleSubmitSignUp = async (data: AuthInputs) => {
+    const {
+      email,
+      password,
+      checkPassword,
+      nickname,
+      bio,
+      // 관련 컴포넌트 생성 후 수정할 예정입니다!
+      // address,
+      // categories,
+    } = data;
+
+    //예외처리 : 누락된 정보 확인
+    if (!email || !password || !checkPassword || !nickname || !bio) {
+      toast({ description: AUTH_ERROR_MESSAGES.ALL_BLANK });
+      return;
+    }
+
+    //예외처리 : 닉네임 중복 확인
+    if (isNicknameExisted) {
+      toast({
+        variant: 'destructive',
+        description: AUTH_ERROR_MESSAGES.NICKNAME.CHECK,
+      });
+      return;
+    }
+
+    //새로운 유저 데이터 => supabase auth.users에 insert
+    const newUserData = {
+      email,
+      password,
+      checkPassword,
+      created_at: Date.now(),
+      options: {
+        data: {
+          nickname,
+          bio,
+          //임시값 입니다!
+          address: '서울시 중랑구',
+          categories: ['러닝'],
+        },
+      },
+    };
+
+    try {
+      const { data, error } = await signup(newUserData);
+
+      //회원가입 성공
+      if (data.user) {
+        //유저 알람
+        toast({ description: AUTH_TOAST_MESSAGES.SIGNUP.SUCCESS });
+        //로그인 페이지로 이동
+        route.replace(PATH.LOGIN);
+      }
+
+      // 회원가입 실패 오류 분기처리
+      if (error) {
+        switch (error.message) {
+          case 'User already registered':
+            return toast({
+              variant: 'destructive',
+              description: AUTH_TOAST_MESSAGES.SIGNUP.FAIL.SAME,
+            });
+
+          case 'Unable to validate email address: invalid format':
+            return toast({
+              variant: 'destructive',
+              description: AUTH_ERROR_MESSAGES.EMAIL.INVALIDATE,
+            });
+
+          case 'Network request failed':
+            return toast({
+              variant: 'destructive',
+              title: AUTH_TOAST_MESSAGES.SIGNUP.ERROR.TITLE,
+              description: AUTH_TOAST_MESSAGES.SIGNUP.ERROR.DESCRIPTION,
+            });
+
+          default:
+            break;
+        }
+      }
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: AUTH_TOAST_MESSAGES.SIGNUP.ERROR.TITLE,
+        description: AUTH_TOAST_MESSAGES.SIGNUP.ERROR.DESCRIPTION,
+      });
+      console.error('회원가입 error : ', error);
+    }
+  };
+
+  //form submit 액션 분기처리
   const onSubmit = (data: AuthInputs) => {
     if (mode === 'login') {
       handleSubmitLogin(data);
@@ -56,109 +233,8 @@ const AuthForm = ({ mode }: AuthFormProps) => {
     }
   };
 
-  //-----로그인 로직-----
-  const handleSubmitLogin = async (
-    data: Pick<AuthInputs, 'email' | 'password'>,
-  ) => {
-    const { email, password } = data;
-
-    // 예외처리 : 누락된 정보 확인
-    if (!email || !password) {
-      alert('빈칸 없이 입력해주세요');
-      return;
-    }
-
-    //로그인하려는 유저 데이터 => supabase auth.users 데이터에서 존재 여부 확인
-    const currentUser = {
-      email,
-      password,
-    };
-
-    try {
-      const { data, error } =
-        await supabase.auth.signInWithPassword(currentUser);
-
-      if (error) {
-        if (error.message === 'Invalid login credentials') {
-          return;
-        }
-      }
-
-      if (data) {
-        //홈으로 이동
-        route.replace(PATH.HOME);
-        console.log('login data', data);
-      }
-    } catch (error) {
-      console.error('로그인 error : ', error);
-    }
-  };
-
-  //-----회원가입 로직-----
-  const handleSubmitSignUp = async (data: AuthInputs) => {
-    const { email, password, checkPassword, nickname, bio, category } = data;
-    //예외처리 : 누락된 정보 확인
-    if (!email || !password || !checkPassword) {
-      alert(AUTH_ERROR_MESSAGES.ALL_BLANK);
-      return;
-    }
-    //예외처리 : 닉네임 중복 확인
-    if (isNicknameExisted) {
-      alert(AUTH_ERROR_MESSAGES.NICKNAME.CHECK);
-      return;
-    }
-
-    //새로운 유저 데이터 => supabase auth.users에 insert
-    const newUserData = {
-      email,
-      password,
-      created_at: Date.now(),
-      options: {
-        data: {
-          nickname,
-          bio,
-          category,
-        },
-      },
-    };
-
-    console.log('newUserData', newUserData);
-
-    try {
-      const { data, error } = await supabase.auth.signUp(newUserData);
-
-      //회원가입 성공
-      if (data.user) {
-        //유저 알람
-        alert('회원가입 성공');
-        //로그인 페이지로 이동
-        route.replace(PATH.LOGIN);
-      }
-
-      //회원가입 실패
-      if (error) {
-        switch (error.message) {
-          case 'User already registered':
-            return alert(AUTH_ERROR_MESSAGES.EMAIL.SAME);
-
-          case 'Unable to validate email address: invalid format':
-            return alert(AUTH_ERROR_MESSAGES.EMAIL.INVALIDATE);
-
-          case 'Network request failed':
-            return alert(AUTH_ERROR_MESSAGES.ERROR);
-
-          default:
-            break;
-        }
-      }
-    } catch (error) {
-      alert(AUTH_ERROR_MESSAGES.ERROR);
-      console.error('회원가입 error : ', error);
-    }
-  };
-
   //로그인 contents : 이메일, 비밀번호
-  const loginInputContents = [
+  const loginInputContents: InputField[] = [
     {
       title: 'EMAIL',
       id: 'email',
@@ -204,7 +280,7 @@ const AuthForm = ({ mode }: AuthFormProps) => {
   ];
 
   // 회원가입 contents : 비밀번호 확인, 닉네임, 상메, 카테고리
-  const signUpInputContents = [
+  const signUpInputContents: InputField[] = [
     {
       title: 'PW CHECK',
       id: 'checkPassword',
@@ -245,9 +321,8 @@ const AuthForm = ({ mode }: AuthFormProps) => {
         value: 8,
         message: AUTH_ERROR_MESSAGES.NICKNAME.LENGTH,
       },
-      valiedate: () => {
-        isNicknameExisted || AUTH_ERROR_MESSAGES.NICKNAME.SAME;
-      },
+      validate: () =>
+        !!isNicknameExisted ? AUTH_ERROR_MESSAGES.NICKNAME.SAME : true,
       error: errors.nickname,
       checkButton: true,
     },
@@ -272,9 +347,6 @@ const AuthForm = ({ mode }: AuthFormProps) => {
 
   return (
     <div>
-      {/* 제목 */}
-      {mode === AUTH_MODE.SIGNUP ? <h2>SIGN UP</h2> : <h2>LOG IN</h2>}
-
       {/* 폼 양식 */}
       <form onSubmit={handleSubmit(onSubmit)}>
         {loginInputContents.map((item) => {

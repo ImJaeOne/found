@@ -1,4 +1,4 @@
-import { AUTH_MODE } from '@/constants/auth';
+import { AUTH_MODE } from '@/constants/users';
 import AuthForm from '../_components/AuthForm';
 
 const LoginPage = () => {
