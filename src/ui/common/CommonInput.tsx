@@ -16,7 +16,7 @@ const CommonInput = ({
     <div className="rounded-xl">
       {isTextarea ? (
         <Textarea
-          className={`w-[60%] resize-none bg-main2 h-${height} scrollbar-thin py-2 scrollbar-thumb-blue-400 scrollbar-track-main2 overflow-y-auto `}
+          className={`w-full resize-none bg-main2 h-${height} scrollbar-thin py-2 scrollbar-thumb-blue-400 scrollbar-track-main2 overflow-y-auto `}
           placeholder={placeholder}
         />
       ) : (
