@@ -30,6 +30,8 @@ export const AUTH_ERROR_MESSAGES = {
     BLANK: '닉네임을 입력해주세요!',
     SAME: '동일한 닉네임이 존재합니다!',
     LENGTH: '닉네임은 2-8글자 여야합니다!',
+    CHECK: '닉네임 중복을 확인해주세요!',
+    SUCCESS: '사용 가능한 닉네임 입니다!',
   },
   BIO: {
     BLANK: '상태메세지 1-50자를 입력해주세요!',
@@ -52,7 +54,6 @@ export const AUTH_TOAST_MESSAGES = {
   },
   SIGNUP: {
     SUCCESS: '회원가입에 성공했습니다!',
-    NICKNAME_CHECK: '닉네임 중복을 확인해주세요!',
     FAIL: {
       SAME: '이미 존재하는 회원입니다!',
     },
