@@ -8,6 +8,7 @@ import AppointmentSpan from './_components/AppointmentSpan';
 import { useFindAddess } from '@/hooks/useFindAddress';
 import { DatePickerDemo } from './_components/DatePickerDemo';
 import { format } from 'date-fns';
+import useClickOutside from '@/hooks/useClickOutside';
 
 type Appointment = {
   title: string;
@@ -28,6 +29,8 @@ const AppointmentPage = () => {
     place: '',
     detailPlace: '',
   });
+
+  const modalRef = useClickOutside();
 
   const { handlePostcodeSearch } = useFindAddess(setPlace);
 
@@ -69,7 +72,10 @@ const AppointmentPage = () => {
       className="fixed inset-0 flex items-center justify-center bg-black/50"
       onClick={(e) => e.stopPropagation()}
     >
-      <div className="bg-white p-10 rounded-lg shadow-lg text-center w-[80%]">
+      <div
+        className="bg-white p-10 rounded-lg shadow-lg text-center w-[80%]"
+        ref={modalRef}
+      >
         {/* Header */}
         <div className="flex justify-between">
           <div className="flex justify-center items-center gap-4">
