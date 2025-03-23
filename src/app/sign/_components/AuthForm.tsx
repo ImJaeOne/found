@@ -1,8 +1,10 @@
 'use client';
 
+import { CATEGORIES_SELECT_MODE } from '@/constants/constants';
 import { AUTH_MODE } from '@/constants/users';
 import { useAuthContents } from '@/hooks/useAuthContents';
 import { useAuthValidation } from '@/hooks/useAuthValidation';
+import CategorySeletor from '@/ui/common/CategorySeletor';
 
 //-----타입 지정-----
 type AuthFormProps = {
@@ -16,9 +18,11 @@ const AuthForm = ({ mode }: AuthFormProps) => {
     isNicknameExisted,
     checkNicknameExsited,
     register,
+    watch,
     handleSubmit,
     errors,
     getValues,
+    setValue,
     onSubmit,
   } = useAuthValidation(mode);
 
@@ -114,6 +118,14 @@ const AuthForm = ({ mode }: AuthFormProps) => {
               </div>
             );
           })}
+
+        {mode === AUTH_MODE.SIGNUP && (
+          <CategorySeletor
+            mode={CATEGORIES_SELECT_MODE.AUTH}
+            watch={watch}
+            setValue={setValue}
+          />
+        )}
 
         <button type="submit">SUBMIT</button>
       </form>
