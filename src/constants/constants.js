@@ -5,6 +5,7 @@ export const PATH = {
   MYPAGE: '/mypage',
   MATELIST: '/matelist',
   CHATTING: '/chatting',
+  APPOINTMENT: '/appointment',
 };
 
 export const CATEGORIES = {

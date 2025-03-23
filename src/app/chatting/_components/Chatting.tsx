@@ -1,8 +1,7 @@
 import { IoArrowForwardCircleSharp } from 'react-icons/io5';
 import MessageCard from './MessageCard';
-import { UserData } from '@/types/users';
 
-const user: Pick<UserData, 'id'> = {
+const user: { id: number } = {
   id: 1,
 };
 
