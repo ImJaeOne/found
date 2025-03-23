@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import React from 'react';
 import Header from './(layout)/Header';
+import { Toaster } from '@/ui/shadcn/toaster';
 
 export const metadata: Metadata = {
   title: 'Found',
@@ -18,6 +19,7 @@ export default function RootLayout({
       <body>
         <Header />
         <main className="py-[100px] w-screen">{children}</main>
+        <Toaster />
       </body>
     </html>
   );
