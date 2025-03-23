@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <Header />
-        <main className="py-[100px] w-screen">
+        <main className="pt-[100px] w-screen">
           {children}
           {modal}
         </main>
