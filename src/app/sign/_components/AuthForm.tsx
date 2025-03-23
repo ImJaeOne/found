@@ -7,7 +7,7 @@ import {
   AUTH_TOAST_MESSAGES,
 } from '@/constants/users';
 import { PATH, QUERY_KEY } from '@/constants/constants';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/useToast';
 import { supabase } from '@/services/supabaseClient';
 import { AuthInputs } from '@/types/users';
 import { useRouter } from 'next/navigation';
