@@ -1,3 +1,4 @@
+import { Appointment } from '@/types/appointments';
 import { useEffect, useState } from 'react';
 
 declare global {
@@ -6,7 +7,9 @@ declare global {
   }
 }
 
-export const useFindAddess = () => {
+export const useFindAddess = (
+  setPlace: React.Dispatch<React.SetStateAction<string>>,
+) => {
   const [roadAddress, setRoadAddress] = useState('');
 
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
@@ -38,6 +41,7 @@ export const useFindAddess = () => {
         }
 
         setRoadAddress(data.roadAddress);
+        setPlace(data.roadAddress);
       },
     }).open();
   };
