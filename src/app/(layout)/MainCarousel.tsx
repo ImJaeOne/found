@@ -1,3 +1,5 @@
+'use client';
+
 import { PATH } from '@/constants/constants';
 import { Button } from '@/ui/shadcn/button';
 import {
