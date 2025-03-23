@@ -4,7 +4,7 @@ import { Textarea } from '../shadcn/textarea';
 type InputProps = {
   placeholder: string;
   isTextarea?: boolean;
-  height?: string;
+  height: number;
 };
 
 const CommonInput = ({
@@ -13,10 +13,10 @@ const CommonInput = ({
   height,
 }: InputProps) => {
   return (
-    <div>
+    <div className="rounded-xl">
       {isTextarea ? (
         <Textarea
-          className={`w-full resize-none bg-main2 h-${height} rounded-xl pl-3 scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-main2 overflow-y-auto`}
+          className={`w-[60%] resize-none bg-main2 h-${height} scrollbar-thin py-2 scrollbar-thumb-blue-400 scrollbar-track-main2 overflow-y-auto `}
           placeholder={placeholder}
         />
       ) : (
