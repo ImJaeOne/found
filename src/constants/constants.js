@@ -9,6 +9,7 @@ export const PATH = {
 
 export const QUERY_KEY = {
   USERS: 'users',
+  USER_CATEGORIES: 'user_categories',
   MESSAGES: 'messages',
   CHAT_ROOMS: 'chat_rooms',
   APPOINTMENTS: 'appointments',
