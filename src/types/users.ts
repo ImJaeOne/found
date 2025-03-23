@@ -5,19 +5,20 @@ export type AuthInputs = {
   nickname: string;
   bio: string;
   address: string;
-  categories: {
-    category: string;
-  };
+  categories: string[];
 };
 
 export type UserData = {
-  id: number;
-  created_at: string;
-  nickname: string;
-  category: string[];
-  profile: string;
-  bio: string;
-  is_finding: boolean;
-  user_id: string;
-  address: string;
+  email: string;
+  password: string;
+  checkPassword: string;
+  created_at: number;
+  options: {
+    data: {
+      nickname: string;
+      bio: string;
+      address: string;
+      categories: string[];
+    };
+  };
 };
