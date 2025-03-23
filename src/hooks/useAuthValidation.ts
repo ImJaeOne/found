@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/router';
 import { useToast } from './useToast';
 import { useState } from 'react';
 import { PATH, QUERY_KEY } from '@/constants/constants';
@@ -9,6 +8,7 @@ import { AUTH_ERROR_MESSAGES, AUTH_TOAST_MESSAGES } from '@/constants/users';
 import { useForm } from 'react-hook-form';
 import { AuthInputs } from '@/types/users';
 import { login, signup } from '@/services/usersServices';
+import { useRouter } from 'next/navigation';
 
 export const useAuthValidation = (mode: string) => {
   // 경로 이동을 위한 route
