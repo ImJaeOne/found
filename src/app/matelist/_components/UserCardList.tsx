@@ -28,7 +28,13 @@ type UserData = {
   user_categories: Category[];
 };
 
-const UserCardList = ({ category }: { category: string }) => {
+const UserCardList = ({
+  category,
+  userId,
+}: {
+  category: string;
+  userId?: number;
+}) => {
   const {
     data: users,
     isError,
@@ -40,6 +46,10 @@ const UserCardList = ({ category }: { category: string }) => {
         .from('users')
         .select('*, user_categories(category)');
 
+      if (error) {
+        throw new Error('users 데이터를 불러오지 못했습니다', error);
+      }
+
       return data as UserData[];
     },
   });
@@ -47,10 +57,17 @@ const UserCardList = ({ category }: { category: string }) => {
   if (isError) return <div>Error!</div>;
   if (isPending) return <div>Loading!</div>;
 
-  // console.log(users);
-  const filteredUsers = users?.filter((user) =>
-    user.user_categories.some((item) => item.category === category),
+  const filteredUsers = users?.filter(
+    (user) =>
+      user.user_categories.some((item) => item.category === category) &&
+      user.id !== userId,
   );
+
+  if (filteredUsers.length === 0) {
+    return<>
+    <h1>해당 운동을 원하는 파우니가 없어요ㅠ</h1>
+    </>
+  }
 
   return (
     <section className="flex flex-col justify-center items-center">
@@ -85,9 +102,3 @@ const UserCardList = ({ category }: { category: string }) => {
 };
 
 export default UserCardList;
-
-/**
- * 유저 정보 가져오기
- * 유저의 category 가져오기
- * category에 맞는 유저들 가져오기
- */

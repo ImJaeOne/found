@@ -38,11 +38,15 @@ const UserCard = ({
     queryKey: ['loginUser'],
     queryFn: async (): Promise<UserData> => {
       const { data } = await supabase.auth.getSession();
-      const { data: user } = await supabase
+      const { data: user, error } = await supabase
         .from('users')
         .select('*')
         .eq('user_id', data.session?.user.id)
         .single();
+
+      if (error) {
+        throw new Error('사용자 정보를 불러오지 못했습니다.', error);
+      }
 
       return user;
     },
@@ -56,7 +60,6 @@ const UserCard = ({
     return <div>Loading...</div>;
   }
 
-  console.log(userSession);
   const startChat = useStartChat();
 
   return (

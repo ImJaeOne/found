@@ -36,7 +36,7 @@ const UserCardListContainer = () => {
       if (sessionData.session === null) {
         return null;
       }
-      const { data: user } = await supabase
+      const { data: user, error } = await supabase
         .from('users')
         .select(
           `
@@ -48,6 +48,10 @@ const UserCardListContainer = () => {
         )
         .eq('user_id', sessionData.session.user.id)
         .single();
+
+      if (error) {
+        throw new Error('사용자 정보를 불러오지 못했습니다.', error);
+      }
       return user;
     },
   });
@@ -55,12 +59,13 @@ const UserCardListContainer = () => {
   if (isError) return <div>Error...</div>;
   if (isPending) return <div>Loading...</div>;
 
-  // console.log(users);
-  // console.log(userSession);
+  let userId: number;
   let myCategories: string[] = [];
   let notMyCategories: string[] = [];
 
-  if (userSession) {
+  if (userSession && typeof userSession !== undefined) {
+    userId = userSession.id;
+
     myCategories = userSession.user_categories
       .map((item) => Object.values(item))
       .flat();
@@ -84,7 +89,7 @@ const UserCardListContainer = () => {
                     같이 할 파우니를 찾고있어요!
                   </h3>
                 </div>
-                <UserCardList category={category} />
+                <UserCardList category={category} userId={userId} />
               </div>
             );
           })}
@@ -98,14 +103,13 @@ const UserCardListContainer = () => {
                     같이 할 파우니를 찾고있어요!
                   </h3>
                 </div>
-                <UserCardList category={category} />
+                <UserCardList category={category} userId={userId} />
               </div>
             );
           })}
         </div>
       ) : (
         <div>
-          <h1>나의 카테고리 아님</h1>
           {categoryList.map((category) => {
             return (
               <div key={category}>
