@@ -14,14 +14,14 @@ export type Appointment = {
   category: string;
 };
 
-export interface AppointmentFormProps {
+export type AppointmentFormProps = {
   newAppointment: Appointment;
   handleChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
   handleDateChange: (date: Date | undefined) => void;
   handleAddClick: () => void;
-}
+};
 
 const AppointmentForm: React.FC<AppointmentFormProps> = ({
   newAppointment,
