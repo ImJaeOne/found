@@ -4,7 +4,10 @@ export type AuthInputs = {
   checkPassword: string;
   nickname: string;
   bio: string;
-  address: string;
+  address: {
+    place: string;
+    detailPlace: string;
+  };
   categories: string[];
 };
 
