@@ -5,8 +5,11 @@ import { supabase } from '@/services/supabaseClient';
 import { Avatar } from '@/ui/shadcn/avatar';
 import { Button } from '@/ui/shadcn/button';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import React, { use } from 'react';
+import React from 'react';
+
+type Category = {
+  category: 'string';
+};
 
 type UserData = {
   id: number;
@@ -17,6 +20,7 @@ type UserData = {
   bio: string;
   user_id: string;
   is_finding: boolean;
+  user_categories: Category[];
 };
 
 const UserCard = ({
@@ -32,13 +36,15 @@ const UserCard = ({
     isPending,
   } = useQuery({
     queryKey: ['loginUser'],
-    queryFn: async () => {
+    queryFn: async (): Promise<UserData> => {
       const { data } = await supabase.auth.getSession();
       const { data: user } = await supabase
         .from('users')
         .select('*')
-        .eq('user_id', data.session?.user.id);
-      return user[0];
+        .eq('user_id', data.session?.user.id)
+        .single();
+
+      return user;
     },
   });
 
@@ -50,6 +56,7 @@ const UserCard = ({
     return <div>Loading...</div>;
   }
 
+  console.log(userSession);
   const startChat = useStartChat();
 
   return (

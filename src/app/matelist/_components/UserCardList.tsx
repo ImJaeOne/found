@@ -9,10 +9,12 @@ import {
 } from '@/ui/shadcn/carousel';
 import React from 'react';
 import UserCard from './UserCard';
-import { Button } from '@/ui/shadcn/button';
-import { CATEGORIES } from '@/constants/constants';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/services/supabaseClient';
+
+type Category = {
+  category: 'string';
+};
 
 type UserData = {
   id: number;
@@ -23,54 +25,32 @@ type UserData = {
   bio: string;
   user_id: string;
   is_finding: boolean;
+  user_categories: Category[];
 };
 
-type CategoriesData = string[];
-
-const categories: CategoriesData = [
-  CATEGORIES.RUNNING,
-  CATEGORIES.TENNIS,
-  CATEGORIES.SOCCER,
-];
-
-type UserCategory = {
-  id: number;
-  user_id: number;
-  category: string;
-};
-
-type UserCardListProps = {
-  category: string;
-  filteredUsers: UserCategory[];
-};
-
-const UserCardList = ({ category, filteredUsers }: UserCardListProps) => {
-  const userIds = filteredUsers.map((user) => user.user_id);
-
+const UserCardList = ({ category }: { category: string }) => {
   const {
     data: users,
     isError,
     isPending,
   } = useQuery({
-    queryKey: ['users', userIds],
-    queryFn: async () => {
-      const { data } = await supabase
+    queryKey: ['users'],
+    queryFn: async (): Promise<UserData[]> => {
+      const { data, error } = await supabase
         .from('users')
-        .select('*')
-        .in('id', userIds);
-      console.log(data);
-      return data;
+        .select('*, user_categories(category)');
+
+      return data as UserData[];
     },
   });
 
-  if (isError) {
-    return <div>Error!</div>;
-  }
+  if (isError) return <div>Error!</div>;
+  if (isPending) return <div>Loading!</div>;
 
-  if (isPending) {
-    return <div>Loading...</div>;
-  }
-  console.log(users);
+  // console.log(users);
+  const filteredUsers = users?.filter((user) =>
+    user.user_categories.some((item) => item.category === category),
+  );
 
   return (
     <section className="flex flex-col justify-center items-center">
@@ -81,7 +61,11 @@ const UserCardList = ({ category, filteredUsers }: UserCardListProps) => {
         className="w-full lg:max-w-[1380px] md:max-w-2xl pt-8"
       >
         <CarouselContent className="-ml-0">
-          {users.map((user: UserData, index: number) => {
+          {filteredUsers.map((user: UserData, index: number) => {
+            const categories = user.user_categories
+              .map((item) => Object.values(item))
+              .flat();
+
             return (
               <CarouselItem
                 key={index}

@@ -4,81 +4,123 @@ import UserCardList from './UserCardList';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/services/supabaseClient';
 import { Button } from '@/ui/shadcn/button';
+import { CATEGORIES } from '@/constants/constants';
+
+type Category = {
+  category: 'string';
+};
+
+type UserData = {
+  id: number;
+  created_at: string;
+  nickname: string;
+  address: string;
+  profile: string;
+  bio: string;
+  user_id: string;
+  is_finding: boolean;
+  user_categories: Category[];
+};
 
 const UserCardListContainer = () => {
+  const categoryList = Object.values(CATEGORIES);
+
   const {
     data: userSession,
     isError,
     isPending,
   } = useQuery({
     queryKey: ['loginUser'],
-    queryFn: async () => {
-      const { data } = await supabase.auth.getSession();
+    queryFn: async (): Promise<UserData | null> => {
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (sessionData.session === null) {
+        return null;
+      }
       const { data: user } = await supabase
         .from('users')
-        .select('*')
-        .eq('user_id', data.session?.user.id);
-      return user[0];
+        .select(
+          `
+        *,
+        user_categories (
+          category
+        )
+      `,
+        )
+        .eq('user_id', sessionData.session.user.id)
+        .single();
+      return user;
     },
   });
 
-  const {
-    data: users,
-    isError: isUsersError,
-    isPending: isUsersPending,
-  } = useQuery({
-    queryKey: ['users'],
-    queryFn: async () => {
-      const { data } = await supabase.from('users').select();
-      return data;
-    },
-  });
+  if (isError) return <div>Error...</div>;
+  if (isPending) return <div>Loading...</div>;
 
-  const {
-    data: categories,
-    isError: isCategoriesError,
-    isPending: isCategoriesPending,
-  } = useQuery({
-    queryKey: ['categories'],
-    queryFn: async () => {
-      const { data } = await supabase.from('user_categories').select();
-      return data;
-    },
-  });
-
-  if (isError || isUsersError || isCategoriesError) return <div>Error...</div>;
-  if (isPending || isUsersPending || isCategoriesPending)
-    return <div>Loading...</div>;
-
-  // console.log(userSession);
   // console.log(users);
-  // console.log(categories);
+  // console.log(userSession);
+  let myCategories: string[] = [];
+  let notMyCategories: string[] = [];
 
-  const userSessionId = userSession.id;
+  if (userSession) {
+    myCategories = userSession.user_categories
+      .map((item) => Object.values(item))
+      .flat();
 
-  const myCategories = categories?.filter(
-    (category) => category.user_id === userSessionId,
-  );
+    notMyCategories = categoryList.filter(
+      (category) => !myCategories.includes(category),
+    );
+  }
 
   return (
     <div>
-      {myCategories.map((myCategory) => {
-        const filteredUsers = categories?.filter((category) => {
-          return category.category === myCategory.category;
-        });
-        console.log(filteredUsers);
-        return (
-          <>
-            <div className="flex flex-row w-full lg:max-w-[1380px] md:max-w-2xl pl-1">
-              <Button className="bg-sub1">{myCategory.category}</Button>
-              <h3 className="text-title-sm pl-3">
-                같이 할 파우니를 찾고있어요!
-              </h3>
-            </div>
-            <UserCardList category={myCategory} filteredUsers={filteredUsers} />
-          </>
-        );
-      })}
+      {userSession ? (
+        <div>
+          <h1>나의 카테고리</h1>
+          {myCategories.map((category) => {
+            return (
+              <div key={category}>
+                <div className="flex flex-row w-full lg:max-w-[1380px] md:max-w-2xl pl-1">
+                  <Button className="bg-sub1">{category}</Button>
+                  <h3 className="text-title-sm pl-3">
+                    같이 할 파우니를 찾고있어요!
+                  </h3>
+                </div>
+                <UserCardList category={category} />
+              </div>
+            );
+          })}
+          <h1>나의 카테고리 아님</h1>
+          {notMyCategories.map((category) => {
+            return (
+              <div key={category}>
+                <div className="flex flex-row w-full lg:max-w-[1380px] md:max-w-2xl pl-1">
+                  <Button className="bg-sub1">{category}</Button>
+                  <h3 className="text-title-sm pl-3">
+                    같이 할 파우니를 찾고있어요!
+                  </h3>
+                </div>
+                <UserCardList category={category} />
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div>
+          <h1>나의 카테고리 아님</h1>
+          {categoryList.map((category) => {
+            return (
+              <div key={category}>
+                <div className="flex flex-row w-full lg:max-w-[1380px] md:max-w-2xl pl-1">
+                  <Button className="bg-sub1">{category}</Button>
+                  <h3 className="text-title-sm pl-3">
+                    같이 할 파우니를 찾고있어요!
+                  </h3>
+                </div>
+                <UserCardList category={category} />
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
