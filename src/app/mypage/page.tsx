@@ -1,4 +1,5 @@
 import UserProfile from '@/ui/common/UserProfile';
+import Appointments from './_components/Appointments';
 
 const MyPage = () => {
   const user = {
@@ -8,10 +9,11 @@ const MyPage = () => {
   };
 
   return (
-    <div>
+    <div className="flex justify-center gap-20">
       <UserProfile user={user} edit={true}>
         <div>children</div>
       </UserProfile>
+      <Appointments />
     </div>
   );
 };
