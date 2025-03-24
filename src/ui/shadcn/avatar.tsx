@@ -2,24 +2,28 @@
 
 import * as React from 'react';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
-
 import { cn } from '@/utils/lib/cn';
 
+/**
+ * 예시코드
+ *  <Avatar size="150">
+        <AvatarImage src="https://github.com/shadcn.png" />
+        <AvatarFallback>CN</AvatarFallback>
+      </Avatar>
+ */
 export interface AvatarProps
   extends React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> {
-  size?: 'sm' | 'lg';
+  size?: string;
 }
 
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
   AvatarProps
->(({ className, size, ...props }, ref) => {
-  const sizeClasses =
-    size === 'sm'
-      ? 'h-[150px] w-[150px]'
-      : size === 'lg'
-        ? 'h-[250px] w-[250px]'
-        : 'h-10 w-10';
+>(({ className, size = '50', ...props }, ref) => {
+  const sizeStyle = {
+    height: `${size}px`,
+    width: `${size}px`,
+  };
 
   return (
     <AvatarPrimitive.Root
@@ -27,8 +31,8 @@ const Avatar = React.forwardRef<
       className={cn(
         'relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full',
         className,
-        sizeClasses,
       )}
+      style={sizeStyle}
       {...props}
     />
   );
