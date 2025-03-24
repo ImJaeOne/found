@@ -5,11 +5,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/ui/shadcn/avatar';
 import { Button } from '@/ui/shadcn/button';
 import CommonInput from '@/ui/common/CommonInput';
 import AppointmentSpan from './_components/AppointmentSpan';
-import { useFindAddess } from '@/hooks/useFindAddress';
 import { DatePickerDemo } from './_components/DatePickerDemo';
 import { format } from 'date-fns';
 import useClickOutside from '@/hooks/useClickOutside';
 import { useRouter } from 'next/navigation';
+import AddressInput from '@/ui/common/AddressInput';
+import useAddressChange from '@/hooks/useAddressChange';
 
 type Appointment = {
   title: string;
@@ -27,30 +28,15 @@ const AppointmentPage = () => {
     category: '',
   });
 
-  const [place, setPlace] = useState<{ place: string; detailPlace: string }>({
-    place: '',
-    detailPlace: '',
-  });
-
   const modalRef = useClickOutside();
 
-  const { handlePostcodeSearch } = useFindAddess(setPlace);
+  const { place, handlePostcodeSearch, handlePlaceChange } = useAddressChange();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setNewAppointment((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handlePlaceChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setPlace((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -104,7 +90,7 @@ const AppointmentPage = () => {
                 <AppointmentSpan label={'TITLE'} />
                 <CommonInput
                   placeholder="제목을 입력해주세요."
-                  height={12}
+                  height={8}
                   name="title"
                   type="text"
                   value={newAppointment.title}
@@ -116,7 +102,7 @@ const AppointmentPage = () => {
                 <CommonInput
                   placeholder="내용을 입력해주세요."
                   isTextarea={true}
-                  height={32}
+                  height={60}
                   name="content"
                   value={newAppointment.content}
                   onChange={handleChange}
@@ -127,27 +113,13 @@ const AppointmentPage = () => {
               <div className="flex flex-col gap-4">
                 <AppointmentSpan label={'PLACE'} />
                 <div className="flex flex-col gap-1">
-                  <button
-                    onClick={handlePostcodeSearch}
-                    className="bg-white text-sub1 border border-sub1 rounded-xl px-3 py-2 "
-                  >
-                    주소 찾기
-                  </button>
-                  <CommonInput
-                    placeholder="도로명 주소"
-                    height={12}
-                    name="place"
-                    value={place.place}
-                    disabled={true}
-                  />
-                  <CommonInput
-                    placeholder="상세 주소"
-                    height={12}
-                    name="detailPlace"
-                    type="text"
-                    value={place.detailPlace}
-                    onChange={handlePlaceChange}
-                  />
+                  <>
+                    <AddressInput
+                      place={place}
+                      handlePostcodeSearch={handlePostcodeSearch}
+                      handlePlaceChange={handlePlaceChange}
+                    />
+                  </>
                 </div>
               </div>
               <div className="flex flex-col gap-4">
@@ -158,7 +130,7 @@ const AppointmentPage = () => {
                 <AppointmentSpan label={'CATEGORY'} />
                 <CommonInput
                   placeholder="카테고리"
-                  height={12}
+                  height={8}
                   name="category"
                   value={newAppointment.category}
                   onChange={handleChange}
