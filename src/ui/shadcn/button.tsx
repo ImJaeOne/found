@@ -14,10 +14,10 @@ import { cn } from '@/utils/lib/cn';
  *  <Button variant="label" size="label">variant, size = label</Button>
  *
  * @example 흰 배경 노란 글씨 버튼
- *  <Button variant="subbutton" size="subbuton">subbutton</Button>
+ *  <Button variant="subbutton" size="subbuton">variant, size = subbutton</Button>
  *
  * @example Slot을 사용하는 버튼
- *  <Button asChild><a href="/home">Home</a></Button>
+ *  <Button asChild><Link href="/home">Home</Link></Button>
  *
  * @prop { 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | 'button' | 'subbutton' | 'label' | 'logo' } variant - 버튼의 스타일
  * @prop { 'default' | 'label' | 'button' | 'subbutton' | 'logo' | 'icon' } size - 버튼의 크기
@@ -40,12 +40,13 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline',
         button: 'bg-main1 !text-title-sm text-light-gray',
         subbutton: 'bg-white border !border-sub1 text-sub1',
-        label: 'bg-sub1 !text-text-lg !text-light-gray pointer-events-none',
+        label:
+          'bg-sub1-30 !text-text-lg text-black border-sub1 border-2 pointer-events-none',
         logo: 'bg-main1 text-light-gray',
       },
       size: {
         default: 'px-2 py-1',
-        label: 'px-6 py-2 rounded-2xl',
+        label: 'px-5 py-3/2 rounded-2xl',
         button: 'px-8 py-3 rounded-2xl',
         subbutton: 'px-9 py-2 rounded-2xl',
         logo: 'px-8 py-5 rounded-2xl',
