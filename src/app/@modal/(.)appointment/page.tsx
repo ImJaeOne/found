@@ -10,7 +10,6 @@ import { DatePickerDemo } from './_components/DatePickerDemo';
 import { format } from 'date-fns';
 import useClickOutside from '@/hooks/useClickOutside';
 import { useRouter } from 'next/navigation';
-import { PATH } from '@/constants/constants';
 
 type Appointment = {
   title: string;
