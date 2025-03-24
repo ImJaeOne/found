@@ -45,7 +45,7 @@ const Chatting = ({ chatId }: { chatId: number }) => {
 
       return userData?.id || null;
     },
-    staleTime: 1000 * 60, // 1분 동안 캐싱 유지
+    staleTime: 1000 * 60,
   });
 
   const [newMessage, setNewMessage] = useState('');

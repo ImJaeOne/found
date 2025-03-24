@@ -12,21 +12,21 @@ const UserProfile = ({
   edit: boolean;
 }) => {
   const profileImg = '/images/found_default_profile01.png';
-  const { nick_name, bio, categories } = user;
+  const { nickname, bio, categories } = user;
 
   return (
     <div className="flex flex-col gap-5 max-w-[300px]">
       <Avatar size="50">
-        <AvatarImage src={profileImg} />
+        <AvatarImage src={profileImg} alt="profile_img" />
         <AvatarFallback>profile_image</AvatarFallback>
       </Avatar>
       {edit ? (
         <div className="flex justify-between items-center">
-          <div className="text-title-lg font-bold">{nick_name}</div>
+          <div className="text-title-lg font-bold">{nickname}</div>
           <GrEdit />
         </div>
       ) : (
-        <div className="text-title-lg font-bold">{nick_name}</div>
+        <div className="text-title-lg font-bold">{nickname}</div>
       )}
       <div className="text-lg">{bio}</div>
       <div className="flex">
@@ -42,7 +42,9 @@ const UserProfile = ({
 export default UserProfile;
 
 type User = {
-  nick_name: string;
+  id: number;
+  nickname: string;
   bio: string;
+  profile: string;
   categories: string[];
 };
