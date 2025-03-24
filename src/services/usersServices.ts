@@ -1,4 +1,4 @@
-import { AuthInputs, UserData } from '@/types/users';
+import { AuthInputs, UserMetaData } from '@/types/users';
 import { supabase } from './supabaseClient';
 import { AuthError, Session, User } from '@supabase/supabase-js';
 import { QUERY_KEY } from '@/constants/constants';
@@ -21,7 +21,7 @@ interface SignupResponse {
 }
 
 export const signup = async (
-  newUserData: UserData,
+  newUserData: UserMetaData,
 ): Promise<SignupResponse> => {
   try {
     const { data, error } = await supabase.auth.signUp(newUserData);

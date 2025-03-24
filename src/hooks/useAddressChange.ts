@@ -1,27 +1,35 @@
 'use client';
 
-import { useState } from 'react';
 import { useFindAddess } from './useFindAddress';
+import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
+import { AuthInputs } from '@/types/users';
 
-const useAddressChange = () => {
-  const [place, setPlace] = useState<{ place: string; detailPlace: string }>({
-    place: '',
-    detailPlace: '',
-  });
+type useAddressChangePros = {
+  setValue: UseFormSetValue<AuthInputs>;
+  watch: UseFormWatch<AuthInputs>;
+};
 
-  const { handlePostcodeSearch } = useFindAddess(setPlace);
+const useAddressChange = ({ setValue, watch }: useAddressChangePros) => {
+  const { handlePostcodeSearch } = useFindAddess(setValue);
 
   const handlePlaceChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-    setPlace((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setValue(
+      `address.${name}` as 'address.place' | 'address.detailPlace',
+      value,
+    );
   };
 
-  return { place, handlePostcodeSearch, handlePlaceChange };
+  return {
+    place: {
+      place: watch('address.place', ''),
+      detailPlace: watch('address.detailPlace', ''),
+    },
+    handlePostcodeSearch,
+    handlePlaceChange,
+  };
 };
 
 export default useAddressChange;

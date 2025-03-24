@@ -9,8 +9,6 @@ import { DatePickerDemo } from './_components/DatePickerDemo';
 import { format } from 'date-fns';
 import useClickOutside from '@/hooks/useClickOutside';
 import { useRouter } from 'next/navigation';
-import AddressInput from '@/ui/common/AddressInput';
-import useAddressChange from '@/hooks/useAddressChange';
 
 type Appointment = {
   title: string;
@@ -30,7 +28,8 @@ const AppointmentPage = () => {
 
   const modalRef = useClickOutside();
 
-  const { place, handlePostcodeSearch, handlePlaceChange } = useAddressChange();
+  //react-hook-form 이후 수정해야함
+  // const { place, handlePostcodeSearch, handlePlaceChange } = useAddressChange();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -44,7 +43,7 @@ const AppointmentPage = () => {
 
   // 추후 supabase upsert
   const handleAddClick = () => {
-    console.log('appointment', { ...newAppointment, ...place });
+    // console.log('appointment', { ...newAppointment, ...place });
     router.back();
   };
 
@@ -114,11 +113,11 @@ const AppointmentPage = () => {
                 <AppointmentSpan label={'PLACE'} />
                 <div className="flex flex-col gap-1">
                   <>
-                    <AddressInput
-                      place={place}
+                    {/* react-hook-form 이후에 수정 */}
+                    {/* <AddressInput
                       handlePostcodeSearch={handlePostcodeSearch}
                       handlePlaceChange={handlePlaceChange}
-                    />
+                    /> */}
                   </>
                 </div>
               </div>

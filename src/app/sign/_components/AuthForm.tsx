@@ -2,8 +2,10 @@
 
 import { CATEGORIES_SELECT_MODE, PATH } from '@/constants/constants';
 import { AUTH_MODE } from '@/constants/users';
+import useAddressChange from '@/hooks/useAddressChange';
 import { useAuthContents } from '@/hooks/useAuthContents';
 import { useAuthValidation } from '@/hooks/useAuthValidation';
+import AddressInput from '@/ui/common/AddressInput';
 import CategorySeletor from '@/ui/common/CategorySeletor';
 import CommonInput from '@/ui/common/CommonInput';
 import { Button } from '@/ui/shadcn/button';
@@ -43,6 +45,7 @@ const AuthForm = ({ mode }: AuthFormProps) => {
         onSubmit={handleSubmit(onSubmit)}
         className="w-full flex flex-col items-center"
       >
+        {/* 이메일 / 비밀번호 */}
         {loginInputContents.map((item) => {
           const {
             title,
@@ -79,6 +82,7 @@ const AuthForm = ({ mode }: AuthFormProps) => {
           );
         })}
 
+        {/* 비밀번호 확인 / 닉네임 / 상태메세지 */}
         {mode === AUTH_MODE.SIGNUP &&
           signUpInputContents.map((item) => {
             const {
@@ -137,6 +141,14 @@ const AuthForm = ({ mode }: AuthFormProps) => {
 
         {mode === AUTH_MODE.SIGNUP && (
           <section className={INPUT_SECTION}>
+            {/* 주소 */}
+            <label htmlFor="address" className={INPUT_LABLE}>
+              <p className={INPUT_TITLE}>ADDRESS</p>
+              <div className="w-full flex flex-col gap-1 mb-4">
+                <AddressInput watch={watch} setValue={setValue} />
+              </div>
+            </label>
+            {/* 카테고리 */}
             <label htmlFor="categories" className={INPUT_LABLE}>
               <p className={INPUT_TITLE}>FAV SPORTS</p>
               <CategorySeletor
