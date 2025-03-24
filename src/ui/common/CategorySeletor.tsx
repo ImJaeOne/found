@@ -4,8 +4,8 @@ import { CATEGORIES } from '@/constants/constants';
 import { AUTH_ERROR_MESSAGES } from '@/constants/users';
 import { toast } from '@/hooks/useToast';
 import { AuthInputs } from '@/types/users';
-import { ChangeEvent } from 'react';
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
+import { Checkbox } from '../shadcn/checkbox';
 
 type CategorySelectorProps = {
   mode: number;
@@ -16,12 +16,10 @@ type CategorySelectorProps = {
 const CategorySeletor = ({ mode, watch, setValue }: CategorySelectorProps) => {
   const checkedItems = watch('categories', []);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value, checked } = e.target;
-
+  const handleChange = (category: string, checked: boolean) => {
     const updatedItems = checked
-      ? [...checkedItems, value]
-      : checkedItems.filter((item: string) => item !== value);
+      ? [...checkedItems, category]
+      : checkedItems.filter((item: string) => item !== category);
 
     if (updatedItems.length > mode) {
       toast({ description: `최대 ${mode}개까지 선택 가능합니다!` });
@@ -42,17 +40,20 @@ const CategorySeletor = ({ mode, watch, setValue }: CategorySelectorProps) => {
     <div className="grid grid-cols-3">
       {categories.map((category) => {
         return (
-          <label htmlFor={category} key={category}>
-            <input
-              type="checkbox"
-              name={category}
-              onChange={handleChange}
-              value={category}
-              checked={checkedItems.includes(category)}
-              className="w-4 h-4 appearance-none border-solid border border-sub1 rounded-sm p-2 checked:border-sub1 checked:bg-sub1"
-            />
-            <span>{category}</span>
-          </label>
+          <div key={category} className="items-top flex space-x-2">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id={category}
+                checked={checkedItems.includes(category)}
+                onCheckedChange={(checked) =>
+                  handleChange(category, Boolean(checked))
+                }
+              />
+              <label htmlFor={category} className="text-text-sm font-medium">
+                {category}
+              </label>
+            </div>
+          </div>
         );
       })}
     </div>
