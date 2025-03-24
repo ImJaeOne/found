@@ -14,7 +14,7 @@ import { cn } from '@/utils/lib/cn';
  *  <Button variant="label" size="label">variant, size = label</Button>
  *
  * @example 흰 배경 노란 글씨 버튼
- *  <Button variant="subbutton" size="subbuton">subbutton</Button>
+ *  <Button variant="subbutton" size="subbuton">variant, size = subbutton</Button>
  *
  * @example Slot을 사용하는 버튼
  *  <Button asChild><a href="/home">Home</a></Button>

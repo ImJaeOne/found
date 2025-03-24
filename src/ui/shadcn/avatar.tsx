@@ -8,7 +8,6 @@ import { cn } from '@/utils/lib/cn';
  * @example
  * <Avatar size="150">
  *   <AvatarImage src="https://github.com/shadcn.png" />
- *   <AvatarFallback>CN</AvatarFallback>
  * </Avatar>
  *
  * @param {string} [size='50'] - 아바타의 크기(단위: px)
