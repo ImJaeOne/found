@@ -165,7 +165,6 @@ export const useAuthValidation = (mode: string) => {
 
       //회원가입 성공
       if (data.user) {
-        console.log('data.user', data.user);
         //유저 알람
         toast({ description: AUTH_TOAST_MESSAGES.SIGNUP.SUCCESS });
         //로그인 페이지로 이동

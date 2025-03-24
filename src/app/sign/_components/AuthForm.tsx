@@ -1,10 +1,13 @@
 'use client';
 
-import { CATEGORIES_SELECT_MODE } from '@/constants/constants';
+import { CATEGORIES_SELECT_MODE, PATH } from '@/constants/constants';
 import { AUTH_MODE } from '@/constants/users';
 import { useAuthContents } from '@/hooks/useAuthContents';
 import { useAuthValidation } from '@/hooks/useAuthValidation';
 import CategorySeletor from '@/ui/common/CategorySeletor';
+import CommonInput from '@/ui/common/CommonInput';
+import { Button } from '@/ui/shadcn/button';
+import Link from 'next/link';
 
 //-----타입 지정-----
 type AuthFormProps = {
@@ -34,9 +37,12 @@ const AuthForm = ({ mode }: AuthFormProps) => {
   });
 
   return (
-    <div>
+    <>
       {/* 폼 양식 */}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full flex flex-col items-center"
+      >
         {loginInputContents.map((item) => {
           const {
             title,
@@ -52,21 +58,24 @@ const AuthForm = ({ mode }: AuthFormProps) => {
           } = item;
 
           return (
-            <div key={id}>
-              <label htmlFor={name}>{title}</label>
-              <input
-                id={id}
-                type={type}
-                placeholder={placeholder}
-                {...register(name, {
-                  required,
-                  minLength,
-                  maxLength,
-                  pattern,
-                })}
-              />
-              {error && <p className="text-red-600">{error.message}</p>}
-            </div>
+            <section key={id} className={INPUT_SECTION}>
+              <label htmlFor={name} className={INPUT_LABLE}>
+                <h6 className={INPUT_TITLE}>{title}</h6>
+                <CommonInput
+                  id={id}
+                  type={type}
+                  placeholder={placeholder}
+                  height={8}
+                  {...register(name, {
+                    required,
+                    minLength,
+                    maxLength,
+                    pattern,
+                  })}
+                />
+              </label>
+              <p className={INPUT_ERROR_TEXT}>{error && error.message}</p>
+            </section>
           );
         })}
 
@@ -88,49 +97,98 @@ const AuthForm = ({ mode }: AuthFormProps) => {
             } = item;
 
             return (
-              <div key={id}>
-                <label htmlFor={name}>{title}</label>
-                <input
-                  id={id}
-                  type={type}
-                  placeholder={placeholder}
-                  {...register(name, {
-                    required,
-                    validate,
-                    minLength,
-                    maxLength,
-                    pattern,
-                  })}
-                />
-                {checkButton && (
-                  <div className="self-end">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        checkNicknameExsited(getValues('nickname'))
-                      }
-                    >
-                      CHECK
-                    </button>
+              <section key={id} className={INPUT_SECTION}>
+                <label htmlFor={name} className={INPUT_LABLE}>
+                  <h6 className={INPUT_TITLE}>{title}</h6>
+                  <div className="w-full flex items-center gap-2">
+                    <CommonInput
+                      id={id}
+                      type={type}
+                      placeholder={placeholder}
+                      height={8}
+                      {...register(name, {
+                        required,
+                        validate,
+                        minLength,
+                        maxLength,
+                        pattern,
+                      })}
+                    />
+                    {checkButton && (
+                      <div className="self-end">
+                        <Button
+                          type="button"
+                          onClick={() =>
+                            checkNicknameExsited(getValues('nickname'))
+                          }
+                          variant="subbutton"
+                          size="subbutton"
+                        >
+                          CHECK
+                        </Button>
+                      </div>
+                    )}
                   </div>
-                )}
-                {error && <p className="text-red-600">{error.message}</p>}
-              </div>
+                </label>
+                <p className={INPUT_ERROR_TEXT}>{error && error.message}</p>
+              </section>
             );
           })}
 
         {mode === AUTH_MODE.SIGNUP && (
-          <CategorySeletor
-            mode={CATEGORIES_SELECT_MODE.AUTH}
-            watch={watch}
-            setValue={setValue}
-          />
+          <section className={INPUT_SECTION}>
+            <label htmlFor="categories" className={INPUT_LABLE}>
+              <p className={INPUT_TITLE}>FAV SPORTS</p>
+              <CategorySeletor
+                mode={CATEGORIES_SELECT_MODE.AUTH}
+                watch={watch}
+                setValue={setValue}
+              />
+            </label>
+          </section>
         )}
 
-        <button type="submit">SUBMIT</button>
+        {/* 로그인/회원가입 이동 버튼 */}
+        <section className="w-full mb-5 pt-3 border-t-2 border-light-gray">
+          {mode === AUTH_MODE.SIGNUP ? (
+            <div className={PAGE_MOVE_WRAPPER}>
+              <p className={PAGE_MOVE_TITLE}>FOUND 회원이신가요?</p>
+              <Link href={PATH.LOGIN} className={PAGE_MOVE_LINK}>
+                LOG IN
+              </Link>
+            </div>
+          ) : (
+            <div className={PAGE_MOVE_WRAPPER}>
+              <p className={PAGE_MOVE_TITLE}>아직 회원이 아니신가요?</p>
+              <Link href={PATH.SIGNUP} className={PAGE_MOVE_LINK}>
+                SIGN UP
+              </Link>
+            </div>
+          )}
+        </section>
+
+        {/* 버튼 */}
+        <div>
+          <Button type="submit" variant="button" size="button">
+            {mode === AUTH_MODE.SIGNUP ? 'SIGN UP' : 'LOG IN'}
+          </Button>
+        </div>
       </form>
-    </div>
+
+      {/* 소셜로그인 */}
+    </>
   );
 };
+
+//style
+const INPUT_SECTION = 'flex flex-col w-full justify-between items-center p-3';
+const INPUT_LABLE = 'flex w-full justify-between items-center';
+const INPUT_TITLE = 'w-1/3 text-xs md:text-text-lg font-semibold text-main1';
+const INPUT_ERROR_TEXT = 'text-sub1 text-text-sm';
+
+const PAGE_MOVE_WRAPPER = 'w-full flex justify-center items-center gap-10';
+const PAGE_MOVE_TITLE = 'text-text-md';
+const PAGE_MOVE_LINK =
+  'text-text-md font-semibold text-main1 cursor-pointer duration-200 hover:scale-105';
 
 export default AuthForm;
