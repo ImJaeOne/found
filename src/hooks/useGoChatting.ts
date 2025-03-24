@@ -34,3 +34,5 @@ const useStartChat = () => {
 };
 
 export default useStartChat;
+
+// 왜 계속 새로운 채팅방이 생성되는지 해결해야 함

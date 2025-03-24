@@ -26,8 +26,6 @@ const UserCard = ({
   user: UserData;
   categories: string[];
 }) => {
-  // console.log(user);
-  const router = useRouter();
   const {
     data: userSession,
     isError,
@@ -51,6 +49,7 @@ const UserCard = ({
   if (isPending) {
     return <div>Loading...</div>;
   }
+
   const startChat = useStartChat();
 
   return (
