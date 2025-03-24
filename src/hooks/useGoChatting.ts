@@ -4,13 +4,13 @@ import { supabase } from '@/services/supabaseClient';
 const useStartChat = () => {
   const router = useRouter();
   const startChat = async (user1_id: number, user2_id: number) => {
-    console.log(user1_id, user2_id);
     // 기존 채팅방 조회
     const { data: existingChat, error } = await supabase
       .from('chat_rooms')
       .select('*')
-      .or(`user1_id.eq.${user1_id},user2_id.eq.${user2_id}`)
-      .or(`user1_id.eq.${user2_id},user2_id.eq.${user1_id}`)
+      .or(
+        `and(user1_id.eq.${user1_id},user2_id.eq.${user2_id}),and(user1_id.eq.${user2_id},user2_id.eq.${user1_id})`,
+      )
       .single();
     console.log(existingChat);
     if (existingChat) {
