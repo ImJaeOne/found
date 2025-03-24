@@ -45,20 +45,21 @@ type UserCardListProps = {
 };
 
 const UserCardList = ({ category, filteredUsers }: UserCardListProps) => {
+  const userIds = filteredUsers.map((user) => user.user_id);
+
   const {
     data: users,
     isError,
     isPending,
   } = useQuery({
-    queryKey: ['users'],
+    queryKey: ['users', userIds],
     queryFn: async () => {
-      filteredUsers.map(async (filteredUser) => {
-        const { data } = await supabase
-          .from('users')
-          .select('*')
-          .eq('user_id', filteredUser.user_id);
-        return data;
-      });
+      const { data } = await supabase
+        .from('users')
+        .select('*')
+        .in('id', userIds);
+      console.log(data);
+      return data;
     },
   });
 
@@ -73,10 +74,6 @@ const UserCardList = ({ category, filteredUsers }: UserCardListProps) => {
 
   return (
     <section className="flex flex-col justify-center items-center">
-      <div className="flex flex-row w-full lg:max-w-[1380px] md:max-w-2xl pl-1">
-        <Button className="bg-sub1">{CATEGORIES.RUNNING}</Button>
-        <h3 className="text-title-sm pl-3">같이 할 파우니를 찾고있어요!</h3>
-      </div>
       <Carousel
         opts={{
           align: 'start',
