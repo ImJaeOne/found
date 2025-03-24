@@ -33,6 +33,9 @@ export const AUTH_ERROR_MESSAGES = {
     CHECK: '닉네임 중복을 확인해주세요!',
     SUCCESS: '사용 가능한 닉네임 입니다!',
   },
+  CATEGORIES: {
+    BLANK: '최소 하나의 카테고리를 선택해야 합니다!',
+  },
   BIO: {
     BLANK: '상태메세지 1-50자를 입력해주세요!',
     MAX: '상태메세지는 50자 이하 입력해주세요!',

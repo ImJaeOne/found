@@ -24,3 +24,8 @@ export const QUERY_KEY = {
   CHAT_ROOMS: 'chat_rooms',
   APPOINTMENTS: 'appointments',
 };
+
+export const CATEGORIES_SELECT_MODE = {
+  AUTH: 3,
+  APPOINTMENT: 1,
+};
