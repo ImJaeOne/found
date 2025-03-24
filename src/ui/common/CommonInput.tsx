@@ -39,7 +39,7 @@ const CommonInput = forwardRef<
   ) => {
     return isTextarea ? (
       <Textarea
-        className={`w-full resize-none bg-main2 min-h-${height} scrollbar-thin py-2 scrollbar-thumb-blue-400 scrollbar-track-main2 overflow-y-auto`}
+        className={`w-full resize-none bg-main2 h-44 scrollbar-thin py-2 scrollbar-thumb-blue-400 scrollbar-track-main2 overflow-y-auto`}
         placeholder={placeholder}
         ref={ref as React.Ref<HTMLTextAreaElement>}
         {...props}
