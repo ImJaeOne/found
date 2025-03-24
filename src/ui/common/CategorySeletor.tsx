@@ -37,22 +37,20 @@ const CategorySeletor = ({ mode, watch, setValue }: CategorySelectorProps) => {
   const categories = Object.values(CATEGORIES);
 
   return (
-    <div className="grid grid-cols-3">
+    <div className="w-full grid grid-cols-3">
       {categories.map((category) => {
         return (
-          <div key={category} className="items-top flex space-x-2">
-            <div className="flex items-center gap-2">
-              <Checkbox
-                id={category}
-                checked={checkedItems.includes(category)}
-                onCheckedChange={(checked) =>
-                  handleChange(category, Boolean(checked))
-                }
-              />
-              <label htmlFor={category} className="text-text-sm font-medium">
-                {category}
-              </label>
-            </div>
+          <div key={category} className="flex items-center gap-2">
+            <Checkbox
+              id={category}
+              checked={checkedItems.includes(category)}
+              onCheckedChange={(checked) =>
+                handleChange(category, Boolean(checked))
+              }
+            />
+            <label htmlFor={category} className="text-text-sm font-medium">
+              {category}
+            </label>
           </div>
         );
       })}
