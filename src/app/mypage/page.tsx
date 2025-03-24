@@ -3,9 +3,10 @@ import Appointments from './_components/Appointments';
 
 const MyPage = () => {
   const user = {
-    nick_name: 'Nickname',
+    nickname: 'Nickname',
     bio: 'bio',
     categories: ['런닝', '배드민턴', '축구'],
+    profile: '/images/found_default_profile01.png',
   };
 
   return (

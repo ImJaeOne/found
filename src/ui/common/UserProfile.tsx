@@ -12,12 +12,12 @@ const UserProfile = ({
   edit: boolean;
 }) => {
   const profileImg = '/images/found_default_profile01.png';
-  const { nickname, bio, categories } = user;
+  const { nickname, bio, categories, profile } = user;
 
   return (
     <div className="flex flex-col gap-5 max-w-[300px]">
       <Avatar size="50">
-        <AvatarImage src={profileImg} alt="profile_img" />
+        <AvatarImage src={profile || profileImg} alt="profile_img" />
         <AvatarFallback>profile_image</AvatarFallback>
       </Avatar>
       {edit ? (
@@ -42,7 +42,6 @@ const UserProfile = ({
 export default UserProfile;
 
 type User = {
-  id: number;
   nickname: string;
   bio: string;
   profile: string;
