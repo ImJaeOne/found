@@ -40,12 +40,13 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline',
         button: 'bg-main1 !text-title-sm text-light-gray',
         subbutton: 'bg-white border !border-sub1 text-sub1',
-        label: 'bg-sub1 !text-text-lg !text-light-gray pointer-events-none',
+        label:
+          'bg-sub1-30 !text-text-lg text-black border-sub1 border-2 pointer-events-none',
         logo: 'bg-main1 text-light-gray',
       },
       size: {
         default: 'px-2 py-1',
-        label: 'px-6 py-2 rounded-2xl',
+        label: 'px-5 py-3/2 rounded-2xl',
         button: 'px-8 py-3 rounded-2xl',
         subbutton: 'px-9 py-2 rounded-2xl',
         logo: 'px-8 py-5 rounded-2xl',

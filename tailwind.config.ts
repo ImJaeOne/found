@@ -42,6 +42,7 @@ const config: Config = {
         main1: '#0040FF',
         main2: '#D9E2FF',
         sub1: '#F2BA40',
+        'sub1-30': 'rgba(242, 186, 64, 0.3)',
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
