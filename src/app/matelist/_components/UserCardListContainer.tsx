@@ -3,6 +3,7 @@ import React from 'react';
 import UserCardList from './UserCardList';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/services/supabaseClient';
+import { Button } from '@/ui/shadcn/button';
 
 const UserCardListContainer = () => {
   const {
@@ -49,9 +50,9 @@ const UserCardListContainer = () => {
   if (isPending || isUsersPending || isCategoriesPending)
     return <div>Loading...</div>;
 
-  console.log(userSession);
-  console.log(users);
-  console.log(categories);
+  // console.log(userSession);
+  // console.log(users);
+  // console.log(categories);
 
   const userSessionId = userSession.id;
 
@@ -59,16 +60,23 @@ const UserCardListContainer = () => {
     (category) => category.user_id === userSessionId,
   );
 
-  console.log(myCategories);
   return (
     <div>
       {myCategories.map((myCategory) => {
         const filteredUsers = categories?.filter((category) => {
           return category.category === myCategory.category;
         });
-        console.log(filteredUsers)
+        console.log(filteredUsers);
         return (
-          <UserCardList category={myCategory} filteredUsers={filteredUsers} />
+          <>
+            <div className="flex flex-row w-full lg:max-w-[1380px] md:max-w-2xl pl-1">
+              <Button className="bg-sub1">{myCategory.category}</Button>
+              <h3 className="text-title-sm pl-3">
+                같이 할 파우니를 찾고있어요!
+              </h3>
+            </div>
+            <UserCardList category={myCategory} filteredUsers={filteredUsers} />
+          </>
         );
       })}
     </div>
@@ -76,5 +84,3 @@ const UserCardListContainer = () => {
 };
 
 export default UserCardListContainer;
-
-
