@@ -40,7 +40,7 @@ const MainCarousel = () => {
                 asChild
                 variant="logo"
                 size="logo"
-                className="absolute bottom-28 right-60 z-1"
+                className="absolute bottom-12 left-3/4 z-1"
               >
                 <Link href={PATH.MATELIST} className="flex items-center">
                   <Image
