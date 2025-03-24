@@ -3,6 +3,7 @@ import './globals.css';
 import React from 'react';
 import Header from './(layout)/Header';
 import { Toaster } from '@/ui/shadcn/toaster';
+import Providers from '@/providers/RQProviders';
 
 export const metadata: Metadata = {
   title: 'Found',
@@ -20,10 +21,12 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <Header />
-        <main className="pt-[100px] w-screen">
-          {children}
-          {modal}
-        </main>
+        <Providers>
+          <main className="py-[100px] w-screen">
+            {children}
+            {modal}
+          </main>
+        </Providers>
         <Toaster />
       </body>
     </html>
