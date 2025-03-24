@@ -12,7 +12,6 @@ import UserCard from './UserCard';
 import { Button } from '@/ui/shadcn/button';
 import { CATEGORIES } from '@/constants/constants';
 import { useQuery } from '@tanstack/react-query';
-import { getUsers } from '@/services/getServices';
 import { supabase } from '@/services/supabaseClient';
 
 type UserData = {
@@ -34,14 +33,33 @@ const categories: CategoriesData = [
   CATEGORIES.SOCCER,
 ];
 
-const UserCardList = () => {
+type UserCategory = {
+  id: number;
+  user_id: number;
+  category: string;
+};
+
+type UserCardListProps = {
+  category: string;
+  filteredUsers: UserCategory[];
+};
+
+const UserCardList = ({ category, filteredUsers }: UserCardListProps) => {
   const {
     data: users,
     isError,
     isPending,
   } = useQuery({
     queryKey: ['users'],
-    queryFn: getUsers,
+    queryFn: async () => {
+      filteredUsers.map(async (filteredUser) => {
+        const { data } = await supabase
+          .from('users')
+          .select('*')
+          .eq('user_id', filteredUser.user_id);
+        return data;
+      });
+    },
   });
 
   if (isError) {
@@ -51,10 +69,8 @@ const UserCardList = () => {
   if (isPending) {
     return <div>Loading...</div>;
   }
+  console.log(users);
 
-  
-
-  console.log('user : ', users);
   return (
     <section className="flex flex-col justify-center items-center">
       <div className="flex flex-row w-full lg:max-w-[1380px] md:max-w-2xl pl-1">
@@ -68,14 +84,16 @@ const UserCardList = () => {
         className="w-full lg:max-w-[1380px] md:max-w-2xl pt-8"
       >
         <CarouselContent className="-ml-0">
-          {users.map((user: UserData, index:number) => (
-            <CarouselItem
-              key={index}
-              className="md:basis-1/2 lg:basis-1/4 pl-0"
-            >
-              <UserCard user={user} categories={categories} />
-            </CarouselItem>
-          ))}
+          {users.map((user: UserData, index: number) => {
+            return (
+              <CarouselItem
+                key={index}
+                className="md:basis-1/2 lg:basis-1/4 pl-0"
+              >
+                <UserCard user={user} categories={categories} />
+              </CarouselItem>
+            );
+          })}
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
