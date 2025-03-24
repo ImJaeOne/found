@@ -1,9 +1,9 @@
 'use client';
 
 import UserProfile from '@/ui/common/UserProfile';
-import Chatting from './_components/Chatting';
+import Chatting from '../_components/Chatting';
 import Link from 'next/link';
-import SectionHeader from './_components/SectionHeader';
+import SectionHeader from '../_components/SectionHeader';
 import { PATH } from '@/constants/constants';
 
 const partner = {
