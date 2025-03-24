@@ -5,11 +5,15 @@ import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import { cn } from '@/utils/lib/cn';
 
 /**
- * 예시코드
- *  <Avatar size="150">
-        <AvatarImage src="https://github.com/shadcn.png" />
-        <AvatarFallback>CN</AvatarFallback>
-      </Avatar>
+ * @example
+ * <Avatar size="150">
+ *   <AvatarImage src="https://github.com/shadcn.png" />
+ *   <AvatarFallback>CN</AvatarFallback>
+ * </Avatar>
+ *
+ * @param {string} [size='50'] - 아바타의 크기(단위: px)
+ * @param {string} [className]
+ * @param {React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>} props
  */
 export interface AvatarProps
   extends React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> {
