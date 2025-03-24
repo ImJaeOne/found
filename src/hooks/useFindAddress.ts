@@ -1,4 +1,6 @@
+import { AuthInputs } from '@/types/users';
 import { useEffect, useState } from 'react';
+import { UseFormSetValue } from 'react-hook-form';
 
 declare global {
   interface Window {
@@ -6,13 +8,7 @@ declare global {
   }
 }
 
-export const useFindAddess = (
-  setPlace: React.Dispatch<
-    React.SetStateAction<{ place: string; detailPlace: string }>
-  >,
-) => {
-  const [roadAddress, setRoadAddress] = useState('');
-
+export const useFindAddess = (setValue: UseFormSetValue<AuthInputs>) => {
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
   useEffect(() => {
@@ -41,11 +37,8 @@ export const useFindAddess = (
           extraRoadAddr = ` (${extraRoadAddr})`;
         }
 
-        setRoadAddress(data.roadAddress);
-        setPlace({
-          place: data.roadAddress,
-          detailPlace: '',
-        });
+        setValue('address.place', data.roadAddress);
+        setValue('address.detailPlace', '');
       },
     }).open();
   };
