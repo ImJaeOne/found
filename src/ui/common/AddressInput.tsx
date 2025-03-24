@@ -1,24 +1,23 @@
 'use client';
 
+import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { Button } from '../shadcn/button';
 import CommonInput from './CommonInput';
+import { AuthInputs } from '@/types/users';
+import useAddressChange from '@/hooks/useAddressChange';
 
-type AddressInputProps = {
-  place: {
-    place: string;
-    detailPlace: string;
-  };
-  handlePostcodeSearch: () => void;
-  handlePlaceChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => void;
+type useAddressInput = {
+  setValue: UseFormSetValue<AuthInputs>;
+  watch: UseFormWatch<AuthInputs>;
 };
 
-const AddressInput = ({
-  place,
-  handlePostcodeSearch,
-  handlePlaceChange,
-}: AddressInputProps) => {
+const AddressInput = ({ watch, setValue }: useAddressInput) => {
+  // Address관련 커스텀 훅
+  const { place, handlePostcodeSearch, handlePlaceChange } = useAddressChange({
+    setValue,
+    watch,
+  });
+
   return (
     <>
       <CommonInput

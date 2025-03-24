@@ -4,14 +4,16 @@ export type AuthInputs = {
   checkPassword: string;
   nickname: string;
   bio: string;
-  address: string;
+  address: {
+    place: string;
+    detailPlace: string;
+  };
   categories: string[];
 };
 
-export type UserData = {
+export type UserMetaData = {
   email: string;
   password: string;
-  checkPassword: string;
   created_at: number;
   options: {
     data: {

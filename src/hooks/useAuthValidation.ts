@@ -116,8 +116,7 @@ export const useAuthValidation = (mode: string) => {
       checkPassword,
       nickname,
       bio,
-      // 관련 컴포넌트 생성 후 수정할 예정입니다!
-      // address,
+      address,
       categories,
     } = data;
 
@@ -128,7 +127,8 @@ export const useAuthValidation = (mode: string) => {
       !checkPassword ||
       !nickname ||
       !bio ||
-      !categories
+      !categories ||
+      !address
     ) {
       toast({ description: AUTH_ERROR_MESSAGES.ALL_BLANK });
       return;
@@ -153,8 +153,7 @@ export const useAuthValidation = (mode: string) => {
         data: {
           nickname,
           bio,
-          //임시값 입니다!
-          address: '서울시 중랑구',
+          address: `${address.place} ${address.detailPlace}`,
           categories,
         },
       },
