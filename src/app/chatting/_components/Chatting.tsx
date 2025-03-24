@@ -2,7 +2,7 @@
 
 import { IoArrowForwardCircleSharp } from 'react-icons/io5';
 import MessageCard from './MessageCard';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { supabase } from '@/services/supabaseClient';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Message } from '@/types/chats';
@@ -28,6 +28,7 @@ const addMessage = async ({ chat_room_id, sender_id, content }: AddMessage) => {
 };
 
 const Chatting = ({ chatId }: { chatId: number }) => {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
 
   const { data: userId } = useQuery({
@@ -84,6 +85,12 @@ const Chatting = ({ chatId }: { chatId: number }) => {
       supabase.removeChannel(subscription);
     };
   }, [chatId, queryClient]);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
   return (
     <>
       <div className="h-[90%] mt-10 rounded-2xl mb-6">
@@ -96,6 +103,7 @@ const Chatting = ({ chatId }: { chatId: number }) => {
               isAppointment={message.appointment}
             />
           ))}
+          <div ref={messagesEndRef} />
         </div>
       </div>
       <label className="relative flex">
