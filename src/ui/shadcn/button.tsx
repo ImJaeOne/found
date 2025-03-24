@@ -17,7 +17,7 @@ import { cn } from '@/utils/lib/cn';
  *  <Button variant="subbutton" size="subbuton">variant, size = subbutton</Button>
  *
  * @example Slot을 사용하는 버튼
- *  <Button asChild><a href="/home">Home</a></Button>
+ *  <Button asChild><Link href="/home">Home</Link></Button>
  *
  * @prop { 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | 'button' | 'subbutton' | 'label' | 'logo' } variant - 버튼의 스타일
  * @prop { 'default' | 'label' | 'button' | 'subbutton' | 'logo' | 'icon' } size - 버튼의 크기
