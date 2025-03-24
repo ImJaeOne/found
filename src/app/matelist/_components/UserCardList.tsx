@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Carousel,
   CarouselContent,
@@ -9,22 +11,22 @@ import React from 'react';
 import UserCard from './UserCard';
 import { Button } from '@/ui/shadcn/button';
 import { CATEGORIES } from '@/constants/constants';
+import { useQuery } from '@tanstack/react-query';
+import { getUsers } from '@/services/getServices';
+import { supabase } from '@/services/supabaseClient';
 
 type UserData = {
-  nick_name: string;
+  id: number;
+  created_at: string;
+  nickname: string;
   address: string;
   profile: string;
   bio: string;
+  user_id: string;
+  is_finding: boolean;
 };
 
 type CategoriesData = string[];
-
-const user: UserData = {
-  nick_name: '햄부기',
-  address: '마포구 상암동',
-  profile: 'https://',
-  bio: '저랑 러닝 하실 분!!',
-};
 
 const categories: CategoriesData = [
   CATEGORIES.RUNNING,
@@ -33,6 +35,26 @@ const categories: CategoriesData = [
 ];
 
 const UserCardList = () => {
+  const {
+    data: users,
+    isError,
+    isPending,
+  } = useQuery({
+    queryKey: ['users'],
+    queryFn: getUsers,
+  });
+
+  if (isError) {
+    return <div>Error!</div>;
+  }
+
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
+
+  
+
+  console.log('user : ', users);
   return (
     <section className="flex flex-col justify-center items-center">
       <div className="flex flex-row w-full lg:max-w-[1380px] md:max-w-2xl pl-1">
@@ -46,7 +68,7 @@ const UserCardList = () => {
         className="w-full lg:max-w-[1380px] md:max-w-2xl pt-8"
       >
         <CarouselContent className="-ml-0">
-          {Array.from({ length: 20 }).map((_, index) => (
+          {users.map((user: UserData, index:number) => (
             <CarouselItem
               key={index}
               className="md:basis-1/2 lg:basis-1/4 pl-0"
@@ -64,3 +86,9 @@ const UserCardList = () => {
 };
 
 export default UserCardList;
+
+/**
+ * 유저 정보 가져오기
+ * 유저의 category 가져오기
+ * category에 맞는 유저들 가져오기
+ */
