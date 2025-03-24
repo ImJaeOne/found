@@ -6,6 +6,7 @@ import { useAuthContents } from '@/hooks/useAuthContents';
 import { useAuthValidation } from '@/hooks/useAuthValidation';
 import CategorySeletor from '@/ui/common/CategorySeletor';
 import CommonInput from '@/ui/common/CommonInput';
+import { Button } from '@/ui/shadcn/button';
 import Link from 'next/link';
 
 //-----타입 지정-----
@@ -38,7 +39,10 @@ const AuthForm = ({ mode }: AuthFormProps) => {
   return (
     <>
       {/* 폼 양식 */}
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full flex flex-col items-center"
+      >
         {loginInputContents.map((item) => {
           const {
             title,
@@ -96,31 +100,35 @@ const AuthForm = ({ mode }: AuthFormProps) => {
               <section key={id} className={INPUT_SECTION}>
                 <label htmlFor={name} className={INPUT_LABLE}>
                   <h6 className={INPUT_TITLE}>{title}</h6>
-                  <CommonInput
-                    id={id}
-                    type={type}
-                    placeholder={placeholder}
-                    height={8}
-                    {...register(name, {
-                      required,
-                      validate,
-                      minLength,
-                      maxLength,
-                      pattern,
-                    })}
-                  />
-                  {checkButton && (
-                    <div className="self-end">
-                      <button
-                        type="button"
-                        onClick={() =>
-                          checkNicknameExsited(getValues('nickname'))
-                        }
-                      >
-                        CHECK
-                      </button>
-                    </div>
-                  )}
+                  <div className="w-full flex items-center gap-2">
+                    <CommonInput
+                      id={id}
+                      type={type}
+                      placeholder={placeholder}
+                      height={8}
+                      {...register(name, {
+                        required,
+                        validate,
+                        minLength,
+                        maxLength,
+                        pattern,
+                      })}
+                    />
+                    {checkButton && (
+                      <div className="self-end">
+                        <Button
+                          type="button"
+                          onClick={() =>
+                            checkNicknameExsited(getValues('nickname'))
+                          }
+                          variant="subbutton"
+                          size="subbutton"
+                        >
+                          CHECK
+                        </Button>
+                      </div>
+                    )}
+                  </div>
                 </label>
                 <p className={INPUT_ERROR_TEXT}>{error && error.message}</p>
               </section>
@@ -158,10 +166,16 @@ const AuthForm = ({ mode }: AuthFormProps) => {
             </div>
           )}
         </section>
-        <button type="submit">
-          {mode === AUTH_MODE.SIGNUP ? 'SIGN UP' : 'LOG IN'}
-        </button>
+
+        {/* 버튼 */}
+        <div>
+          <Button type="submit" variant="button" size="button">
+            {mode === AUTH_MODE.SIGNUP ? 'SIGN UP' : 'LOG IN'}
+          </Button>
+        </div>
       </form>
+
+      {/* 소셜로그인 */}
     </>
   );
 };
