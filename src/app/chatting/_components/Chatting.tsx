@@ -107,24 +107,37 @@ const Chatting = ({ chatId }: { chatId: number }) => {
         </div>
       </div>
       <label className="relative flex">
-        <input
-          type="text"
-          className=" w-full bg-slate-50 h-12 rounded-2xl pl-3 pr-12 placeholder:text-center"
-          placeholder="채팅을 입력해주세요."
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-        />
-        <IoArrowForwardCircleSharp
-          aria-label="전송 버튼"
-          className="text-title-lg text-main2 hover:text-main1 cursor-pointer absolute right-0"
-          onClick={() => {
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
             sendMessage({
               chat_room_id: chatId,
               sender_id: userId,
               content: newMessage,
             });
           }}
-        />
+          className="w-full flex"
+        >
+          <input
+            type="text"
+            className="w-full bg-slate-50 h-12 rounded-2xl pl-3 pr-12 placeholder:text-center"
+            placeholder="채팅을 입력해주세요."
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+          />
+          <button
+            type="submit"
+            aria-label="전송 버튼"
+            className={`text-title-lg  cursor-pointer absolute right-0 ${
+              newMessage
+                ? 'hover:text-main1 text-main1'
+                : 'opacity-50 cursor-not-allowed text-main2'
+            }`}
+            disabled={!newMessage}
+          >
+            <IoArrowForwardCircleSharp />
+          </button>
+        </form>
       </label>
     </>
   );
