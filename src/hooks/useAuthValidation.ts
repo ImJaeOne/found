@@ -50,7 +50,9 @@ export const useAuthValidation = (mode: string) => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
     getValues,
+    watch,
   } = useForm<AuthInputs>();
 
   // 로그인 로직
@@ -116,11 +118,18 @@ export const useAuthValidation = (mode: string) => {
       bio,
       // 관련 컴포넌트 생성 후 수정할 예정입니다!
       // address,
-      // categories,
+      categories,
     } = data;
 
     //예외처리 : 누락된 정보 확인
-    if (!email || !password || !checkPassword || !nickname || !bio) {
+    if (
+      !email ||
+      !password ||
+      !checkPassword ||
+      !nickname ||
+      !bio ||
+      !categories
+    ) {
       toast({ description: AUTH_ERROR_MESSAGES.ALL_BLANK });
       return;
     }
@@ -146,7 +155,7 @@ export const useAuthValidation = (mode: string) => {
           bio,
           //임시값 입니다!
           address: '서울시 중랑구',
-          categories: ['러닝'],
+          categories,
         },
       },
     };
@@ -156,6 +165,7 @@ export const useAuthValidation = (mode: string) => {
 
       //회원가입 성공
       if (data.user) {
+        console.log('data.user', data.user);
         //유저 알람
         toast({ description: AUTH_TOAST_MESSAGES.SIGNUP.SUCCESS });
         //로그인 페이지로 이동
@@ -211,9 +221,11 @@ export const useAuthValidation = (mode: string) => {
     isNicknameExisted,
     checkNicknameExsited,
     register,
+    watch,
     handleSubmit,
     errors,
     getValues,
+    setValue,
     onSubmit,
   };
 };
