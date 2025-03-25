@@ -17,10 +17,12 @@ export type UserMetaData = {
   created_at: number;
   options: {
     data: {
+      sub?: string;
       nickname: string;
       bio: string;
       address: string;
       categories: string[];
+      profile: string;
     };
   };
 };
@@ -30,7 +32,7 @@ export type UserData = {
   id: number;
   sub: string;
   nickname: string;
-  profile: string;
+  profile?: string;
   bio: string;
   isFinding: boolean;
   address: string;
