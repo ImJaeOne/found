@@ -35,10 +35,10 @@ const ChattingUserProfile = ({ chatId }: { chatId: number }) => {
     <div className="flex flex-col justify-between p-4 pb-0 rounded-md items-center">
       <UserProfile user={partner} />
       <div className="flex flex-col gap-4 p-3 w-[200px] h-[100px] rounded-md items-center bg-main2">
-        <Link href={PATH.APPOINTMENT} className="h-[50px]">
+        <Link href={`${PATH.APPOINTMENT}/${chatId}`} className="h-[50px]">
           약속 요청하기
         </Link>
-        <Link href={PATH.APPOINTMENT} className="h-[50px]">
+        <Link href={`${PATH.APPOINTMENT}/${chatId}`} className="h-[50px]">
           약속 확인하기
         </Link>
       </div>
