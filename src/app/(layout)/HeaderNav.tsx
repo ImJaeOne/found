@@ -4,6 +4,7 @@ import { PATH } from '@/constants/constants';
 import Link from 'next/link';
 import { useAuthStore } from '@/providers/AuthProvider';
 import { logout } from '@/services/usersServices';
+import { toast } from '@/hooks/useToast';
 
 const HeaderNav = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -13,6 +14,9 @@ const HeaderNav = () => {
   const handleLogout = async () => {
     await logout();
     setLogout();
+
+    //사용자 알림
+    toast({ description: '로그아웃 되었습니다!' });
   };
 
   return (
