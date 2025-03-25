@@ -1,8 +1,7 @@
-export type Appointment = {
+export type AppointmentInputs = {
   title: string;
-  place: string;
-  detailPlace: string;
+  address: { place: string; detailPlace: string };
   content: string;
   date: string;
-  category: string;
+  category: string[];
 };
