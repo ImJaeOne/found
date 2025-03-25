@@ -4,10 +4,13 @@ import { IoArrowForwardCircleSharp } from 'react-icons/io5';
 import MessageCard from './MessageCard';
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from '@/services/supabaseClient';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Message } from '@/types/chats';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { Chat, Message } from '@/types/chats';
+import { useSubscribeChat } from '@/hooks/useSubscribeChat';
 
 type AddMessage = Pick<Message, 'chat_room_id' | 'sender_id' | 'content'>;
+
+type ChatProps = Pick<Chat, 'id'>;
 
 const fetchMessages = async (chatId: number) => {
   const { data, error } = await supabase
@@ -29,7 +32,6 @@ const addMessage = async ({ chat_room_id, sender_id, content }: AddMessage) => {
 
 const Chatting = ({ chatId }: { chatId: number }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const queryClient = useQueryClient();
 
   const { data: userId } = useQuery({
     queryKey: ['userId'],
@@ -65,32 +67,7 @@ const Chatting = ({ chatId }: { chatId: number }) => {
     },
   });
 
-  useEffect(() => {
-    const subscription = supabase
-      .channel(`chat-${chatId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'messages',
-          filter: `chat_room_id=eq.${chatId}`,
-        },
-        (payload) => {
-          queryClient.setQueryData(
-            ['messages', chatId],
-            (oldMessages: Message[]) => {
-              return [...(oldMessages || []), payload.new];
-            },
-          );
-        },
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(subscription);
-    };
-  }, [chatId, queryClient]);
+  useSubscribeChat(chatId);
 
   useEffect(() => {
     if (messagesEndRef.current) {
