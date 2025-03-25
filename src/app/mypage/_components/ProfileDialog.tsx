@@ -78,8 +78,6 @@ const ProfileDialog = () => {
         data: { ...userData, profile: imageUrl }, // 저장된 이미지 URL 사용
       });
 
-      // setLogin({ ...user, ...userData, profile: imageUrl });
-
       console.log('프로필 수정 완료:', userQueryData);
     } catch (error) {
       console.error('프로필 수정 중 오류 발생:', error);

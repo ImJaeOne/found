@@ -1,13 +1,6 @@
 import { getProfileImg } from '@/services/uploadProfile';
 import { useQuery } from '@tanstack/react-query';
 
-// export const useProfileImageQuery = (filePath) => {
-//   return useQuery({
-//     queryKey: ['profileImage'],
-//     queryFn: () => getProfileImg(filePath),
-//   });
-// };
-
 export const useProfileImageQuery = (
   filePath: string | undefined,
   options?: Omit<Parameters<typeof useQuery>[0], 'queryKey' | 'queryFn'>,

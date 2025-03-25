@@ -24,7 +24,14 @@ export const editProfile = async (user_id: number, data: UserData) => {
 export const getProfile = async (user_id: number) => {
   const { data, error } = await supabase
     .from('users')
-    .select('*')
+    .select(
+      `
+  *,
+  user_categories (
+    category
+  )
+`,
+    )
     .eq('id', user_id)
     .single();
 

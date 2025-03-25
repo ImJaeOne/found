@@ -16,42 +16,12 @@ export const uploadImage = async (filePath: string, file: File) => {
   return uploadData; // 업로드된 데이터 반환
 };
 
-export const deleteImage = async (filePath: string) => {
-  const { data: existingFiles } = await supabase.storage
-    .from('profiles') // 'profiles'을 실제 버킷 이름으로 변경
-    .list('profile', { search: filePath }); // 'profiles' 폴더 안에서 파일 경로 검색
-
-  // 2. 파일이 이미 존재하면 삭제
-  if (existingFiles && existingFiles.length > 0) {
-    const { error: deleteError } = await supabase.storage
-      .from('profiles')
-      .remove([filePath]); // 기존 파일을 삭제
-
-    if (deleteError) {
-      throw new Error(`이미지 삭제 실패: ${deleteError.message}`);
-    }
-  }
-};
-
-// export const getProfileImg = async (filePath: string) => {
-//   try {
-//     const { data } = await supabase.storage
-//       .from('profiles')
-//       .getPublicUrl(filePath);
-//     return data;
-//   } catch (error) {
-//     console.error('프로필 이미지 로드 실패:', error);
-//     throw new Error(`프로필 이미지 로드 실패: ${error}`);
-//   }
-// };
-
 export const getProfileImg = async (filePath: string) => {
   try {
     const { data } = await supabase.storage
       .from('profiles')
       .getPublicUrl(filePath);
-    // 매번 다른 쿼리 파라미터가 붙도록 함
-    return { publicUrl: `${data.publicUrl}?t=${new Date().getTime()}` };
+    return data;
   } catch (error) {
     console.error('프로필 이미지 로드 실패:', error);
     throw new Error(`프로필 이미지 로드 실패: ${error}`);

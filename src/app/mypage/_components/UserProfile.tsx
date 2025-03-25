@@ -1,7 +1,6 @@
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from '../../../ui/shadcn/avatar';
-import { Button } from '../../../ui/shadcn/button';
 import { useAuthStore } from '@/providers/AuthProvider';
 import { UserData } from '@/types/users';
 import ProfileDialog from './ProfileDialog';
@@ -9,16 +8,12 @@ import { Switch } from '@/ui/shadcn/switch';
 import { useEditProfileMutation } from '@/hooks/mutations/useEditProfileMutation';
 import { useProfileImageQuery } from '@/hooks/query/useProfileImage';
 import { useGetUserQuery } from '@/hooks/query/useProfileQuery';
+import { Button } from '@/ui/shadcn/button';
 
 const UserProfile = () => {
   const user: UserData | null = useAuthStore((state) => state.user);
   const { mutate: updateUser } = useEditProfileMutation(user?.id);
   const { data: userData, isPending, isError } = useGetUserQuery(user!.id);
-  // const {
-  //   data: profileImage,
-  //   isPending: isPendingProfile,
-  //   isError: isErrrorProfile,
-  // } = useProfileImageQuery(userData?.profile);
 
   const {
     data: profileImage,
@@ -28,7 +23,7 @@ const UserProfile = () => {
     enabled: !!userData?.profile, // userData.profile이 있을 때만 쿼리 실행
   });
 
-  console.log('이거', userData);
+  console.log(profileImage);
 
   if (isPending || isPendingProfile) return <div>Loading...</div>;
   if (isError) return <div>Error...</div>;
@@ -37,10 +32,7 @@ const UserProfile = () => {
   return (
     <div className="flex flex-col gap-5 max-w-[300px]">
       <Avatar size="150">
-        <AvatarImage
-          // src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/render/image/public/profiles/${userData.profile}`}
-          src={profileImage?.publicUrl}
-        />
+        <AvatarImage src={profileImage?.publicUrl} />
         <AvatarFallback>profile_image</AvatarFallback>
       </Avatar>
       <div className="text-title-lg font-bold">{userData?.nickname}</div>
@@ -49,11 +41,11 @@ const UserProfile = () => {
         <div>{userData?.bio}</div>
       </div>
       <div className="flex gap-2">
-        {/* {userData?.categories.map((category) => (
-          <Button variant="label" size="label" key={category}>
-            {category}
+        {userData?.user_categories.map((category) => (
+          <Button variant="label" size="label" key={category.category}>
+            {category.category}
           </Button>
-        ))} */}
+        ))}
       </div>
       <div className="flex flex-col justify-center items-center gap-10 mt-10">
         <div className="flex items-center gap-2">
