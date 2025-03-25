@@ -13,8 +13,6 @@ const AppointmentCard = ({ data }) => {
     ? other_user_profile
     : image?.publicUrl;
 
-  console.log(other_user_profile);
-
   const appointment = appointments[0];
 
   return (
