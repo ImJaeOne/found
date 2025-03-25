@@ -3,30 +3,58 @@
 import { useFindAddess } from './useFindAddress';
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { AuthInputs } from '@/types/users';
+import { AppointmentInputs } from '@/types/appointments';
 
 type useAddressChangePros = {
-  setValue: UseFormSetValue<AuthInputs>;
-  watch: UseFormWatch<AuthInputs>;
+  authWatch?: UseFormWatch<AuthInputs>;
+  appointmentWatch?: UseFormWatch<AppointmentInputs>;
+  authSetValue?: UseFormSetValue<AuthInputs>;
+  appointmentSetValue?: UseFormSetValue<AppointmentInputs>;
 };
 
-const useAddressChange = ({ setValue, watch }: useAddressChangePros) => {
-  const { handlePostcodeSearch } = useFindAddess(setValue);
+const useAddressChange = ({
+  authWatch,
+  authSetValue,
+  appointmentWatch,
+  appointmentSetValue,
+}: useAddressChangePros) => {
+  const { handlePostcodeSearch } = useFindAddess({
+    authSetValue,
+    appointmentSetValue,
+  });
 
   const handlePlaceChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-    setValue(
-      `address.${name}` as 'address.place' | 'address.detailPlace',
-      value,
-    );
+    appointmentSetValue
+      ? appointmentSetValue(
+          `address.${name}` as 'address.place' | 'address.detailPlace',
+          value,
+        )
+      : authSetValue
+        ? authSetValue(
+            `address.${name}` as 'address.place' | 'address.detailPlace',
+            value,
+          )
+        : undefined;
   };
 
   return {
-    place: {
-      place: watch('address.place', ''),
-      detailPlace: watch('address.detailPlace', ''),
-    },
+    place: appointmentWatch
+      ? {
+          place: appointmentWatch('address.place', ''),
+          detailPlace: appointmentWatch('address.detailPlace', ''),
+        }
+      : authWatch
+        ? {
+            place: authWatch('address.place', ''),
+            detailPlace: authWatch('address.detailPlace', ''),
+          }
+        : {
+            place: undefined,
+            detailPlace: undefined,
+          },
     handlePostcodeSearch,
     handlePlaceChange,
   };

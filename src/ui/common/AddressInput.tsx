@@ -5,17 +5,27 @@ import { Button } from '../shadcn/button';
 import CommonInput from './CommonInput';
 import { AuthInputs } from '@/types/users';
 import useAddressChange from '@/hooks/useAddressChange';
+import { AppointmentInputs } from '@/types/appointments';
 
-type useAddressInput = {
-  setValue: UseFormSetValue<AuthInputs>;
-  watch: UseFormWatch<AuthInputs>;
+type AddressInputProps = {
+  authWatch?: UseFormWatch<AuthInputs>;
+  authSetValue?: UseFormSetValue<AuthInputs>;
+  appointmentWatch?: UseFormWatch<AppointmentInputs>;
+  appointmentSetValue?: UseFormSetValue<AppointmentInputs>;
 };
 
-const AddressInput = ({ watch, setValue }: useAddressInput) => {
+const AddressInput = ({
+  authWatch,
+  authSetValue,
+  appointmentWatch,
+  appointmentSetValue,
+}: AddressInputProps) => {
   // Address관련 커스텀 훅
   const { place, handlePostcodeSearch, handlePlaceChange } = useAddressChange({
-    setValue,
-    watch,
+    authSetValue,
+    authWatch,
+    appointmentWatch,
+    appointmentSetValue,
   });
 
   return (

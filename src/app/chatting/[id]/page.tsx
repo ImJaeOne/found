@@ -8,7 +8,7 @@ const ChattingPage = async ({ params }: Params) => {
 
   return (
     <div className="w-full h-full flex justify-center items-center">
-      <div className="w-[70%] h-[70vh] flex pt-10 2xl:pt-20 gap-20">
+      <div className="w-[70%] h-[70vh] flex pt-10 2xl:pt-20 gap-10">
         <ChattingUserProfile chatId={chatId} />
         <div className="h-[90%] w-full">
           <SectionHeader />

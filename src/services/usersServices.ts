@@ -1,4 +1,6 @@
-import { AuthInputs, UserMetaData } from '@/types/users';
+'use server';
+import { createClient } from './server';
+import { AuthInputs, UserData, UserMetaData } from '@/types/users';
 import { supabase } from './supabaseClient';
 import { AuthError, Session, User } from '@supabase/supabase-js';
 import { QUERY_KEY } from '@/constants/constants';
@@ -8,7 +10,9 @@ import { toast } from '@/hooks/useToast';
 export const login = async (
   currentUser: Pick<AuthInputs, 'email' | 'password'>,
 ) => {
+  const supabaseServer = await createClient();
   const { data, error } = await supabase.auth.signInWithPassword(currentUser);
+  await supabaseServer.auth.signInWithPassword(currentUser);
 
   return { data, error };
 };
@@ -25,7 +29,9 @@ export const signup = async (
   newUserData: UserMetaData,
 ): Promise<SignupResponse> => {
   try {
+    const supabaseServer = await createClient();
     const { data, error } = await supabase.auth.signUp(newUserData);
+    await supabaseServer.auth.signUp(newUserData);
 
     if (data) {
       const userId = data?.user?.id;
@@ -85,8 +91,10 @@ export const fetchUserIdFinding = async (sub: string) => {
 
 //-----logout 로직-----
 export const logout = async () => {
+  const supabaseServer = await createClient();
   try {
     await supabase.auth.signOut();
+    await supabaseServer.auth.signOut();
   } catch (error) {
     console.error('로그아웃 에러 : ', error);
     //사용자 알람
@@ -95,4 +103,42 @@ export const logout = async () => {
       description: '로그아웃에 실패했습니다. 잠시 후 다시 시도해주세요!',
     });
   }
+};
+
+//-----채팅 상대방 정보 가져오는 로직-----
+export const fetchChatPartner = async (
+  chatId: number,
+  userId: number,
+): Promise<UserData> => {
+  // 채팅방 정보 가져오기
+  const { data, error } = await supabase
+    .from('chat_rooms')
+    .select('user1_id, user2_id')
+    .eq('id', chatId)
+    .single();
+
+  if (error) throw new Error(error.message);
+
+  // 상대방 ID 찾기
+  const otherUserId = data.user1_id === userId ? data.user2_id : data.user1_id;
+
+  // 상대방 정보 가져오기
+  const { data: otherUser, error: userError } = await supabase
+    .from('users')
+    .select('*, user_categories(category)')
+    .eq('id', otherUserId)
+    .single();
+
+  if (userError) throw new Error(userError.message);
+
+  const categories = otherUser.user_categories.map(
+    (item: { category: string }) => item.category,
+  );
+
+  const otherUserInfo = {
+    ...otherUser,
+    categories,
+  };
+
+  return otherUserInfo;
 };

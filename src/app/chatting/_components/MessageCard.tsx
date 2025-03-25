@@ -19,12 +19,12 @@ const MessageCard = ({
           {isAppointment ? parse(content) : content}
         </div>
       </div>
-      {isAppointment && (
+      {isAppointment && !isMyMessage && (
         <div className="w-full flex flex-col">
           <hr className="w-full border-main1 my-1" />
           <div className="text-main1 text-sm flex flex-col justify-center items-center font-semibold">
-            <p>약속이 생성되었습니다!</p>
-            <p>마이페이지를 확인해주세요!</p>
+            <p>약속이 요청되었습니다!</p>
+            <p>약속을 확인해주세요!</p>
           </div>
         </div>
       )}
