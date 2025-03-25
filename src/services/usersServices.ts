@@ -81,3 +81,8 @@ export const fetchUserIdFinding = async (sub: string) => {
 
   return data;
 };
+
+//-----logout 로직-----
+export const logout = async () => {
+  await supabase.auth.signOut();
+};
