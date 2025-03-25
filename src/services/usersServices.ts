@@ -2,6 +2,7 @@ import { AuthInputs, UserMetaData } from '@/types/users';
 import { supabase } from './supabaseClient';
 import { AuthError, Session, User } from '@supabase/supabase-js';
 import { QUERY_KEY } from '@/constants/constants';
+import { toast } from '@/hooks/useToast';
 
 //-----로그인 로직-----
 export const login = async (
@@ -84,5 +85,14 @@ export const fetchUserIdFinding = async (sub: string) => {
 
 //-----logout 로직-----
 export const logout = async () => {
-  await supabase.auth.signOut();
+  try {
+    await supabase.auth.signOut();
+  } catch (error) {
+    console.error('로그아웃 에러 : ', error);
+    //사용자 알람
+    toast({
+      variant: 'destructive',
+      description: '로그아웃에 실패했습니다. 잠시 후 다시 시도해주세요!',
+    });
+  }
 };
