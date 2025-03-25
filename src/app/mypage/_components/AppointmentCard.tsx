@@ -1,6 +1,4 @@
-import { useProfileImageQuery } from '@/hooks/query/useProfileImage';
-import { useGetUserQuery } from '@/hooks/query/useProfileQuery';
-import { ImageType } from '@/types/image';
+import { useProfileImageQuery } from '@/hooks/queries/useProfileImage';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/shadcn/avatar';
 import { Button } from '@/ui/shadcn/button';
 

@@ -2,7 +2,7 @@
 
 import { useEditProfileMutation } from '@/hooks/mutations/useEditProfileMutation';
 import { useUploadProfileImage } from '@/hooks/mutations/useUploadImageMutation';
-import { useGetUserQuery } from '@/hooks/query/useProfileQuery';
+import { useGetUserQuery } from '@/hooks/queries/useProfileQuery';
 import { useAuthStore } from '@/providers/AuthProvider';
 import { Button } from '@/ui/shadcn/button';
 import {
@@ -72,7 +72,7 @@ const ProfileDialog = () => {
     }
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     try {
       let imageUrl = userQueryData?.profile;
 

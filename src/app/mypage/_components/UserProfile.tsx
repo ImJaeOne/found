@@ -6,8 +6,8 @@ import { UserData, UserQueryData } from '@/types/users';
 import ProfileDialog from './ProfileDialog';
 import { Switch } from '@/ui/shadcn/switch';
 import { useEditProfileMutation } from '@/hooks/mutations/useEditProfileMutation';
-import { useProfileImageQuery } from '@/hooks/query/useProfileImage';
-import { useGetUserQuery } from '@/hooks/query/useProfileQuery';
+import { useProfileImageQuery } from '@/hooks/queries/useProfileImage';
+import { useGetUserQuery } from '@/hooks/queries/useProfileQuery';
 import { Button } from '@/ui/shadcn/button';
 import { ImageType } from '@/types/image';
 

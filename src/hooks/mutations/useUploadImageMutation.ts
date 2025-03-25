@@ -9,7 +9,6 @@ export const useUploadProfileImage = (user_id: number) => {
       uploadImage(filePath, file),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`userData-${user_id}`] });
-      queryClient.invalidateQueries({ queryKey: ['profileImage'] });
     },
     onError: (error: Error) => {
       console.error('Image upload error', error.message);
