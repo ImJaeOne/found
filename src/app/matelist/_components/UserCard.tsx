@@ -79,14 +79,14 @@ const UserCard = ({
       <div className="flex flex-col items-center flex-1 pt-5 w-full justify-around">
         <div className="flex flex-row w-full gap-2 flex-wrap">
           {categories.map((category) => (
-            <Button key={category} className="bg-sub1">
+            <Button key={category} variant={'label'} size={'label'}>
               {category}
             </Button>
           ))}
         </div>
         {userSession ? (
           <Button
-            className="bg-main1"
+            variant={'button'} size={"button"}
             onClick={() => startChat(userSession.id, user.id)}
           >
             CHAT ROOM
