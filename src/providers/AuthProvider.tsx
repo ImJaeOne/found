@@ -10,9 +10,10 @@ export type AuthStoreApi = ReturnType<typeof createAuthStore>;
 const AuthStoreContext = createContext<StoreApi<AuthStore> | null>(null);
 
 // Provider
+// Provider
 export const AuthStoreProvider = ({ children }: { children: ReactNode }) => {
   // Zustand 스토어를 생성
-  const storeRef = useRef<AuthStoreApi>();
+  const storeRef = useRef<AuthStoreApi | null>(null);
   if (storeRef.current === null) {
     storeRef.current = createAuthStore();
   }
