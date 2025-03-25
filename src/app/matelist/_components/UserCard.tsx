@@ -5,8 +5,6 @@ import { supabase } from '@/services/supabaseClient';
 import { Avatar } from '@/ui/shadcn/avatar';
 import { Button } from '@/ui/shadcn/button';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import React, { use } from 'react';
 
 type UserData = {
   id: number;
@@ -26,8 +24,6 @@ const UserCard = ({
   user: UserData;
   categories: string[];
 }) => {
-  // console.log(user);
-  const router = useRouter();
   const {
     data: userSession,
     isError,
@@ -36,13 +32,18 @@ const UserCard = ({
     queryKey: ['loginUser'],
     queryFn: async () => {
       const { data } = await supabase.auth.getSession();
+      const userSessionId = data?.session?.user.id;
+      if (!userSessionId) return null;
       const { data: user } = await supabase
         .from('users')
         .select('*')
-        .eq('user_id', data.session?.user.id);
+        .eq('user_id', userSessionId);
+      if (!user) return null;
       return user[0];
     },
   });
+
+  const startChat = useStartChat();
 
   if (isError) {
     return <div>Error!</div>;
@@ -51,7 +52,6 @@ const UserCard = ({
   if (isPending) {
     return <div>Loading...</div>;
   }
-  const startChat = useStartChat();
 
   return (
     <article className="flex flex-col min-w-80 max-w-80 h-96 bg-light-gray rounded-3xl p-7">
