@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
-import AppointmentForm, { Appointment } from './_components/AppointmentForm';
+import AppointmentForm, { Appointment } from '../_components/AppointmentForm';
 
 const AppointmentPage = () => {
   const router = useRouter();
