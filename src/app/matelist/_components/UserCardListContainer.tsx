@@ -79,7 +79,7 @@ const UserCardListContainer = () => {
     <div className="w-full flex flex-col justify-center items-center">
       {userSession ? (
         <div className=" lg:max-w-[1380px] md:max-w-2xl pt-8 ">
-          <h1 className="text-title-md text-main1 font-bold">나의 카테고리</h1>
+          <h1 className="text-title-md text-main1 font-bold">관심있는 카테고리</h1>
           {myCategories.map((category) => {
             return (
               <div key={category}>
@@ -94,7 +94,7 @@ const UserCardListContainer = () => {
             );
           })}
           <h1 className="text-title-md text-main1 font-bold pt-10">
-            나의 카테고리 아님
+            다른 운동 파우니도 찾아보세요
           </h1>
           {notMyCategories.map((category) => {
             return (
