@@ -4,6 +4,7 @@ import React from 'react';
 import Header from './(layout)/Header';
 import { Toaster } from '@/ui/shadcn/toaster';
 import Providers from '@/providers/RQProviders';
+import { AuthStoreProvider } from '@/providers/AuthProvider';
 
 export const metadata: Metadata = {
   title: 'Found',
@@ -20,13 +21,15 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <Header />
-        <Providers>
-          <main className="pt-[100px] w-screen">
-            {children}
-            {modal}
-          </main>
-        </Providers>
+        <AuthStoreProvider>
+          <Header />
+          <Providers>
+            <main className="pt-[100px] w-screen">
+              {children}
+              {modal}
+            </main>
+          </Providers>
+        </AuthStoreProvider>
         <Toaster />
       </body>
     </html>

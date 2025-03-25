@@ -28,13 +28,13 @@ export const signup = async (
 
     if (data) {
       const userId = data?.user?.id;
-      const { address, bio, categories, nickname } =
+      const { address, bio, categories, nickname, profile } =
         data?.user?.user_metadata || {};
 
       //public.users에 데이터 삽입
       const { data: userData, error: userError } = await supabase
         .from(QUERY_KEY.USERS)
-        .insert([{ address, bio, nickname, user_id: userId }])
+        .insert([{ address, bio, nickname, user_id: userId, profile }])
         .select('id');
 
       if (userError) {
@@ -64,4 +64,20 @@ export const signup = async (
     console.error('signup errors : ', error);
     return { data: { user: null, session: null }, error: null };
   }
+};
+
+//-----id(int8) 가져오는 로직-----
+export const fetchUserIdFinding = async (sub: string) => {
+  const { data, error } = await supabase
+    .from(QUERY_KEY.USERS)
+    .select('id, is_finding')
+    .eq('user_id', sub)
+    .single();
+
+  if (error) {
+    console.error('user id 로딩 중 오류 : ', error);
+    return null;
+  }
+
+  return data;
 };

@@ -6,9 +6,10 @@ import { PATH, QUERY_KEY } from '@/constants/constants';
 import { supabase } from '@/services/supabaseClient';
 import { AUTH_ERROR_MESSAGES, AUTH_TOAST_MESSAGES } from '@/constants/users';
 import { useForm } from 'react-hook-form';
-import { AuthInputs } from '@/types/users';
+import { AuthInputs, UserData } from '@/types/users';
 import { login, signup } from '@/services/usersServices';
 import { useRouter } from 'next/navigation';
+import { createAuthStore } from '@/services/userStore';
 
 export const useAuthValidation = (mode: string) => {
   // 경로 이동을 위한 route
@@ -90,10 +91,24 @@ export const useAuthValidation = (mode: string) => {
       }
 
       if (data) {
+        // 성공시 zustand state 업데이트
+        const userData: Omit<UserData, 'id' | 'isFinding'> = {
+          sub: data.user?.user_metadata.sub,
+          nickname: data.user?.user_metadata.nickname,
+          bio: data.user?.user_metadata.bio,
+          address: data.user?.user_metadata.address,
+          categories: data.user?.user_metadata.categories,
+          profile: data.user?.user_metadata.profile,
+        };
+
+        const store = createAuthStore();
+        store.getState().setLogin(userData);
+
         // 성공시 사용자 알람
         toast({
           description: AUTH_TOAST_MESSAGES.LOGIN.SUCCESS,
         });
+
         // 홈으로 이동
         route.replace(PATH.HOME);
       }
@@ -155,6 +170,7 @@ export const useAuthValidation = (mode: string) => {
           bio,
           address: `${address.place} ${address.detailPlace}`,
           categories,
+          profile: `/images/found_default_profile${Math.floor(Math.random() * 6)}.png`,
         },
       },
     };

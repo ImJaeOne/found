@@ -17,10 +17,24 @@ export type UserMetaData = {
   created_at: number;
   options: {
     data: {
+      sub?: string;
       nickname: string;
       bio: string;
       address: string;
       categories: string[];
+      profile: string;
     };
   };
+};
+
+//sub는 auth.users의 id값 입니다!
+export type UserData = {
+  id: number;
+  sub: string;
+  nickname: string;
+  profile?: string;
+  bio: string;
+  isFinding: boolean;
+  address: string;
+  categories: string[];
 };
