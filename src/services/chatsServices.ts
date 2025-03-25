@@ -24,3 +24,19 @@ export const addMessage = async ({
 
   if (error) throw new Error(error.message);
 };
+
+export const checkAppointmentMessage = async (chatId: number) => {
+  const { data, error } = await supabase
+    .from('messages')
+    .select('*')
+    .eq('chat_room_id', chatId)
+    .eq('appointment', true);
+
+  if (error) throw new Error(error.message);
+
+  if (data.length) {
+    return true;
+  } else {
+    return false;
+  }
+};

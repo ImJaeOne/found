@@ -6,6 +6,7 @@ import React from 'react';
 import UserProfile from './UserProfile';
 import { useAuthStore } from '@/providers/AuthProvider';
 import { useGetChatPartner } from '@/hooks/queries/useUserQuery';
+import { useAppointmentMessages } from '@/hooks/queries/useChatQuery';
 
 const ChattingUserProfile = ({ chatId }: { chatId: number }) => {
   const { user } = useAuthStore((state) => state);
@@ -15,6 +16,7 @@ const ChattingUserProfile = ({ chatId }: { chatId: number }) => {
     isError,
     error,
   } = useGetChatPartner(chatId, user);
+  const { data: hasAppointment } = useAppointmentMessages(chatId);
 
   if (isPending)
     return (
@@ -34,11 +36,23 @@ const ChattingUserProfile = ({ chatId }: { chatId: number }) => {
   return (
     <div className="flex flex-col justify-between p-4 pb-0 rounded-md items-center">
       <UserProfile user={partner} />
-      <div className="flex flex-col gap-4 p-3 w-[200px] h-[100px] rounded-md items-center bg-main2">
-        <Link href={`${PATH.APPOINTMENT}/${chatId}`} className="h-[50px]">
+      <div className="flex flex-col gap-4 p-3 w-[200px] h-[100px] rounded-xl items-center bg-main2">
+        <Link
+          href={`${PATH.APPOINTMENT}/${chatId}`}
+          className={`h-[50px] flex items-center justify-center w-full 
+          ${hasAppointment ? 'text-medium-gray cursor-not-allowed' : 'text-black'}`}
+          aria-disabled={hasAppointment}
+          tabIndex={hasAppointment ? -1 : 0}
+        >
           약속 요청하기
         </Link>
-        <Link href={`${PATH.APPOINTMENT}/${chatId}`} className="h-[50px]">
+        <Link
+          href={`${PATH.APPOINTMENT}/${chatId}`}
+          className={`h-[50px] flex items-center justify-center w-full 
+          ${hasAppointment ? ' text-black' : ' text-medium-gray cursor-not-allowed'}`}
+          aria-disabled={!hasAppointment}
+          tabIndex={!hasAppointment ? -1 : 0}
+        >
           약속 확인하기
         </Link>
       </div>
