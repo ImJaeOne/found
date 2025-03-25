@@ -1,5 +1,13 @@
-const myPage = () => {
-  return <div>myPage</div>;
+import UserProfile from '@/app/mypage/_components/UserProfile';
+import Appointments from './_components/Appointments';
+
+const MyPage = () => {
+  return (
+    <div className="flex justify-center gap-20">
+      <UserProfile />
+      <Appointments />
+    </div>
+  );
 };
 
-export default myPage;
+export default MyPage;

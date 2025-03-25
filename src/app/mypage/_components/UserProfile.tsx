@@ -8,32 +8,52 @@ import ProfileDialog from './ProfileDialog';
 import { Switch } from '@/ui/shadcn/switch';
 import { useEditProfileMutation } from '@/hooks/mutations/useEditProfileMutation';
 import { useProfileImageQuery } from '@/hooks/query/useProfileImage';
+import { useGetUserQuery } from '@/hooks/query/useProfileQuery';
 
 const UserProfile = () => {
   const user: UserData | null = useAuthStore((state) => state.user);
-  const { data: profileImage } = useProfileImageQuery();
-  const { mutate: updateUser } = useEditProfileMutation();
+  const { mutate: updateUser } = useEditProfileMutation(user?.id);
+  const { data: userData, isPending, isError } = useGetUserQuery(user!.id);
+  // const {
+  //   data: profileImage,
+  //   isPending: isPendingProfile,
+  //   isError: isErrrorProfile,
+  // } = useProfileImageQuery(userData?.profile);
 
-  console.log(profileImage?.publicUrl);
-  console.log(user);
+  const {
+    data: profileImage,
+    isPending: isPendingProfile,
+    isError: isErrorProfile,
+  } = useProfileImageQuery(userData?.profile, {
+    enabled: !!userData?.profile, // userData.profile이 있을 때만 쿼리 실행
+  });
+
+  console.log('이거', userData);
+
+  if (isPending || isPendingProfile) return <div>Loading...</div>;
+  if (isError) return <div>Error...</div>;
+  if (isErrorProfile) return <div>Error...</div>;
 
   return (
     <div className="flex flex-col gap-5 max-w-[300px]">
       <Avatar size="150">
-        <AvatarImage src={profileImage?.publicUrl || user?.profile} />
+        <AvatarImage
+          // src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/render/image/public/profiles/${userData.profile}`}
+          src={profileImage?.publicUrl}
+        />
         <AvatarFallback>profile_image</AvatarFallback>
       </Avatar>
-      <div className="text-title-lg font-bold">{user?.nickname}</div>
+      <div className="text-title-lg font-bold">{userData?.nickname}</div>
       <div className="flex flex-col gap-1 text-md text-medium-gray">
-        <div>{user?.address}</div>
-        <div>{user?.bio}</div>
+        <div>{userData?.address}</div>
+        <div>{userData?.bio}</div>
       </div>
       <div className="flex gap-2">
-        {user?.categories.map((category) => (
+        {/* {userData?.categories.map((category) => (
           <Button variant="label" size="label" key={category}>
             {category}
           </Button>
-        ))}
+        ))} */}
       </div>
       <div className="flex flex-col justify-center items-center gap-10 mt-10">
         <div className="flex items-center gap-2">
@@ -42,8 +62,8 @@ const UserProfile = () => {
             checked={user?.isFinding}
             onClick={() =>
               updateUser({
-                user_id: user?.id,
-                data: { ...user, isFinding: !user.isFinding },
+                user_id: userData?.id,
+                data: { ...userData, isFinding: !userData.isFinding },
               })
             }
           />

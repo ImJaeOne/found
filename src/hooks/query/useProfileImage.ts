@@ -1,14 +1,20 @@
-'use client';
-
-import { useAuthStore } from '@/providers/AuthProvider';
 import { getProfileImg } from '@/services/uploadProfile';
 import { useQuery } from '@tanstack/react-query';
 
-export const useProfileImageQuery = () => {
-  const user_id: number = useAuthStore((state) => state?.user?.id);
+// export const useProfileImageQuery = (filePath) => {
+//   return useQuery({
+//     queryKey: ['profileImage'],
+//     queryFn: () => getProfileImg(filePath),
+//   });
+// };
 
+export const useProfileImageQuery = (
+  filePath: string | undefined,
+  options?: Omit<Parameters<typeof useQuery>[0], 'queryKey' | 'queryFn'>,
+) => {
   return useQuery({
-    queryKey: ['profileImage'],
-    queryFn: () => getProfileImg(user_id),
+    queryKey: ['profileImage', filePath],
+    queryFn: () => getProfileImg(filePath!),
+    ...options,
   });
 };

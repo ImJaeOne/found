@@ -2,7 +2,7 @@
 
 import { PATH } from '@/constants/constants';
 import { supabase } from '@/services/supabaseClient';
-import UserProfile from '@/ui/common/UserProfile';
+import UserProfile from '@/app/mypage/_components/UserProfile';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import React from 'react';

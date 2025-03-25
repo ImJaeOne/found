@@ -2,7 +2,9 @@
 
 import { useEditProfileMutation } from '@/hooks/mutations/useEditProfileMutation';
 import { useUploadProfileImage } from '@/hooks/mutations/useUploadImageMutation';
+import { useGetUserQuery } from '@/hooks/query/useProfileQuery';
 import { useAuthStore } from '@/providers/AuthProvider';
+import { UserData } from '@/types/users';
 import { Button } from '@/ui/shadcn/button';
 import {
   Dialog,
@@ -18,19 +20,20 @@ import { Label } from '@/ui/shadcn/label';
 import { useState } from 'react';
 
 const ProfileDialog = () => {
-  const { mutate: editProfile } = useEditProfileMutation();
-  const { mutate: updateProfileImage, data: imageData } =
-    useUploadProfileImage();
   const user = useAuthStore((state) => state.user);
+  const { mutate: editProfile } = useEditProfileMutation(user?.id);
+  const { mutate: updateProfileImage } = useUploadProfileImage(user?.id);
+  const { data: userQueryData } = useGetUserQuery(user!.id);
   const [userData, setUserData] = useState({
-    ...user,
+    ...userQueryData,
   });
-  const [profileImg, setProfileImg] = useState<File | null>(null);
+  const [profileImg, setProfileImg] = useState<File | null>(
+    userQueryData?.profile,
+  );
   const [preview, setPreview] = useState(
     user?.profile || '/images/default_profile.png',
   );
-  const filePath = `profile/${user?.id}`;
-  console.log(imageData);
+  const [filePath, setFilePath] = useState(user?.profile);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
@@ -38,11 +41,13 @@ const ProfileDialog = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    console.log(file);
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
         setProfileImg(file);
+        setFilePath(file.name);
       };
       reader.readAsDataURL(file);
 
@@ -53,22 +58,18 @@ const ProfileDialog = () => {
 
   const handleSave = async () => {
     try {
-      let imageUrl = userData.profile;
+      let imageUrl = userQueryData.profile;
 
       // 파일이 변경되었을 경우 업로드
       if (profileImg) {
-        const { data, error } = await updateProfileImage({
+        updateProfileImage({
           filePath,
           file: profileImg,
         });
 
-        if (error) {
-          console.error('이미지 업로드 실패:', error);
-          return;
-        }
-
         // 업로드 성공 시 반환된 이미지 URL을 저장
-        imageUrl = data?.publicUrl; // Supabase가 반환하는 public URL 사용
+        imageUrl = filePath; // Supabase가 반환하는 public URL 사용
+        console.log(imageUrl);
       }
 
       // 프로필 정보 업데이트
@@ -77,7 +78,9 @@ const ProfileDialog = () => {
         data: { ...userData, profile: imageUrl }, // 저장된 이미지 URL 사용
       });
 
-      console.log('프로필 수정 완료:', userData);
+      // setLogin({ ...user, ...userData, profile: imageUrl });
+
+      console.log('프로필 수정 완료:', userQueryData);
     } catch (error) {
       console.error('프로필 수정 중 오류 발생:', error);
     }
