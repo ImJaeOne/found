@@ -23,6 +23,7 @@ export const QUERY_KEY = {
   MESSAGES: 'messages',
   CHAT_ROOMS: 'chat_rooms',
   APPOINTMENTS: 'appointments',
+  CHAT_PARTNER: 'chat_partner',
 };
 
 export const CATEGORIES_SELECT_MODE = {
