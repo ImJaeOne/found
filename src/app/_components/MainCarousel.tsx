@@ -35,6 +35,7 @@ const MainCarousel = () => {
                 src={img.src}
                 alt={img.alt}
                 className="object-cover"
+                priority={idx === 0}
               />
               <Button
                 asChild
