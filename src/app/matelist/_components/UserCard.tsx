@@ -84,12 +84,16 @@ const UserCard = ({
             </Button>
           ))}
         </div>
-        <Button
-          className="bg-main1"
-          onClick={() => startChat(userSession.id, user.id)}
-        >
-          CHAT ROOM
-        </Button>
+        {userSession ? (
+          <Button
+            className="bg-main1"
+            onClick={() => startChat(userSession.id, user.id)}
+          >
+            CHAT ROOM
+          </Button>
+        ) : (
+          <></>
+        )}
       </div>
     </article>
   );
