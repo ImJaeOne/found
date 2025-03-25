@@ -1,4 +1,4 @@
-import { UserData, UserMetaData } from '@/types/users';
+import { UserData } from '@/types/users';
 import { createStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
