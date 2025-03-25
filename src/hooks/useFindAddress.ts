@@ -1,3 +1,4 @@
+import { AppointmentInputs } from '@/types/appointments';
 import { AuthInputs } from '@/types/users';
 import { useEffect, useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
@@ -8,7 +9,15 @@ declare global {
   }
 }
 
-export const useFindAddess = (setValue: UseFormSetValue<AuthInputs>) => {
+type useFindAddessProps = {
+  authSetValue?: UseFormSetValue<AuthInputs>;
+  appointmentSetValue?: UseFormSetValue<AppointmentInputs>;
+};
+
+export const useFindAddess = ({
+  authSetValue,
+  appointmentSetValue,
+}: useFindAddessProps) => {
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
   useEffect(() => {
@@ -23,22 +32,13 @@ export const useFindAddess = (setValue: UseFormSetValue<AuthInputs>) => {
   const handlePostcodeSearch = () => {
     new window.daum.Postcode({
       oncomplete: (data: any) => {
-        let extraRoadAddr = '';
-
-        if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-          extraRoadAddr += data.bname;
+        if (authSetValue) {
+          authSetValue('address.place', data.roadAddress);
+          authSetValue('address.detailPlace', '');
+        } else if (appointmentSetValue) {
+          appointmentSetValue('address.place', data.roadAddress);
+          appointmentSetValue('address.detailPlace', '');
         }
-        if (data.buildingName !== '' && data.apartment === 'Y') {
-          extraRoadAddr += extraRoadAddr
-            ? `, ${data.buildingName}`
-            : data.buildingName;
-        }
-        if (extraRoadAddr !== '') {
-          extraRoadAddr = ` (${extraRoadAddr})`;
-        }
-
-        setValue('address.place', data.roadAddress);
-        setValue('address.detailPlace', '');
       },
     }).open();
   };

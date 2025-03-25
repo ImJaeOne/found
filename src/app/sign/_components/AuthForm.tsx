@@ -2,7 +2,6 @@
 
 import { CATEGORIES_SELECT_MODE, PATH } from '@/constants/constants';
 import { AUTH_MODE } from '@/constants/users';
-import useAddressChange from '@/hooks/useAddressChange';
 import { useAuthContents } from '@/hooks/useAuthContents';
 import { useAuthValidation } from '@/hooks/useAuthValidation';
 import AddressInput from '@/ui/common/AddressInput';
@@ -23,11 +22,11 @@ const AuthForm = ({ mode }: AuthFormProps) => {
     isNicknameExisted,
     checkNicknameExsited,
     register,
-    watch,
+    authWatch,
     handleSubmit,
     errors,
     getValues,
-    setValue,
+    authSetValue,
     onSubmit,
   } = useAuthValidation(mode);
 
@@ -145,7 +144,10 @@ const AuthForm = ({ mode }: AuthFormProps) => {
             <label htmlFor="address" className={INPUT_LABLE}>
               <p className={INPUT_TITLE}>ADDRESS</p>
               <div className="w-full flex flex-col gap-1 mb-4">
-                <AddressInput watch={watch} setValue={setValue} />
+                <AddressInput
+                  authWatch={authWatch}
+                  authSetValue={authSetValue}
+                />
               </div>
             </label>
             {/* 카테고리 */}
@@ -153,8 +155,8 @@ const AuthForm = ({ mode }: AuthFormProps) => {
               <p className={INPUT_TITLE}>FAV SPORTS</p>
               <CategorySeletor
                 mode={CATEGORIES_SELECT_MODE.AUTH}
-                watch={watch}
-                setValue={setValue}
+                authWatch={authWatch}
+                authSetValue={authSetValue}
               />
             </label>
           </section>
