@@ -8,7 +8,7 @@ const UserProfile = ({ user }: { user: UserData }) => {
   return (
     <div className="flex flex-col gap-5 max-w-[300px] items-center ">
       <Avatar size="150">
-        <AvatarImage src={profile} />
+        <AvatarImage src={profile} alt="profile_img" />
         <AvatarFallback>profile_image</AvatarFallback>
       </Avatar>
       <div className="text-title-md font-bold">{nickname}</div>
