@@ -64,9 +64,11 @@ const UserCardList = ({
   );
 
   if (filteredUsers.length === 0) {
-    return<>
-    <h1>해당 운동을 원하는 파우니가 없어요ㅠ</h1>
-    </>
+    return (
+      <div className="flex justify-center item-center">
+        <h1 className="text-title-md text-main1">해당 운동을 원하는 파우니가 없어요ㅠ</h1>
+      </div>
+    );
   }
 
   return (
@@ -75,9 +77,9 @@ const UserCardList = ({
         opts={{
           align: 'start',
         }}
-        className="w-full lg:max-w-[1380px] md:max-w-2xl pt-8"
+        className="w-full pt-8"
       >
-        <CarouselContent className="-ml-0">
+        <CarouselContent className="-ml-0 gap-2">
           {filteredUsers.map((user: UserData, index: number) => {
             const categories = user.user_categories
               .map((item) => Object.values(item))

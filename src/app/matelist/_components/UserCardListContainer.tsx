@@ -76,14 +76,14 @@ const UserCardListContainer = () => {
   }
 
   return (
-    <div>
+    <div className="w-full flex flex-col justify-center items-center">
       {userSession ? (
-        <div>
-          <h1>나의 카테고리</h1>
+        <div className=" lg:max-w-[1380px] md:max-w-2xl pt-8 ">
+          <h1 className="text-title-md text-main1 font-bold">나의 카테고리</h1>
           {myCategories.map((category) => {
             return (
               <div key={category}>
-                <div className="flex flex-row w-full lg:max-w-[1380px] md:max-w-2xl pl-1">
+                <div className="flex flex-row w-full pl-1 pt-10">
                   <Button className="bg-sub1">{category}</Button>
                   <h3 className="text-title-sm pl-3">
                     같이 할 파우니를 찾고있어요!
@@ -93,11 +93,13 @@ const UserCardListContainer = () => {
               </div>
             );
           })}
-          <h1>나의 카테고리 아님</h1>
+          <h1 className="text-title-md text-main1 font-bold pt-10">
+            나의 카테고리 아님
+          </h1>
           {notMyCategories.map((category) => {
             return (
               <div key={category}>
-                <div className="flex flex-row w-full lg:max-w-[1380px] md:max-w-2xl pl-1">
+                <div className="flex flex-row w-full pl-1 pt-10">
                   <Button className="bg-sub1">{category}</Button>
                   <h3 className="text-title-sm pl-3">
                     같이 할 파우니를 찾고있어요!
@@ -110,10 +112,13 @@ const UserCardListContainer = () => {
         </div>
       ) : (
         <div>
+          <h1 className="text-title-md text-main1 font-bold">
+            모집중인 파우니
+          </h1>
           {categoryList.map((category) => {
             return (
               <div key={category}>
-                <div className="flex flex-row w-full lg:max-w-[1380px] md:max-w-2xl pl-1">
+                <div className="flex flex-row w-full pl-1 pt-10">
                   <Button className="bg-sub1">{category}</Button>
                   <h3 className="text-title-sm pl-3">
                     같이 할 파우니를 찾고있어요!
