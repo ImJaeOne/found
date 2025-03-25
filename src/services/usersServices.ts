@@ -65,3 +65,19 @@ export const signup = async (
     return { data: { user: null, session: null }, error: null };
   }
 };
+
+//-----id(int8) 가져오는 로직-----
+export const fetchUserIdFinding = async (sub: string) => {
+  const { data, error } = await supabase
+    .from(QUERY_KEY.USERS)
+    .select('id, is_finding')
+    .eq('user_id', sub)
+    .single();
+
+  if (error) {
+    console.error('user id 로딩 중 오류 : ', error);
+    return null;
+  }
+
+  return data;
+};
