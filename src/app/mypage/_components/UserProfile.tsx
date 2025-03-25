@@ -38,8 +38,6 @@ const UserProfile = () => {
     console.log(userData);
   };
 
-  console.log(userData);
-
   const {
     data,
     isPending: isPendingProfile,
