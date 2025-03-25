@@ -40,7 +40,8 @@ export const createAuthStore = (initState: AuthState = defaultInitState) => {
               nickname: userData.nickname,
               profile: userData.profile,
               bio: userData.bio,
-              categroies: userData.categories,
+              address: userData.address,
+              categories: userData.categories,
               isFinding: is_finding,
             };
 
