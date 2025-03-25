@@ -32,7 +32,7 @@ const ChattingUserProfile = ({ chatId }: { chatId: number }) => {
     );
 
   return (
-    <div className="flex flex-col justify-between p-4 rounded-md items-center">
+    <div className="flex flex-col justify-between p-4 pb-0 rounded-md items-center">
       <UserProfile user={partner} />
       <div className="flex flex-col gap-4 p-3 w-[200px] h-[100px] rounded-md items-center bg-main2">
         <Link href={PATH.APPOINTMENT} className="h-[50px]">

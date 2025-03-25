@@ -98,21 +98,19 @@ const Chatting = ({ chatId }: { chatId: number }) => {
     }
   }, [messages]);
   return (
-    <>
-      <div className="h-[90%] mt-10 rounded-2xl mb-6">
-        <div className=" overflow-y-scroll h-full scrollbar-thin scrollbar-thumb-main1 scrollbar-track-main2 rounded-scrollbar pr-2">
-          {messages.map((message) => (
-            <MessageCard
-              key={message.id}
-              content={message.content}
-              isMyMessage={message.sender_id === userId}
-              isAppointment={message.appointment}
-            />
-          ))}
-          <div ref={messagesEndRef} />
-        </div>
+    <div className="h-full mt-10 rounded-2xl flex flex-col justify-between">
+      <div className=" overflow-y-scroll h-[90%] scrollbar-thin scrollbar-thumb-main1 scrollbar-track-main2 rounded-scrollbar pr-2">
+        {messages.map((message) => (
+          <MessageCard
+            key={message.id}
+            content={message.content}
+            isMyMessage={message.sender_id === userId}
+            isAppointment={message.appointment}
+          />
+        ))}
+        <div ref={messagesEndRef} />
       </div>
-      <label className="relative flex">
+      <label className="relative flex mt-4">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -145,7 +143,7 @@ const Chatting = ({ chatId }: { chatId: number }) => {
           </button>
         </form>
       </label>
-    </>
+    </div>
   );
 };
 
