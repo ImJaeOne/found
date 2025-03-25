@@ -1,5 +1,3 @@
-'use client';
-
 import { PATH } from '@/constants/constants';
 import Image from 'next/image';
 import Link from 'next/link';
