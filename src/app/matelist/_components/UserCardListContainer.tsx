@@ -79,7 +79,9 @@ const UserCardListContainer = () => {
     <div className="w-full flex flex-col justify-center items-center">
       {userSession ? (
         <div className=" lg:max-w-[1380px] md:max-w-2xl pt-8 ">
-          <h1 className="text-title-md text-main1 font-bold">관심있는 카테고리</h1>
+          <h1 className="text-title-md text-main1 font-bold">
+            관심있는 카테고리
+          </h1>
           {myCategories.map((category) => {
             return (
               <div key={category}>
@@ -111,7 +113,7 @@ const UserCardListContainer = () => {
           })}
         </div>
       ) : (
-        <div>
+        <div className=" lg:max-w-[1380px] md:max-w-2xl pt-8 ">
           <h1 className="text-title-md text-main1 font-bold">
             모집중인 파우니
           </h1>
