@@ -59,6 +59,7 @@ const Chatting = ({ chatId }: { chatId: number }) => {
 
   const { mutate: sendMessage } = useMutation({
     mutationFn: addMessage,
+    mutationKey: ['messages', chatId],
     onSuccess: () => {
       setNewMessage('');
     },
@@ -69,7 +70,12 @@ const Chatting = ({ chatId }: { chatId: number }) => {
       .channel(`chat-${chatId}`)
       .on(
         'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'messages' },
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'messages',
+          filter: `chat_room_id=eq.${chatId}`,
+        },
         (payload) => {
           queryClient.setQueryData(
             ['messages', chatId],
