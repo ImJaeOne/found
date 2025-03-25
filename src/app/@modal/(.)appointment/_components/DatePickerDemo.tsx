@@ -7,18 +7,30 @@ import { cn } from '@/utils/lib/cn';
 import { PopoverTrigger, Popover, PopoverContent } from '@/ui/shadcn/popover';
 import { Button } from '@/ui/shadcn/button';
 import { Calendar } from '@/ui/shadcn/calendar';
+import { UseFormGetValues, UseFormSetValue } from 'react-hook-form';
+import { AppointmentInputs } from '@/types/appointments';
+
+type DatePickerProps = {
+  // onChange: (date: Date | undefined) => void;
+  appointmentSetValue: UseFormSetValue<AppointmentInputs>;
+  getValues: UseFormGetValues<AppointmentInputs>;
+};
 
 export function DatePickerDemo({
-  onChange,
-}: {
-  onChange: (date: Date | undefined) => void;
-}) {
+  appointmentSetValue,
+  getValues,
+}: DatePickerProps) {
   const [date, setDate] = useState<Date>();
 
   const handleDateSelect = (selectedDate: Date | undefined) => {
-    setDate(selectedDate);
-    onChange(selectedDate);
+    if (selectedDate) {
+      setDate(selectedDate);
+      const newDate = format(selectedDate, 'yyyy년 MM월 dd일');
+      appointmentSetValue('date', newDate);
+    }
   };
+
+  // const getDate = getValues('date');
 
   return (
     <Popover>

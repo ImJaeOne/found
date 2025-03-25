@@ -10,6 +10,7 @@ import { AuthInputs, UserData } from '@/types/users';
 import { login, signup } from '@/services/usersServices';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/providers/AuthProvider';
+import { AppointmentInputs } from '@/types/appointments';
 
 export const useAuthValidation = (mode: string) => {
   // 경로 이동을 위한 route
@@ -51,9 +52,9 @@ export const useAuthValidation = (mode: string) => {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
+    setValue: authSetValue,
     getValues,
-    watch,
+    watch: authWatch,
   } = useForm<AuthInputs>();
 
   // 로그인 로직
@@ -236,11 +237,11 @@ export const useAuthValidation = (mode: string) => {
     isNicknameExisted,
     checkNicknameExsited,
     register,
-    watch,
+    authWatch,
     handleSubmit,
     errors,
     getValues,
-    setValue,
+    authSetValue,
     onSubmit,
   };
 };
