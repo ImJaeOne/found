@@ -91,8 +91,10 @@ export const fetchUserIdFinding = async (sub: string) => {
 
 //-----logout 로직-----
 export const logout = async () => {
+  const supabaseServer = await createClient();
   try {
     await supabase.auth.signOut();
+    await supabaseServer.auth.signOut();
   } catch (error) {
     console.error('로그아웃 에러 : ', error);
     //사용자 알람
