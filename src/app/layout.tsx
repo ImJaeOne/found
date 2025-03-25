@@ -24,7 +24,7 @@ export default function RootLayout({
         <AuthStoreProvider>
           <Header />
           <Providers>
-            <main className="pt-[100px] w-screen">
+            <main className="pt-14 w-screen">
               {children}
               {modal}
             </main>
