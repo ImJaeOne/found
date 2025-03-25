@@ -1,4 +1,4 @@
-import { UserData } from '@/types/users';
+import { UserData, UserMetaData } from '@/types/users';
 import { createStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
@@ -10,7 +10,7 @@ export type AuthState = {
 };
 
 export type AuthActions = {
-  setLogin: (userData: UserData) => Promise<void>;
+  setLogin: (userData: Omit<UserData, 'id' | 'isFinding'>) => Promise<void>;
   setLogout: () => void;
 };
 
@@ -28,7 +28,7 @@ export const createAuthStore = (initState: AuthState = defaultInitState) => {
         ...initState,
 
         // 로그인
-        setLogin: async (userData: UserData) => {
+        setLogin: async (userData: Omit<UserData, 'id' | 'isFinding'>) => {
           const { id, is_finding } = (await fetchUserIdFinding(
             userData.sub,
           )) || { id: null, is_finding: false };
