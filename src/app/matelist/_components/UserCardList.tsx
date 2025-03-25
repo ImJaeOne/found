@@ -7,7 +7,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/ui/shadcn/carousel';
-import React from 'react';
 import UserCard from './UserCard';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/services/supabaseClient';

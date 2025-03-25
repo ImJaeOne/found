@@ -5,7 +5,6 @@ import { supabase } from '@/services/supabaseClient';
 import { Avatar } from '@/ui/shadcn/avatar';
 import { Button } from '@/ui/shadcn/button';
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
 
 type Category = {
   category: 'string';
@@ -84,15 +83,14 @@ const UserCard = ({
             </Button>
           ))}
         </div>
-        {userSession ? (
+        {userSession && (
           <Button
-            variant={'button'} size={"button"}
+            variant={'button'}
+            size={'button'}
             onClick={() => startChat(userSession.id, user.id)}
           >
             CHAT ROOM
           </Button>
-        ) : (
-          <></>
         )}
       </div>
     </article>

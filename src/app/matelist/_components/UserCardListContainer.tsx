@@ -1,5 +1,4 @@
 'use client';
-import React from 'react';
 import UserCardList from './UserCardList';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/services/supabaseClient';
