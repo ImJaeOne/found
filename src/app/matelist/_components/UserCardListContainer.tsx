@@ -76,13 +76,29 @@ const UserCardListContainer = () => {
 
   return (
     <div className="w-full flex flex-col justify-center items-center">
-      {userSession ? (
-        <div className=" lg:max-w-[1380px] md:max-w-2xl pt-8 ">
-          <h1 className="text-title-md text-main1 font-bold">
-            관심있는 카테고리
-          </h1>
-          {myCategories.map((category) => {
-            return (
+      <div className="w-full max-w-[1380px] px-4 pt-8">
+        <h1 className="text-title-md text-main1 font-bold">
+          {userSession ? '관심있는 카테고리' : '모집중인 파우니'}
+        </h1>
+
+        {(userSession ? myCategories : categoryList).map((category) => (
+          <div key={category}>
+            <div className="flex flex-row w-full pl-1 pt-10">
+              <Button className="bg-sub1">{category}</Button>
+              <h3 className="text-title-sm pl-3">
+                같이 할 파우니를 찾고있어요!
+              </h3>
+            </div>
+            <UserCardList category={category} userId={userSession?.id} />
+          </div>
+        ))}
+
+        {userSession && notMyCategories.length > 0 && (
+          <>
+            <h1 className="text-title-md text-main1 font-bold pt-10">
+              다른 운동 파우니도 찾아보세요
+            </h1>
+            {notMyCategories.map((category) => (
               <div key={category}>
                 <div className="flex flex-row w-full pl-1 pt-10">
                   <Button className="bg-sub1">{category}</Button>
@@ -90,47 +106,12 @@ const UserCardListContainer = () => {
                     같이 할 파우니를 찾고있어요!
                   </h3>
                 </div>
-                <UserCardList category={category} userId={userId} />
+                <UserCardList category={category} userId={userSession.id} />
               </div>
-            );
-          })}
-          <h1 className="text-title-md text-main1 font-bold pt-10">
-            다른 운동 파우니도 찾아보세요
-          </h1>
-          {notMyCategories.map((category) => {
-            return (
-              <div key={category}>
-                <div className="flex flex-row w-full pl-1 pt-10">
-                  <Button className="bg-sub1">{category}</Button>
-                  <h3 className="text-title-sm pl-3">
-                    같이 할 파우니를 찾고있어요!
-                  </h3>
-                </div>
-                <UserCardList category={category} userId={userId} />
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        <div className=" lg:max-w-[1380px] md:max-w-2xl pt-8 ">
-          <h1 className="text-title-md text-main1 font-bold">
-            모집중인 파우니
-          </h1>
-          {categoryList.map((category) => {
-            return (
-              <div key={category}>
-                <div className="flex flex-row w-full pl-1 pt-10">
-                  <Button className="bg-sub1">{category}</Button>
-                  <h3 className="text-title-sm pl-3">
-                    같이 할 파우니를 찾고있어요!
-                  </h3>
-                </div>
-                <UserCardList category={category} />
-              </div>
-            );
-          })}
-        </div>
-      )}
+            ))}
+          </>
+        )}
+      </div>
     </div>
   );
 };
