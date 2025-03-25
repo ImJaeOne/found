@@ -9,21 +9,22 @@ import { useEditProfileMutation } from '@/hooks/mutations/useEditProfileMutation
 import { useProfileImageQuery } from '@/hooks/query/useProfileImage';
 import { useGetUserQuery } from '@/hooks/query/useProfileQuery';
 import { Button } from '@/ui/shadcn/button';
+import { ImageType } from '@/types/image';
 
 const UserProfile = () => {
   const user: UserData | null = useAuthStore((state) => state.user);
-  const { mutate: updateUser } = useEditProfileMutation(user?.id);
+  const { mutate: updateUser } = useEditProfileMutation(user?.id || 0);
   const { data: userData, isPending, isError } = useGetUserQuery(user!.id);
 
   const {
-    data: profileImage,
+    data,
     isPending: isPendingProfile,
     isError: isErrorProfile,
   } = useProfileImageQuery(userData?.profile, {
     enabled: !!userData?.profile, // userData.profile이 있을 때만 쿼리 실행
   });
 
-  console.log(profileImage);
+  const profileImage = data as ImageType;
 
   if (isPending || isPendingProfile) return <div>Loading...</div>;
   if (isError) return <div>Error...</div>;
@@ -54,7 +55,6 @@ const UserProfile = () => {
             checked={user?.isFinding}
             onClick={() =>
               updateUser({
-                user_id: userData?.id,
                 data: { ...userData, isFinding: !userData.isFinding },
               })
             }

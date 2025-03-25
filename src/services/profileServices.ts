@@ -1,4 +1,4 @@
-import { UserData } from '@/types/users';
+import { UserData, UserQueryData } from '@/types/users';
 import { supabase } from './supabaseClient';
 
 export const editProfile = async (user_id: number, data: UserData) => {
@@ -21,7 +21,7 @@ export const editProfile = async (user_id: number, data: UserData) => {
   return data;
 };
 
-export const getProfile = async (user_id: number) => {
+export const getProfile = async (user_id: number): Promise<UserQueryData> => {
   const { data, error } = await supabase
     .from('users')
     .select(

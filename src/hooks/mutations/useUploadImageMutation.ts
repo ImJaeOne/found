@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { uploadImage } from '../../services/uploadProfile';
 
-export const useUploadProfileImage = (user_id) => {
+export const useUploadProfileImage = (user_id: number) => {
   const queryClient = useQueryClient();
 
   return useMutation({
