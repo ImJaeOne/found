@@ -1,14 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { format } from 'date-fns';
-import useClickOutside from '@/hooks/useClickOutside';
 import { useRouter } from 'next/navigation';
-import AppointmentForm, {
-  Appointment,
-} from '@/app/appointment/_components/AppointmentForm';
+import { format } from 'date-fns';
+import AppointmentForm, { Appointment } from './_components/AppointmentForm';
 
-const AppointmentModal = () => {
+const AppointmentPage = () => {
   const router = useRouter();
   const [newAppointment, setNewAppointment] = useState<Appointment>({
     title: '',
@@ -16,11 +13,6 @@ const AppointmentModal = () => {
     date: '',
     category: '',
   });
-
-  const modalRef = useClickOutside();
-
-  //react-hook-form 이후 수정해야함
-  // const { place, handlePostcodeSearch, handlePlaceChange } = useAddressChange();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -47,23 +39,15 @@ const AppointmentModal = () => {
   };
 
   return (
-    <div
-      className="fixed inset-0 flex items-center justify-center bg-black/50"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <div
-        className="bg-white p-10 rounded-lg shadow-lg text-center w-[80%]"
-        ref={modalRef}
-      >
-        <AppointmentForm
-          newAppointment={newAppointment}
-          handleChange={handleChange}
-          handleDateChange={handleDateChange}
-          handleAddClick={handleAddClick}
-        />
-      </div>
+    <div className="container mx-auto py-10">
+      <AppointmentForm
+        newAppointment={newAppointment}
+        handleChange={handleChange}
+        handleDateChange={handleDateChange}
+        handleAddClick={handleAddClick}
+      />
     </div>
   );
 };
 
-export default AppointmentModal;
+export default AppointmentPage;

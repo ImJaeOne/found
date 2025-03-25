@@ -52,6 +52,8 @@ const UserCard = ({
     },
   });
 
+  const startChat = useStartChat();
+
   if (isError) {
     return <div>Error!</div>;
   }
