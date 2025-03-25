@@ -22,13 +22,13 @@ const images = [
 
 const MainCarousel = () => {
   return (
-    <div className="relative h-[calc(100vh-100px)]">
+    <div className="relative h-[calc(100vh-56px)]">
       <Carousel opts={{ loop: true }} className="w-full ">
         <CarouselContent className="m-0">
           {images.map((img, idx) => (
             <CarouselItem
               key={idx}
-              className="w-full relative h-[calc(100vh-100px)]"
+              className="w-full relative h-[calc(100vh-56px)]"
             >
               <Image
                 fill
