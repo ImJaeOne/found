@@ -28,13 +28,13 @@ export const signup = async (
 
     if (data) {
       const userId = data?.user?.id;
-      const { address, bio, categories, nickname } =
+      const { address, bio, categories, nickname, profile } =
         data?.user?.user_metadata || {};
 
       //public.users에 데이터 삽입
       const { data: userData, error: userError } = await supabase
         .from(QUERY_KEY.USERS)
-        .insert([{ address, bio, nickname, user_id: userId }])
+        .insert([{ address, bio, nickname, user_id: userId, profile }])
         .select('id');
 
       if (userError) {
