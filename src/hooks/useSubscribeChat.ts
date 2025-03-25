@@ -18,12 +18,19 @@ export const useSubscribeChat = (chatId: number) => {
           filter: `chat_room_id=eq.${chatId}`,
         },
         (payload) => {
+          const newMessage = payload.new as Message;
+
           queryClient.setQueryData(
             [QUERY_KEY.MESSAGES, chatId],
-            (oldMessages: Message[]) => {
-              return [...(oldMessages || []), payload.new];
-            },
+            (oldMessages: Message[] = []) => [...oldMessages, newMessage],
           );
+
+          if (newMessage.appointment) {
+            queryClient.setQueryData(
+              [QUERY_KEY.APPOINTMENTS, chatId],
+              () => newMessage.appointment,
+            );
+          }
         },
       )
       .subscribe();
