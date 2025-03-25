@@ -1,13 +1,17 @@
+'use server';
 import { AuthInputs, UserMetaData } from '@/types/users';
 import { supabase } from './supabaseClient';
 import { AuthError, Session, User } from '@supabase/supabase-js';
 import { QUERY_KEY } from '@/constants/constants';
+import { createClient } from './server';
 
 //-----로그인 로직-----
 export const login = async (
   currentUser: Pick<AuthInputs, 'email' | 'password'>,
 ) => {
+  const supabaseServer = await createClient();
   const { data, error } = await supabase.auth.signInWithPassword(currentUser);
+  await supabaseServer.auth.signInWithPassword(currentUser);
 
   return { data, error };
 };
@@ -24,7 +28,9 @@ export const signup = async (
   newUserData: UserMetaData,
 ): Promise<SignupResponse> => {
   try {
+    const supabaseServer = await createClient();
     const { data, error } = await supabase.auth.signUp(newUserData);
+    await supabaseServer.auth.signUp(newUserData);
 
     if (data) {
       const userId = data?.user?.id;
