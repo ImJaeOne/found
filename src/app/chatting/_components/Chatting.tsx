@@ -2,78 +2,50 @@
 
 import { IoArrowForwardCircleSharp } from 'react-icons/io5';
 import MessageCard from './MessageCard';
-import { useEffect, useRef, useState } from 'react';
-import { supabase } from '@/services/supabaseClient';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { Chat, Message } from '@/types/chats';
+import { useEffect, useRef } from 'react';
 import { useSubscribeChat } from '@/hooks/useSubscribeChat';
-
-type AddMessage = Pick<Message, 'chat_room_id' | 'sender_id' | 'content'>;
-
-type ChatProps = Pick<Chat, 'id'>;
-
-const fetchMessages = async (chatId: number) => {
-  const { data, error } = await supabase
-    .from('messages')
-    .select('*')
-    .eq('chat_room_id', chatId)
-    .order('created_at', { ascending: true });
-  if (error) throw new Error(error.message);
-  return data || [];
-};
-
-const addMessage = async ({ chat_room_id, sender_id, content }: AddMessage) => {
-  const { error } = await supabase
-    .from('messages')
-    .insert([{ chat_room_id, sender_id, content }]);
-
-  if (error) throw new Error(error.message);
-};
+import { useAuthStore } from '@/providers/AuthProvider';
+import { useAddMessageMutation } from '@/hooks/mutations/useChatMutation';
+import { useFetchChatMessages } from '@/hooks/queries/useChatQuery';
 
 const Chatting = ({ chatId }: { chatId: number }) => {
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const { data: userId } = useQuery({
-    queryKey: ['userId'],
-    queryFn: async () => {
-      const { data: sessionData } = await supabase.auth.getSession();
-      const userSessionId = sessionData?.session?.user.id;
-      if (!userSessionId) return null;
-
-      const { data: userData } = await supabase
-        .from('users')
-        .select('id')
-        .eq('user_id', userSessionId)
-        .single();
-
-      return userData?.id || null;
-    },
-    staleTime: 1000 * 60,
-  });
-
-  const [newMessage, setNewMessage] = useState('');
-
-  const { data: messages = [] } = useQuery({
-    queryKey: ['messages', chatId],
-    queryFn: () => fetchMessages(chatId),
-    staleTime: 1000 * 60,
-  });
-
-  const { mutate: sendMessage } = useMutation({
-    mutationFn: addMessage,
-    mutationKey: ['messages', chatId],
-    onSuccess: () => {
-      setNewMessage('');
-    },
-  });
+  const { user } = useAuthStore((state) => state);
 
   useSubscribeChat(chatId);
+
+  const {
+    data: messages,
+    isPending,
+    isError,
+    error,
+  } = useFetchChatMessages(chatId);
+
+  const { newMessage, setNewMessage, sendMessage } =
+    useAddMessageMutation(chatId);
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
+
+  if (isPending)
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        Loading...
+      </div>
+    );
+
+  if (isError)
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center">
+        <p>채팅 내용을 불러올 수 없습니다.</p>
+        <p>{error.message}</p>
+      </div>
+    );
+
   return (
     <div className="h-full mt-10 rounded-2xl flex flex-col justify-between">
       <div className=" overflow-y-scroll h-[90%] scrollbar-thin scrollbar-thumb-main1 scrollbar-track-main2 rounded-scrollbar pr-2">
@@ -81,7 +53,7 @@ const Chatting = ({ chatId }: { chatId: number }) => {
           <MessageCard
             key={message.id}
             content={message.content}
-            isMyMessage={message.sender_id === userId}
+            isMyMessage={message.sender_id === user!.id}
             isAppointment={message.appointment}
           />
         ))}
@@ -93,7 +65,7 @@ const Chatting = ({ chatId }: { chatId: number }) => {
             e.preventDefault();
             sendMessage({
               chat_room_id: chatId,
-              sender_id: userId,
+              sender_id: user!.id,
               content: newMessage,
             });
           }}
