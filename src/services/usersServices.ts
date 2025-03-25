@@ -1,9 +1,10 @@
 'use server';
-import { AuthInputs, UserMetaData } from '@/types/users';
+import { createClient } from './server';
+import { AuthInputs, UserData, UserMetaData } from '@/types/users';
 import { supabase } from './supabaseClient';
 import { AuthError, Session, User } from '@supabase/supabase-js';
 import { QUERY_KEY } from '@/constants/constants';
-import { createClient } from './server';
+import { toast } from '@/hooks/useToast';
 
 //-----로그인 로직-----
 export const login = async (
@@ -86,4 +87,56 @@ export const fetchUserIdFinding = async (sub: string) => {
   }
 
   return data;
+};
+
+//-----logout 로직-----
+export const logout = async () => {
+  try {
+    await supabase.auth.signOut();
+  } catch (error) {
+    console.error('로그아웃 에러 : ', error);
+    //사용자 알람
+    toast({
+      variant: 'destructive',
+      description: '로그아웃에 실패했습니다. 잠시 후 다시 시도해주세요!',
+    });
+  }
+};
+
+//-----채팅 상대방 정보 가져오는 로직-----
+export const fetchChatPartner = async (
+  chatId: number,
+  userId: number,
+): Promise<UserData> => {
+  // 채팅방 정보 가져오기
+  const { data, error } = await supabase
+    .from('chat_rooms')
+    .select('user1_id, user2_id')
+    .eq('id', chatId)
+    .single();
+
+  if (error) throw new Error(error.message);
+
+  // 상대방 ID 찾기
+  const otherUserId = data.user1_id === userId ? data.user2_id : data.user1_id;
+
+  // 상대방 정보 가져오기
+  const { data: otherUser, error: userError } = await supabase
+    .from('users')
+    .select('*, user_categories(category)')
+    .eq('id', otherUserId)
+    .single();
+
+  if (userError) throw new Error(userError.message);
+
+  const categories = otherUser.user_categories.map(
+    (item: { category: string }) => item.category,
+  );
+
+  const otherUserInfo = {
+    ...otherUser,
+    categories,
+  };
+
+  return otherUserInfo;
 };

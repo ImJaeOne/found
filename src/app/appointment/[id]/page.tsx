@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
-import AppointmentForm, { Appointment } from './_components/AppointmentForm';
+import AppointmentForm, { Appointment } from '../_components/AppointmentForm';
 
 const AppointmentPage = () => {
   const router = useRouter();
@@ -39,7 +39,7 @@ const AppointmentPage = () => {
   };
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto max-w-5xl rounded-2xl shadow-xl border border-gray-200 p-10 bg-white">
       <AppointmentForm
         newAppointment={newAppointment}
         handleChange={handleChange}
