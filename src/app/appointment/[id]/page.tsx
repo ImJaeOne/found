@@ -1,4 +1,4 @@
-import AppointmentForm from './_components/AppointmentForm';
+import AppointmentForm from '../_components/AppointmentForm';
 
 const AppointmentPage = () => {
   return (

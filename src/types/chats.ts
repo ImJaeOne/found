@@ -6,3 +6,10 @@ export type Message = {
   read_status: boolean;
   sender_id: number;
 };
+
+export type Chat = {
+  id: number;
+  user1_id: number;
+  user2_id: number;
+  created_at: string;
+};
