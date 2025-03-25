@@ -5,6 +5,7 @@ export type Message = {
   content: string;
   read_status: boolean;
   sender_id: number;
+  appointment: boolean;
 };
 
 export type Chat = {
