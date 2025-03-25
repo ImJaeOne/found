@@ -13,17 +13,23 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { FaChevronRight } from 'react-icons/fa6';
+import Autoplay from 'embla-carousel-autoplay';
 
 const images = [
   { src: '/images/found_main01.jpg', alt: 'main01' },
   { src: '/images/found_main02.jpg', alt: 'main02' },
   { src: '/images/found_main03.jpg', alt: 'main03' },
 ];
+const autoplayOptions = { delay: 1000 * 2, stopOnInteraction: false };
 
 const MainCarousel = () => {
   return (
     <div className="relative h-[calc(100vh-56px)]">
-      <Carousel opts={{ loop: true }} className="w-full ">
+      <Carousel
+        opts={{ loop: true }}
+        plugins={[Autoplay(autoplayOptions)]}
+        className="w-full "
+      >
         <CarouselContent className="m-0">
           {images.map((img, idx) => (
             <CarouselItem
@@ -35,6 +41,7 @@ const MainCarousel = () => {
                 src={img.src}
                 alt={img.alt}
                 className="object-cover"
+                priority={idx === 0}
               />
               <Button
                 asChild
@@ -48,6 +55,7 @@ const MainCarousel = () => {
                     alt="FOUND"
                     width={100}
                     height={100}
+                    style={{ width: 'auto', height: 'auto' }}
                     className="object-contain"
                   />
                   <FaChevronRight />
