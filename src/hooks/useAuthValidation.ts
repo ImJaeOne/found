@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { AuthInputs, UserData } from '@/types/users';
 import { login, signup } from '@/services/usersServices';
 import { useRouter } from 'next/navigation';
-import { createAuthStore } from '@/services/userStore';
+import { useAuthStore } from '@/providers/AuthProvider';
 
 export const useAuthValidation = (mode: string) => {
   // 경로 이동을 위한 route
@@ -57,6 +57,8 @@ export const useAuthValidation = (mode: string) => {
   } = useForm<AuthInputs>();
 
   // 로그인 로직
+  const loginWithZustand = useAuthStore((state) => state.setLogin);
+
   const handleSubmitLogin = async (
     data: Pick<AuthInputs, 'email' | 'password'>,
   ) => {
@@ -101,8 +103,7 @@ export const useAuthValidation = (mode: string) => {
           profile: data.user?.user_metadata.profile,
         };
 
-        const store = createAuthStore();
-        store.getState().setLogin(userData);
+        loginWithZustand(userData);
 
         // 성공시 사용자 알람
         toast({
@@ -170,7 +171,7 @@ export const useAuthValidation = (mode: string) => {
           bio,
           address: `${address.place} ${address.detailPlace}`,
           categories,
-          profile: `/images/found_default_profile${Math.floor(Math.random() * 6)}.png`,
+          profile: `/images/found_default_profile0${Math.floor(Math.random() * 6)}.png`,
         },
       },
     };
