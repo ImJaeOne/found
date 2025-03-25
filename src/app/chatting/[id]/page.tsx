@@ -1,7 +1,7 @@
 import Chatting from '../_components/Chatting';
 import SectionHeader from '../_components/SectionHeader';
 import { Params } from '@/types/params';
-import ChattingUserProfile from '../_components/\bChattingUserProfile';
+import ChattingUserProfile from '../_components/ChattingUserProfile';
 
 const ChattingPage = async ({ params }: Params) => {
   const chatId = Number(params.id);
