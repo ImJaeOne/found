@@ -34,7 +34,7 @@ export interface UserData {
   nickname: string;
   profile?: string;
   bio: string;
-  isFinding: boolean;
+  is_finding: boolean;
   address: string;
   categories: string[];
 }

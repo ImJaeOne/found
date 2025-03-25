@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from '../../../ui/shadcn/avatar';
 import { useAuthStore } from '@/providers/AuthProvider';
-import { UserData } from '@/types/users';
+import { UserData, UserQueryData } from '@/types/users';
 import ProfileDialog from './ProfileDialog';
 import { Switch } from '@/ui/shadcn/switch';
 import { useEditProfileMutation } from '@/hooks/mutations/useEditProfileMutation';
@@ -15,6 +15,30 @@ const UserProfile = () => {
   const user: UserData | null = useAuthStore((state) => state.user);
   const { mutate: updateUser } = useEditProfileMutation(user?.id || 0);
   const { data: userData, isPending, isError } = useGetUserQuery(user!.id);
+
+  const defaultUserData: UserData = {
+    id: 0,
+    profile: '',
+    nickname: '',
+    bio: '',
+    is_finding: false,
+    address: '',
+    sub: '',
+    categories: [],
+  };
+
+  const clickHandler = () => {
+    updateUser({
+      data: {
+        ...defaultUserData,
+        ...userData,
+        is_finding: !userData?.is_finding,
+      },
+    });
+    console.log(userData);
+  };
+
+  console.log(userData);
 
   const {
     data,
@@ -51,14 +75,7 @@ const UserProfile = () => {
       <div className="flex flex-col justify-center items-center gap-10 mt-10">
         <div className="flex items-center gap-2">
           <div className="text-medium-gray text-sm">프로필 공개</div>
-          <Switch
-            checked={user?.isFinding}
-            onClick={() =>
-              updateUser({
-                data: { ...userData, isFinding: !userData.isFinding },
-              })
-            }
-          />
+          <Switch checked={userData?.is_finding} onClick={clickHandler} />
         </div>
         <ProfileDialog />
       </div>

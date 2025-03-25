@@ -36,7 +36,7 @@ const ProfileDialog = () => {
     profile: '',
     nickname: '',
     bio: '',
-    isFinding: false,
+    is_finding: false,
     address: '',
     categories: [],
     user_categories: [],

@@ -9,6 +9,7 @@ export const editProfile = async (user_id: number, data: UserData) => {
       bio: data.bio,
       address: data.address,
       profile: data.profile,
+      is_finding: data.is_finding,
     })
     .eq('id', user_id);
 

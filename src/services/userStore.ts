@@ -10,7 +10,7 @@ export type AuthState = {
 };
 
 export type AuthActions = {
-  setLogin: (userData: Omit<UserData, 'id' | 'isFinding'>) => Promise<void>;
+  setLogin: (userData: Omit<UserData, 'id' | 'is_finding'>) => Promise<void>;
   setLogout: () => void;
 };
 
@@ -28,7 +28,7 @@ export const createAuthStore = (initState: AuthState = defaultInitState) => {
         ...initState,
 
         // 로그인
-        setLogin: async (userData: Omit<UserData, 'id' | 'isFinding'>) => {
+        setLogin: async (userData: Omit<UserData, 'id' | 'is_finding'>) => {
           const { id, is_finding } = (await fetchUserIdFinding(
             userData.sub,
           )) || { id: null, is_finding: false };
@@ -42,7 +42,7 @@ export const createAuthStore = (initState: AuthState = defaultInitState) => {
               bio: userData.bio,
               address: userData.address,
               categories: userData.categories,
-              isFinding: is_finding,
+              is_finding,
             };
 
             state.isAuthenticated = true;
