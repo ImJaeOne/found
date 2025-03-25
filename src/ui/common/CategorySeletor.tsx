@@ -6,24 +6,43 @@ import { toast } from '@/hooks/useToast';
 import { AuthInputs } from '@/types/users';
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { Checkbox } from '../shadcn/checkbox';
+import { AppointmentInputs } from '@/types/appointments';
 
 type CategorySelectorProps = {
   mode: number;
-  watch: UseFormWatch<AuthInputs>;
-  setValue: UseFormSetValue<AuthInputs>;
+  authWatch?: UseFormWatch<AuthInputs>;
+  authSetValue?: UseFormSetValue<AuthInputs>;
+  appointmentWatch?: UseFormWatch<AppointmentInputs>;
+  appointmentSetValue?: UseFormSetValue<AppointmentInputs>;
 };
 
-const CategorySeletor = ({ mode, watch, setValue }: CategorySelectorProps) => {
-  const checkedItems = watch('categories', []);
+const CategorySeletor = ({
+  mode,
+  authWatch,
+  authSetValue,
+  appointmentWatch,
+  appointmentSetValue,
+}: CategorySelectorProps) => {
+  const checkedItems = authWatch
+    ? authWatch('categories', [])
+    : appointmentWatch
+      ? appointmentWatch('category', [])
+      : [];
 
   const handleChange = (category: string, checked: boolean) => {
-    const updatedItems = checked
-      ? [...checkedItems, category]
-      : checkedItems.filter((item: string) => item !== category);
+    let updatedItems;
 
-    if (updatedItems.length > mode) {
-      toast({ description: `최대 ${mode}개까지 선택 가능합니다!` });
-      return;
+    if (mode === 1) {
+      updatedItems = checked ? [category] : []; // 하나만 선택 가능하도록 처리
+    } else {
+      updatedItems = checked
+        ? [...checkedItems, category]
+        : checkedItems.filter((item) => item !== category);
+
+      if (updatedItems.length > mode) {
+        toast({ description: `최대 ${mode}개까지 선택 가능합니다!` });
+        return;
+      }
     }
 
     if (updatedItems.length === 0) {
@@ -31,7 +50,11 @@ const CategorySeletor = ({ mode, watch, setValue }: CategorySelectorProps) => {
       return;
     }
 
-    setValue('categories', updatedItems);
+    authSetValue
+      ? authSetValue('categories', updatedItems)
+      : appointmentSetValue
+        ? appointmentSetValue('category', updatedItems)
+        : [];
   };
 
   const categories = Object.values(CATEGORIES);
