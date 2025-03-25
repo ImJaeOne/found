@@ -9,7 +9,7 @@ import { useAddMessageMutation } from '@/hooks/mutations/useChatMutation';
 import { useFetchChatMessages } from '@/hooks/queries/useChatQuery';
 
 const Chatting = ({ chatId }: { chatId: number }) => {
-  const { user } = useAuthStore((state) => state);
+  const user = useAuthStore((state) => state.user);
 
   useSubscribeChat(chatId);
 
