@@ -5,6 +5,7 @@ export type Appointment = {
   date: string;
   category: string;
   chat_room_id: number;
+  is_confirmed: boolean;
 };
 
 export type AppointmentInputs = {

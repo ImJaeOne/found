@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useAddMessageMutation } from './mutations/useChatMutation';
 import { UserData } from '@/types/users';
 import { PATH } from '@/constants/constants';
+import { useRouter } from 'next/navigation';
 
 const useAppointmentValidation = (
   chatId: number,
@@ -22,6 +23,8 @@ const useAppointmentValidation = (
   } = useForm<AppointmentInputs>();
 
   const { sendMessage } = useAddMessageMutation(chatId);
+
+  const router = useRouter();
 
   const appointmentContent = `<p>${loginUser?.nickname}님이 약속 요청을 보냈어요!</p>
   <p>약속 확인 후 수락 버튼을 눌러주세요!</p>
@@ -42,6 +45,7 @@ const useAppointmentValidation = (
       chat_room_id: chatId,
       address: address,
       category: category,
+      is_confirmed: false,
     };
 
     await sendNewAppoinment(newAppointmentData);
@@ -51,6 +55,7 @@ const useAppointmentValidation = (
       content: appointmentContent,
       appointment: true,
     });
+    router.back();
   };
 
   const onSubmit = (data: AppointmentInputs) => {

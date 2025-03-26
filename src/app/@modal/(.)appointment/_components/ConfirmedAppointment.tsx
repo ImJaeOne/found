@@ -38,17 +38,19 @@ const ConfirmedAppointment = ({
             약속
           </span>
         </div>
-        <div className="flex justify-center items-center">
-          <Button variant="button" size="button" type="submit">
-            CHECK
-          </Button>
-        </div>
+        {!appointment.is_confirmed && (
+          <div className="flex justify-center items-center">
+            <Button variant="button" size="button" type="submit">
+              CHECK
+            </Button>
+          </div>
+        )}
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 ">
         <section className="w-1/2">
           <div>
-            <h6>TITLE</h6>
+            <h6 className="text-main1 text-title-sm font-bold">TITLE</h6>
             <CommonInput
               placeholder="Enter title"
               height={8}
@@ -57,7 +59,7 @@ const ConfirmedAppointment = ({
             />
           </div>
           <div>
-            <h6>CONTENT</h6>
+            <h6 className="text-main1 text-title-sm font-bold">CONTENT</h6>
             <CommonInput
               placeholder="Enter content"
               isTextarea={true}
@@ -67,9 +69,9 @@ const ConfirmedAppointment = ({
             />
           </div>
         </section>
-        <section className="w-1/2">
+        <section className="flex flex-col w-1/2 gap-6">
           <div>
-            <h6>ADDRESS</h6>
+            <h6 className="text-main1 text-title-sm font-bold mb-2">ADDRESS</h6>
             <CommonInput
               placeholder="Enter address"
               height={8}
@@ -79,7 +81,7 @@ const ConfirmedAppointment = ({
           </div>
 
           <div>
-            <h6>DATE</h6>
+            <h6 className="text-main1 text-title-sm font-bold mb-2">DATE</h6>
             <CommonInput
               placeholder="Enter date"
               height={8}
@@ -89,7 +91,7 @@ const ConfirmedAppointment = ({
           </div>
 
           <div>
-            <h6>SPORT</h6>
+            <h6 className="text-main1 text-title-sm font-bold ">SPORT</h6>
             <Button variant="label" size="label" key={appointment.category}>
               {appointment.category}
             </Button>

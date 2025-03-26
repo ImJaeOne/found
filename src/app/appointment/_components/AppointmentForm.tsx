@@ -81,6 +81,7 @@ const AppointmentForm = ({ chatId }: { chatId: number }) => {
         <p>{error.message}</p>
       </div>
     );
+
   if (appointment.length) {
     return (
       <ConfirmedAppointment

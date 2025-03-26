@@ -93,7 +93,7 @@ export const confirmAppointment = async (chatId: number) => {
     .from('appointments')
     .update({ is_confirmed: true })
     .eq('chat_room_id', chatId)
-    .single();
+    .maybeSingle();
 
   if (error) {
     throw error;

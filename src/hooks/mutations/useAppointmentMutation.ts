@@ -8,7 +8,9 @@ export const useConfirmAppointmentMutation = (chatId: number) => {
     mutationFn: () => confirmAppointment(chatId),
     mutationKey: [QUERY_KEY.APPOINTMENTS, chatId],
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.APPOINTMENTS] });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.APPOINTMENTS, chatId],
+      });
     },
   });
   return confirmAppointmentMutation;
