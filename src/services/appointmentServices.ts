@@ -3,7 +3,6 @@ import { supabase } from './supabaseClient';
 import { Appointment } from '@/types/appointments';
 
 export const sendNewAppoinment = async (newAppointmentData: Appointment) => {
-  console.log(newAppointmentData);
   const { data, error } = await supabase
     .from(TABLE_NAME.APPOINTMENTS)
     .upsert(newAppointmentData)

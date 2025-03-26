@@ -19,8 +19,6 @@ const ConfirmedAppointment = ({
 }) => {
   const confirmAppointmentMutation = useConfirmAppointmentMutation(chatId);
   const router = useRouter();
-  console.log(chatPartner);
-  console.log(appointment);
   return (
     <form
       className="w-full flex flex-col gap-4"
