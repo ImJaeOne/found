@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { useAuthStore } from '@/providers/AuthProvider';
 import { logout } from '@/services/usersServices';
 import { toast } from '@/hooks/useToast';
+import { usePrefetchUser } from '@/hooks/queries/usePrefetchUser';
 
 const HeaderNav = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const user = useAuthStore((state) => state.user);
   const setLogout = useAuthStore((state) => state.setLogout);
+  const handleHover = usePrefetchUser();
 
   const handleLogout = async () => {
     await logout();
@@ -49,7 +51,9 @@ const HeaderNav = () => {
             </>
           )}
           <li className={navLi}>
-            <Link href={PATH.MATELIST}>FOUNIES</Link>
+            <Link href={PATH.MATELIST} onMouseEnter={handleHover}>
+              FOUNIES
+            </Link>
           </li>
         </ul>
       </nav>
