@@ -1,9 +1,7 @@
-import { supabase } from '@/services/supabaseClient';
+import MainCarousel from './_components/MainCarousel';
 
 const Home = async () => {
-  const data = await supabase.from('test').select('*');
-  console.log(data);
-  return <div className="text-sub1 text-xl">1석이조</div>;
+  return <MainCarousel />;
 };
 
 export default Home;
