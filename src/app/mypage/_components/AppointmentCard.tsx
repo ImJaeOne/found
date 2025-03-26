@@ -21,6 +21,8 @@ const AppointmentCard = ({ data }: { data: MyAppointment }) => {
 
   const appointment = appointments[0];
 
+  console.log(appointment.date)
+
   return (
     <div className="w-[400px] text-black rounded-[16px] py-6 px-4 flex flex-col gap-2 bg-light-gray mb-6">
       <div className="w-full flex justify-between items-center gap-4">
