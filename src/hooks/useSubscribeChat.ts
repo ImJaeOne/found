@@ -27,7 +27,7 @@ export const useSubscribeChat = (chatId: number) => {
 
           if (newMessage.appointment) {
             queryClient.setQueryData(
-              [QUERY_KEY.APPOINTMENTS, chatId],
+              [QUERY_KEY.APPOINTMENTS, 'hasAppointment', chatId],
               () => newMessage.appointment,
             );
           }
