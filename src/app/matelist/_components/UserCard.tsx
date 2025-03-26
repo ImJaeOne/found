@@ -16,8 +16,6 @@ const UserCard = ({
   const userSession = useAuthStore((state) => state.user);
 
   const startChat = useStartChat();
-  // console.log(user);
-  // console.log(userSession);
 
   return (
     <article className="flex flex-col min-w-80 max-w-80 h-96 bg-light-gray rounded-3xl p-7">

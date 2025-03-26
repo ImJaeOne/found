@@ -1,7 +1,7 @@
 import { UserData } from '@/types/users';
 import { supabase } from './supabaseClient';
 
-export const getUsersCategories = async (category) => {
+export const getUsersCategories = async (category: string) => {
   const { data, error } = await supabase.rpc(
     'get_users_with_category_all_categories',
     {
