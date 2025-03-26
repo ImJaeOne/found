@@ -22,8 +22,8 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <AuthStoreProvider>
-          <Header />
           <Providers>
+            <Header />
             <main className="pt-14 w-screen">
               {children}
               {modal}
