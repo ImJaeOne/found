@@ -44,8 +44,8 @@ const AuthListner = () => {
             sub: userId,
             nickname,
             profile,
-            bio: '',
-            address: '',
+            bio: '소개글 미작성',
+            address: '주소 미지정',
             categories: [],
           };
 
