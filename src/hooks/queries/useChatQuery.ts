@@ -1,4 +1,5 @@
 import { QUERY_KEY } from '@/constants/constants';
+import { requestAppointment } from '@/services/appointmentServices';
 import {
   checkAppointmentMessage,
   fetchMessages,
@@ -16,5 +17,12 @@ export const useAppointmentMessages = (chatId: number) => {
   return useQuery({
     queryKey: [QUERY_KEY.APPOINTMENTS, 'hasAppointment', chatId],
     queryFn: () => checkAppointmentMessage(chatId),
+  });
+};
+
+export const useRequestedAppointment = (chatId: number) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.APPOINTMENTS, 'isRequested'],
+    queryFn: () => requestAppointment(chatId),
   });
 };

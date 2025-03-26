@@ -1,7 +1,10 @@
 'use client';
 
+import { QUERY_KEY } from '@/constants/constants';
 import { useConfirmAppointmentMutation } from '@/hooks/mutations/useAppointmentMutation';
+import { useRequestedAppointment } from '@/hooks/queries/useChatQuery';
 import { useProfileImageQuery } from '@/hooks/queries/useUserQuery';
+import { useAuthStore } from '@/providers/AuthProvider';
 import { Appointment } from '@/types/appointments';
 import { ImageType } from '@/types/image';
 import { UserData } from '@/types/users';
@@ -19,12 +22,35 @@ const ConfirmedAppointment = ({
   appointment: Appointment;
   chatId: number;
 }) => {
+  const user = useAuthStore((state) => state.user);
   const confirmAppointmentMutation = useConfirmAppointmentMutation(chatId);
   const router = useRouter();
 
   const { data: image } = useProfileImageQuery(chatPartner?.profile, {
     enabled: !!chatPartner?.profile,
   });
+
+  const {
+    data: requestId,
+    isPending,
+    isError,
+    error,
+  } = useRequestedAppointment(chatId);
+
+  if (isPending)
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        Loading...
+      </div>
+    );
+
+  if (isError)
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center">
+        <p>요청 정보를 불러오는 중입니다.</p>
+        <p>{error.message}</p>
+      </div>
+    );
 
   const imageUrl = image as ImageType;
 
@@ -54,7 +80,7 @@ const ConfirmedAppointment = ({
             약속
           </span>
         </div>
-        {!appointment.is_confirmed && (
+        {!appointment.is_confirmed && requestId !== user?.id && (
           <div className="flex justify-center items-center">
             <Button variant="button" size="button" type="submit">
               CHECK

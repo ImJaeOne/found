@@ -46,7 +46,7 @@ const AppointmentCard = ({ data }: { data: MyAppointment }) => {
       <div className="w-full flex justify-between items-center gap-4">
         <div className="flex items-center gap-4">
           <Avatar size="50">
-            <AvatarImage src={profileImage} />
+            <AvatarImage src={profileImage} alt="profile_img" />
             <AvatarFallback>profile_image</AvatarFallback>
           </Avatar>
           <div className="flex gap-2">
