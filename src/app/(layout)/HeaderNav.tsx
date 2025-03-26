@@ -18,7 +18,7 @@ const HeaderNav = () => {
     setLogout();
 
     //로그아웃시 Home으로 이동
-    route.replace(PATH.HOME);
+    route.push(PATH.HOME);
 
     //사용자 알림
     toast({ description: '로그아웃 되었습니다!' });

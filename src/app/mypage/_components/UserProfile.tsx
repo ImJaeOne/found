@@ -16,7 +16,7 @@ import { ImageType } from '@/types/image';
 const UserProfile = () => {
   const user: UserData | null = useAuthStore((state) => state.user);
   const { mutate: updateUser } = useEditProfileMutation(user?.id || 0);
-  const { data: userData, isPending, isError } = useGetUserQuery(user!.id);
+  const { data: userData, isPending, isError } = useGetUserQuery(user?.id || 0);
   const {
     data,
     isPending: isPendingProfile,
