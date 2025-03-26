@@ -47,9 +47,17 @@ export const signup = async (
       if (userError) {
         console.error('signup errors - public.users 오류 : ', userError);
       }
-      //public.user_categories에 데이터 삽입
+
       const insertedUserId = userData?.[0]?.id;
 
+      // user_metaData에 id 삽입
+      await supabase.auth.updateUser({
+        data: {
+          id: insertedUserId,
+        },
+      });
+
+      //public.user_categories에 데이터 삽입
       if (categories && categories.length > 0) {
         for (const category of categories) {
           const { error } = await supabase
@@ -93,8 +101,8 @@ export const fetchUserIdFinding = async (sub: string) => {
 export const logout = async () => {
   const supabaseServer = await createClient();
   try {
-    await supabase.auth.signOut();
     await supabaseServer.auth.signOut();
+    await supabase.auth.signOut();
   } catch (error) {
     console.error('로그아웃 에러 : ', error);
     //사용자 알람
