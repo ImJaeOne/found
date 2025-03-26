@@ -67,6 +67,7 @@ const Chatting = ({ chatId }: { chatId: number }) => {
               chat_room_id: chatId,
               sender_id: user!.id,
               content: newMessage,
+              appointment: false,
             });
           }}
           className="w-full flex"

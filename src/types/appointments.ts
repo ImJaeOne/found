@@ -1,6 +1,6 @@
 export type Appointment = {
   title: string;
-  place: string;
+  address: string;
   content: string;
   date: string;
   category: string;
