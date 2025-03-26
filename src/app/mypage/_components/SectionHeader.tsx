@@ -24,7 +24,7 @@ const SectionHeader = ({ selected, setSelected }: SectionHeaderProps) => {
   );
 
   return (
-    <div className="w-full border-b border-medium-gray flex justify-end">
+    <div className="w-[400px] border-b border-medium-gray flex justify-end">
       <>
         <TabButton type="upcoming" label="앞둔 약속" />
         <TabButton type="previous" label="지난 약속" />

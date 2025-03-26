@@ -1,26 +1,10 @@
 'use client';
 
 import useStartChat from '@/hooks/useGoChatting';
-import { supabase } from '@/services/supabaseClient';
+import { useAuthStore } from '@/providers/AuthProvider';
+import { UserData } from '@/types/users';
 import { Avatar } from '@/ui/shadcn/avatar';
 import { Button } from '@/ui/shadcn/button';
-import { useQuery } from '@tanstack/react-query';
-
-type Category = {
-  category: 'string';
-};
-
-type UserData = {
-  id: number;
-  created_at: string;
-  nickname: string;
-  address: string;
-  profile: string;
-  bio: string;
-  user_id: string;
-  is_finding: boolean;
-  user_categories: Category[];
-};
 
 const UserCard = ({
   user,
@@ -29,37 +13,9 @@ const UserCard = ({
   user: UserData;
   categories: string[];
 }) => {
-  const {
-    data: userSession,
-    isError,
-    isPending,
-  } = useQuery({
-    queryKey: ['loginUser'],
-    queryFn: async (): Promise<UserData> => {
-      const { data } = await supabase.auth.getSession();
-      const { data: user, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('user_id', data.session?.user.id)
-        .single();
-
-      if (error) {
-        throw new Error('사용자 정보를 불러오지 못했습니다.', error);
-      }
-
-      return user;
-    },
-  });
+  const userSession = useAuthStore((state) => state.user);
 
   const startChat = useStartChat();
-
-  if (isError) {
-    return <div>Error!</div>;
-  }
-
-  if (isPending) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <article className="flex flex-col min-w-80 max-w-80 h-96 bg-light-gray rounded-3xl p-7">

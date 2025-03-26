@@ -1,6 +1,6 @@
 'use client';
 
-import { PATH } from '@/constants/constants';
+import { CATEGORIES, PATH, QUERY_KEY } from '@/constants/constants';
 import { Button } from '@/ui/shadcn/button';
 import {
   Carousel,
@@ -14,6 +14,8 @@ import Link from 'next/link';
 import React from 'react';
 import { FaChevronRight } from 'react-icons/fa6';
 import Autoplay from 'embla-carousel-autoplay';
+import { usePrefetchUser } from '@/hooks/queries/usePrefetchUser';
+import { useAuthStore } from '@/providers/AuthProvider';
 
 const images = [
   { src: '/images/found_main01.jpg', alt: 'main01' },
@@ -23,6 +25,9 @@ const images = [
 const autoplayOptions = { delay: 1000 * 2, stopOnInteraction: false };
 
 const MainCarousel = () => {
+  const user = useAuthStore((state) => state.user);
+  const handleHover = usePrefetchUser(user ? user.id : undefined);
+
   return (
     <div className="relative h-[calc(100vh-56px)]">
       <Carousel
@@ -49,7 +54,11 @@ const MainCarousel = () => {
                 size="logo"
                 className="absolute bottom-12 left-3/4 z-1"
               >
-                <Link href={PATH.MATELIST} className="flex items-center">
+                <Link
+                  href={PATH.MATELIST}
+                  className="flex items-center"
+                  onMouseEnter={handleHover}
+                >
                   <Image
                     src="/images/found_logo_white.png"
                     alt="FOUND"
