@@ -1,5 +1,18 @@
 import { AUTH_MODE } from '@/constants/users';
 import AuthForm from '../_components/AuthForm';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: '로그인 - FOUND',
+  description: 'FOUND에 로그인하고 완벽한 운동 메이트를 찾아보세요!',
+  openGraph: {
+    title: '로그인 - FOUND',
+    description: 'FOUND에 로그인하고 완벽한 운동 메이트를 찾아보세요!',
+    url: 'https://found-smoky.vercel.app/sign/login',
+    siteName: 'FOUND',
+    type: 'website',
+  },
+};
 
 const LoginPage = () => {
   return (
