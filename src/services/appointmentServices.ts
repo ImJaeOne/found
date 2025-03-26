@@ -101,3 +101,17 @@ export const confirmAppointment = async (chatId: number) => {
 
   return data;
 };
+
+export const requestAppointment = async (chatId: number) => {
+  const { data, error } = await supabase
+    .from('messages')
+    .select('sender_id')
+    .eq('chat_room_id', chatId)
+    .eq('appointment', true);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data[0].sender_id;
+};
