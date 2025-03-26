@@ -22,7 +22,12 @@ const UserCardList = ({ category }: { category: string }) => {
   } = useUsersCategories(user ? { category, id: user.id } : { category });
 
   if (isError) return <div>Error!</div>;
-  if (isPending) return <div>Loading!</div>;
+  if (isPending)
+    return (
+      <div className="w-full h-96 flex justify-center items-center">
+        Loading!
+      </div>
+    );
 
   if (users.length === 0) {
     return (
@@ -40,7 +45,7 @@ const UserCardList = ({ category }: { category: string }) => {
         opts={{
           align: 'start',
         }}
-        className="w-full pt-8"
+        className="w-full py-8"
       >
         <CarouselContent className="-ml-0 gap-2">
           {users.map((user: UserData, index: number) => {

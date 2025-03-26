@@ -10,11 +10,13 @@ const CategoryCardSection = ({ categories }: CategoryCardSectionProps) => {
     <>
       {categories.map((category) => (
         <div key={category}>
-          <div className="flex flex-row w-full pl-1 pt-10">
+          <div className="flex flex-row w-full pl-1 pt-2">
             <Button variant={'label'} size={'label'}>
               {category}
             </Button>
-            <h3 className="text-title-sm pl-3">같이 할 파우니를 찾고있어요!</h3>
+            <div className="text-title-sm pl-3">
+              같이 할 파우니를 찾고있어요!
+            </div>
           </div>
           <UserCardList category={category} />
         </div>
