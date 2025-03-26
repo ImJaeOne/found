@@ -14,9 +14,8 @@ import Link from 'next/link';
 import React from 'react';
 import { FaChevronRight } from 'react-icons/fa6';
 import Autoplay from 'embla-carousel-autoplay';
-import { useQueryClient } from '@tanstack/react-query';
-import { getUsersCategories } from '@/services/getUsersCategories';
 import { usePrefetchUser } from '@/hooks/queries/usePrefetchUser';
+import { useAuthStore } from '@/providers/AuthProvider';
 
 const images = [
   { src: '/images/found_main01.jpg', alt: 'main01' },
@@ -26,7 +25,8 @@ const images = [
 const autoplayOptions = { delay: 1000 * 2, stopOnInteraction: false };
 
 const MainCarousel = () => {
-  const handleHover = usePrefetchUser();
+  const user = useAuthStore((state) => state.user);
+  const handleHover = usePrefetchUser(user ? user.id : undefined);
 
   return (
     <div className="relative h-[calc(100vh-56px)]">

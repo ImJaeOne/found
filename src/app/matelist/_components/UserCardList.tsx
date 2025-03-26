@@ -10,9 +10,16 @@ import {
 import UserCard from './UserCard';
 import { UserData } from '@/types/users';
 import { useUsersCategories } from '@/hooks/queries/useUsersCategories';
+import { useAuthStore } from '@/providers/AuthProvider';
 
 const UserCardList = ({ category }: { category: string }) => {
-  const { data: users, isError, isPending } = useUsersCategories(category);
+  const user = useAuthStore((state) => state.user);
+
+  const {
+    data: users,
+    isError,
+    isPending,
+  } = useUsersCategories(user ? { category, id: user.id } : { category });
 
   if (isError) return <div>Error!</div>;
   if (isPending) return <div>Loading!</div>;

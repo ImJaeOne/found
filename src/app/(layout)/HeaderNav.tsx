@@ -11,7 +11,7 @@ const HeaderNav = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const user = useAuthStore((state) => state.user);
   const setLogout = useAuthStore((state) => state.setLogout);
-  const handleHover = usePrefetchUser();
+  const handleHover = usePrefetchUser(user ? user.id : undefined);
 
   const handleLogout = async () => {
     await logout();
