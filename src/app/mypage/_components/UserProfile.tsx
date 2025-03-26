@@ -1,5 +1,4 @@
 'use client';
-
 import { Avatar, AvatarFallback, AvatarImage } from '../../../ui/shadcn/avatar';
 import { useAuthStore } from '@/providers/AuthProvider';
 import { UserData } from '@/types/users';
@@ -12,8 +11,9 @@ import {
 } from '@/hooks/queries/useUserQuery';
 import { Button } from '@/ui/shadcn/button';
 import { ImageType } from '@/types/image';
-// import { MYPAGE_TOAST_MESSAGES } from '@/constants/my-page';
 import { useToast } from '@/hooks/useToast';
+import { MYPAGE_TOAST_MESSAGES } from '@/constants/my-page';
+
 const UserProfile = () => {
   const user: UserData | null = useAuthStore((state) => state.user);
   const { mutate: updateUser } = useEditProfileMutation(user?.id || 0);
@@ -58,10 +58,10 @@ const UserProfile = () => {
       },
       {
         onSuccess: () => {
-          // toast({ description: MYPAGE_TOAST_MESSAGES.ISFINDING });
+          toast({ description: MYPAGE_TOAST_MESSAGES.ISFINDING });
         },
         onError: () => {
-          // toast({ description: MYPAGE_TOAST_MESSAGES.ERROR.ISFINDING });
+          toast({ description: MYPAGE_TOAST_MESSAGES.ERROR.ISFINDING });
         },
       },
     );
