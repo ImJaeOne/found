@@ -11,16 +11,20 @@ export const fetchMessages = async (chatId: number) => {
   return data || [];
 };
 
-type AddMessage = Pick<Message, 'chat_room_id' | 'sender_id' | 'content'>;
+type AddMessage = Pick<
+  Message,
+  'chat_room_id' | 'sender_id' | 'content' | 'appointment'
+>;
 
 export const addMessage = async ({
   chat_room_id,
   sender_id,
   content,
+  appointment = false,
 }: AddMessage) => {
   const { error } = await supabase
     .from('messages')
-    .insert([{ chat_room_id, sender_id, content }]);
+    .insert([{ chat_room_id, sender_id, content, appointment }]);
 
   if (error) throw new Error(error.message);
 };

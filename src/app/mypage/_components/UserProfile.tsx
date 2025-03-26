@@ -22,7 +22,6 @@ const UserProfile = ({ params }: Props) => {
     isPending,
     isError,
   } = useGetUserQuery(params.id || 0);
-
   const {
     data,
     isPending: isPendingProfile,

@@ -1,4 +1,5 @@
 import parse from 'html-react-parser';
+import Link from 'next/link';
 
 const MessageCard = ({
   content,
@@ -10,7 +11,7 @@ const MessageCard = ({
   isAppointment: boolean;
 }) => {
   return (
-    <div className="flex flex-col gap-4 text-text-sm px-12 py-4 bg-slate-50 rounded-lg">
+    <div className="flex flex-col gap-4 text-text-sm px-12 py-4 ">
       <div className={`flex ${isMyMessage ? 'justify-end' : 'justify-start'}`}>
         <div
           className={`rounded-2xl px-6 py-3 w-fit max-w-[60%] 

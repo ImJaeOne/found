@@ -4,11 +4,11 @@ import SectionHeader from './SectionHeader';
 import { useState } from 'react';
 import AppointmentCard from './AppointmentCard';
 import { useAppointmentQuery } from '@/hooks/queries/useAppointmentQuery';
-import { useAuthStore } from '@/providers/AuthProvider';
+import { Props } from '../[id]/page';
+import Link from 'next/link';
 
-const Appointments = () => {
-  const user = useAuthStore((state) => state.user);
-  const { data: appointments } = useAppointmentQuery(user?.id || 0);
+const Appointments = ({ params }: Props) => {
+  const { data: appointments } = useAppointmentQuery(Number(params.id) || 0);
   const [selected, setSelected] = useState<'upcoming' | 'previous'>('upcoming');
 
   const formatKoreanDateString = (dateStr: string) => {
@@ -37,7 +37,9 @@ const Appointments = () => {
       <SectionHeader selected={selected} setSelected={setSelected} />
       <div>
         {filteredAppointments?.map((appointment) => (
-          <AppointmentCard key={appointment.id} data={appointment} />
+          <Link key={appointment.id} href={`/appointment/${appointment.id}`}>
+            <AppointmentCard data={appointment} />
+          </Link>
         ))}
       </div>
     </div>

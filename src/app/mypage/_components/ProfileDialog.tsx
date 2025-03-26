@@ -62,7 +62,6 @@ const ProfileDialog = ({ params }: Props) => {
   };
 
   const { toast } = useToast();
-
   const [profileImg, setProfileImg] = useState<File | null>(null);
   const [open, setOpen] = useState(false);
   const [preview, setPreview] = useState(profileImage);
@@ -102,11 +101,9 @@ const ProfileDialog = ({ params }: Props) => {
         filePath: filePath || '',
         file: profileImg,
       });
-
       // 업로드 성공 시 반환된 이미지 URL을 저장
       imageUrl = filePath || ''; // Supabase가 반환하는 public URL 사용
     }
-
     setOpen(false);
 
     // 프로필 정보 업데이트

@@ -10,7 +10,9 @@ export type AuthState = {
 };
 
 export type AuthActions = {
-  setLogin: (userData: Omit<UserData, 'id' | 'is_finding'>) => Promise<void>;
+  // setLogin: (userData: UserData) => Promise<void>;
+  loginWithZustand: (userData: Omit<UserData, 'id' | 'is_finding'>) => void;
+  setLogin: (userData: UserData) => void;
   setLogout: () => void;
 };
 
@@ -27,8 +29,10 @@ export const createAuthStore = (initState: AuthState = defaultInitState) => {
       immer((set) => ({
         ...initState,
 
-        // 로그인
-        setLogin: async (userData: Omit<UserData, 'id' | 'is_finding'>) => {
+        // 이메일 로그인시 사용하는 로직
+        loginWithZustand: async (
+          userData: Omit<UserData, 'id' | 'is_finding'>,
+        ) => {
           const { id, is_finding } = (await fetchUserIdFinding(
             userData.sub,
           )) || { id: null, is_finding: false };
@@ -43,6 +47,24 @@ export const createAuthStore = (initState: AuthState = defaultInitState) => {
               address: userData.address,
               categories: userData.categories,
               is_finding,
+            };
+
+            state.isAuthenticated = true;
+          });
+        },
+
+        // 소셜로그인시 사용하는 로직
+        setLogin: async (userData: UserData) => {
+          set((state) => {
+            state.user = {
+              id: userData?.id,
+              sub: userData?.sub,
+              nickname: userData?.nickname,
+              profile: userData?.profile,
+              bio: userData?.bio,
+              address: userData?.address,
+              categories: userData?.categories,
+              is_finding: userData?.is_finding,
             };
 
             state.isAuthenticated = true;

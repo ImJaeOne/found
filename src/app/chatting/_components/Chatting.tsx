@@ -48,7 +48,7 @@ const Chatting = ({ chatId }: { chatId: number }) => {
 
   return (
     <div className="h-full mt-10 rounded-2xl flex flex-col justify-between">
-      <div className=" overflow-y-scroll h-[90%] scrollbar-thin scrollbar-thumb-main1 scrollbar-track-main2 rounded-scrollbar pr-2">
+      <div className=" overflow-y-scroll h-[90%] scrollbar-thin bg-slate-50 scrollbar-thumb-main1 scrollbar-track-main2 rounded-scrollbar rounded-lg pr-2">
         {messages.map((message) => (
           <MessageCard
             key={message.id}
@@ -67,6 +67,7 @@ const Chatting = ({ chatId }: { chatId: number }) => {
               chat_room_id: chatId,
               sender_id: user!.id,
               content: newMessage,
+              appointment: false,
             });
           }}
           className="w-full flex"

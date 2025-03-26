@@ -1,7 +1,7 @@
 import { AuthInputs, UserData, UserMetaData } from '@/types/users';
 import { supabase } from './supabaseClient';
 import { AuthError, Session, User } from '@supabase/supabase-js';
-import { QUERY_KEY } from '@/constants/constants';
+import { QUERY_KEY, TABLE_NAME } from '@/constants/constants';
 import { toast } from '@/hooks/useToast';
 
 //-----로그인 로직-----
@@ -9,6 +9,14 @@ export const login = async (
   currentUser: Pick<AuthInputs, 'email' | 'password'>,
 ) => {
   const { data, error } = await supabase.auth.signInWithPassword(currentUser);
+
+  await fetch('/api/auth', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(currentUser),
+  });
 
   return { data, error };
 };
@@ -25,9 +33,7 @@ export const signup = async (
   newUserData: UserMetaData,
 ): Promise<SignupResponse> => {
   try {
-    // const supabaseServer = await createClient();
     const { data, error } = await supabase.auth.signUp(newUserData);
-    // await supabaseServer.auth.signUp(newUserData);
 
     if (data) {
       const userId = data?.user?.id;
@@ -36,16 +42,24 @@ export const signup = async (
 
       //public.users에 데이터 삽입
       const { data: userData, error: userError } = await supabase
-        .from(QUERY_KEY.USERS)
+        .from(TABLE_NAME.USER)
         .insert([{ address, bio, nickname, user_id: userId, profile }])
         .select('id');
 
       if (userError) {
         console.error('signup errors - public.users 오류 : ', userError);
       }
-      //public.user_categories에 데이터 삽입
+
       const insertedUserId = userData?.[0]?.id;
 
+      // user_metaData에 id 삽입
+      await supabase.auth.updateUser({
+        data: {
+          id: insertedUserId,
+        },
+      });
+
+      //public.user_categories에 데이터 삽입
       if (categories && categories.length > 0) {
         for (const category of categories) {
           const { error } = await supabase
@@ -135,4 +149,19 @@ export const fetchChatPartner = async (
   };
 
   return otherUserInfo;
+};
+
+// 기존에 가입되어 있는 유저인지 확인
+export const fetchExistingUser = async (userId: string) => {
+  const { data: existingUser, error } = await supabase
+    .from(TABLE_NAME.USER)
+    .select('*')
+    .eq('user_id', userId)
+    .maybeSingle();
+
+  if (error) throw error;
+
+  console.log('fetch => existingUser ', existingUser);
+
+  return existingUser;
 };
