@@ -1,4 +1,3 @@
-  <img src="https://github.com/ImJaeOne/found/blob/dev/public/images/found_default_profile05.png?raw=true" width="80" alt="found_favicon"> 
   <img src="https://github.com/ImJaeOne/found/blob/dev/public/images/found_logo.png?raw=true" alt="found_logo">
 
 ## 📢 프로젝트 소개
@@ -193,4 +192,4 @@ src/
 
 ## ERD
 
-<img width="994" alt="image" src="/public/images/ERD.png" />
+<img width="994" alt="image" src="https://github.com/ImJaeOne/found/blob/dev/public/images/ERD.png?raw=true" />
