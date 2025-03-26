@@ -18,10 +18,12 @@ import { Input } from '@/ui/shadcn/input';
 import { Label } from '@/ui/shadcn/label';
 import { useState } from 'react';
 import { UserQueryData } from '@/types/users';
+import { useToast } from '@/hooks/useToast';
+import { MYPAGE_TOAST_MESSAGES } from '@/constants/my-page';
 
 const ProfileDialog = () => {
   const user = useAuthStore((state) => state.user);
-  const { mutate: editProfile } = useEditProfileMutation(user?.id || 0);
+  const { mutate: updateUser } = useEditProfileMutation(user?.id || 0);
   const { mutate: updateProfileImage } = useUploadProfileImage(user?.id || 0);
   const {
     data: userQueryData,
@@ -30,6 +32,7 @@ const ProfileDialog = () => {
     error,
   } = useGetUserQuery(user!.id);
   const [userData, setUserData] = useState({ ...userQueryData });
+  const { toast } = useToast();
 
   const defaultUserData: UserQueryData = {
     id: 0,
@@ -73,27 +76,33 @@ const ProfileDialog = () => {
   };
 
   const handleSave = () => {
-    try {
-      let imageUrl = userQueryData?.profile;
+    let imageUrl = userQueryData?.profile;
 
-      // 파일이 변경되었을 경우 업로드
-      if (profileImg) {
-        updateProfileImage({
-          filePath: filePath || '',
-          file: profileImg,
-        });
-
-        // 업로드 성공 시 반환된 이미지 URL을 저장
-        imageUrl = filePath || ''; // Supabase가 반환하는 public URL 사용
-      }
-
-      // 프로필 정보 업데이트
-      editProfile({
-        data: { ...defaultUserData, ...userData, profile: imageUrl }, // 저장된 이미지 URL 사용
+    // 파일이 변경되었을 경우 업로드
+    if (profileImg) {
+      updateProfileImage({
+        filePath: filePath || '',
+        file: profileImg,
       });
-    } catch (error) {
-      console.error('프로필 수정 중 오류 발생:', error);
+
+      // 업로드 성공 시 반환된 이미지 URL을 저장
+      imageUrl = filePath || ''; // Supabase가 반환하는 public URL 사용
     }
+
+    // 프로필 정보 업데이트
+    updateUser(
+      {
+        data: { ...defaultUserData, ...userData, profile: imageUrl }, // 저장된 이미지 URL 사용
+      },
+      {
+        onSuccess: () => {
+          toast({ description: MYPAGE_TOAST_MESSAGES.ISFINDING });
+        },
+        onError: () => {
+          toast({ description: MYPAGE_TOAST_MESSAGES.ERROR.ISFINDING });
+        },
+      },
+    );
   };
 
   if (isPending)

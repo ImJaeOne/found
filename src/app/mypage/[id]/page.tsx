@@ -3,7 +3,7 @@ import Appointments from '../_components/Appointments';
 
 const MyPage = () => {
   return (
-    <div className="flex justify-center gap-20">
+    <div className="flex justify-center gap-20 mt-20">
       <UserProfile />
       <Appointments />
     </div>
