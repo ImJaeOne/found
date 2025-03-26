@@ -24,6 +24,7 @@ export const QUERY_KEY = {
   CHAT_ROOMS: 'chat_rooms',
   APPOINTMENTS: 'appointments',
   CHAT_PARTNER: 'chat_partner',
+  PROFILE_IMAGE: 'profile_image',
 };
 
 export const TABLE_NAME = {

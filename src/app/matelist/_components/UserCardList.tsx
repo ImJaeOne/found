@@ -65,7 +65,9 @@ const UserCardList = ({
   if (filteredUsers.length === 0) {
     return (
       <div className="flex justify-center item-center">
-        <h1 className="text-title-md text-main1">해당 운동을 원하는 파우니가 없어요ㅠ</h1>
+        <h1 className="text-title-md text-main1">
+          해당 운동을 원하는 파우니가 없어요ㅠ
+        </h1>
       </div>
     );
   }
