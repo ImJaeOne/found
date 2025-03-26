@@ -25,14 +25,7 @@ export const editProfile = async (user_id: number, data: UserData) => {
 export const getProfile = async (user_id: number): Promise<UserQueryData> => {
   const { data, error } = await supabase
     .from('users')
-    .select(
-      `
-  *,
-  user_categories (
-    category
-  )
-`,
-    )
+    .select(`*, user_categories (category)`)
     .eq('id', user_id)
     .single();
 
@@ -41,6 +34,5 @@ export const getProfile = async (user_id: number): Promise<UserQueryData> => {
     throw error;
   }
 
-  console.log('프로필 조회 성공');
   return data;
 };

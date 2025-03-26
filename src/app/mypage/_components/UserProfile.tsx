@@ -2,12 +2,14 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from '../../../ui/shadcn/avatar';
 import { useAuthStore } from '@/providers/AuthProvider';
-import { UserData, UserQueryData } from '@/types/users';
+import { UserData } from '@/types/users';
 import ProfileDialog from './ProfileDialog';
 import { Switch } from '@/ui/shadcn/switch';
 import { useEditProfileMutation } from '@/hooks/mutations/useEditProfileMutation';
-import { useProfileImageQuery } from '@/hooks/queries/useProfileImage';
-import { useGetUserQuery } from '@/hooks/queries/useProfileQuery';
+import {
+  useProfileImageQuery,
+  useGetUserQuery,
+} from '@/hooks/queries/useUserQuery';
 import { Button } from '@/ui/shadcn/button';
 import { ImageType } from '@/types/image';
 
@@ -15,6 +17,13 @@ const UserProfile = () => {
   const user: UserData | null = useAuthStore((state) => state.user);
   const { mutate: updateUser } = useEditProfileMutation(user?.id || 0);
   const { data: userData, isPending, isError } = useGetUserQuery(user!.id);
+  const {
+    data,
+    isPending: isPendingProfile,
+    isError: isErrorProfile,
+  } = useProfileImageQuery(userData?.profile, {
+    enabled: !!userData?.profile, // userData.profile이 있을 때만 쿼리 실행
+  });
 
   const defaultUserData: UserData = {
     id: 0,
@@ -35,16 +44,7 @@ const UserProfile = () => {
         is_finding: !userData?.is_finding,
       },
     });
-    console.log(userData);
   };
-
-  const {
-    data,
-    isPending: isPendingProfile,
-    isError: isErrorProfile,
-  } = useProfileImageQuery(userData?.profile, {
-    enabled: !!userData?.profile, // userData.profile이 있을 때만 쿼리 실행
-  });
 
   const profileImage = data as ImageType;
 

@@ -2,7 +2,7 @@
 
 import { useEditProfileMutation } from '@/hooks/mutations/useEditProfileMutation';
 import { useUploadProfileImage } from '@/hooks/mutations/useUploadImageMutation';
-import { useGetUserQuery } from '@/hooks/queries/useProfileQuery';
+import { useGetUserQuery } from '@/hooks/queries/useUserQuery';
 import { useAuthStore } from '@/providers/AuthProvider';
 import { Button } from '@/ui/shadcn/button';
 import {
@@ -91,8 +91,6 @@ const ProfileDialog = () => {
       editProfile({
         data: { ...defaultUserData, ...userData, profile: imageUrl }, // 저장된 이미지 URL 사용
       });
-
-      console.log('프로필 수정 완료:', userQueryData);
     } catch (error) {
       console.error('프로필 수정 중 오류 발생:', error);
     }
