@@ -1,6 +1,5 @@
 'use client';
 
-import { QUERY_KEY } from '@/constants/constants';
 import { useConfirmAppointmentMutation } from '@/hooks/mutations/useAppointmentMutation';
 import { useRequestedAppointment } from '@/hooks/queries/useChatQuery';
 import { useProfileImageQuery } from '@/hooks/queries/useUserQuery';
@@ -73,7 +72,7 @@ const ConfirmedAppointment = ({
       <div className="flex justify-between">
         <div className="flex justify-center items-center gap-4">
           <Avatar size="sm">
-            <AvatarImage src={profileImage} />
+            <AvatarImage src={profileImage} alt="profile_img" />
           </Avatar>
           <span className="font-bold text-title-sm">
             <span className="text-main1">{chatPartner.nickname}</span> 님과의

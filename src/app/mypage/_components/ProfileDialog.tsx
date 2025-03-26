@@ -211,6 +211,7 @@ const ProfileDialog = ({ params }: Props) => {
             size="button"
             type="submit"
             onClick={handleSave}
+            aria-label="toggle-myInfo"
           >
             SAVE
           </Button>
