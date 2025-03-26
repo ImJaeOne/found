@@ -1,6 +1,5 @@
 'use client';
 
-import { QUERY_KEY } from '@/constants/constants';
 import { useConfirmAppointmentMutation } from '@/hooks/mutations/useAppointmentMutation';
 import { useRequestedAppointment } from '@/hooks/queries/useChatQuery';
 import { useProfileImageQuery } from '@/hooks/queries/useUserQuery';
