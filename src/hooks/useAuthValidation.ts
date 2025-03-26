@@ -172,7 +172,7 @@ export const useAuthValidation = (mode: string) => {
           bio,
           address: `${address.place} ${address.detailPlace}`,
           categories,
-          profile: `/images/found_default_profile0${Math.floor(Math.random() * 6)}.png`,
+          profile: `/images/found_default_profile0${Math.floor(Math.random() * 6 + 1)}.png`,
         },
       },
     };

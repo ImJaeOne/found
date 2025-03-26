@@ -48,9 +48,10 @@ const AddressInput = ({
         />
         <Button
           onClick={handlePostcodeSearch}
-          className="bg-white text-sub1 border border-sub1 rounded-xl px-3 py-2 "
+          className="bg-white text-sub1 border border-sub1 rounded-xl px-3v py-2 "
           variant="subbutton"
           size="subbutton"
+          type="button"
         >
           주소 찾기
         </Button>
