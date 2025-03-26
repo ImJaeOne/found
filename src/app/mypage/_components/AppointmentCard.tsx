@@ -32,7 +32,13 @@ const AppointmentCard = ({ data }: { data: MyAppointment }) => {
     const today = dayjs();
     const diff = appointmentDate.diff(today, 'day');
     // diff가 음수면 지난 약속, 양수면 앞으로 남은 날
-    dDayText = diff >= 0 ? `D-${diff}` : `D+${Math.abs(diff)}`;
+    if (diff === 0) {
+      dDayText = 'D-Today';
+    } else if (diff > 0) {
+      dDayText = `D-${diff}`;
+    } else {
+      dDayText = `D+${Math.abs(diff)}`;
+    }
   }
 
   return (
