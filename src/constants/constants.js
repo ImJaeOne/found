@@ -24,6 +24,15 @@ export const QUERY_KEY = {
   CHAT_ROOMS: 'chat_rooms',
   APPOINTMENTS: 'appointments',
   CHAT_PARTNER: 'chat_partner',
+  PROFILE_IMAGE: 'profile_image',
+};
+
+export const TABLE_NAME = {
+  USER: 'users',
+  USER_CATEGORIES: 'user_categories',
+  MESSAGES: 'messages',
+  CHAT_ROOMS: 'chat_rooms',
+  APPOINTMENTS: 'appointments',
 };
 
 export const CATEGORIES_SELECT_MODE = {
