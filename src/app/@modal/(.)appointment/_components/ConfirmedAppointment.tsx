@@ -72,7 +72,7 @@ const ConfirmedAppointment = ({
       <div className="flex justify-between">
         <div className="flex justify-center items-center gap-4">
           <Avatar size="sm">
-            <AvatarImage src={profileImage} />
+            <AvatarImage src={profileImage} alt="profile_img" />
           </Avatar>
           <span className="font-bold text-title-sm">
             <span className="text-main1">{chatPartner.nickname}</span> 님과의
