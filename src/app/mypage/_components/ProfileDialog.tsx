@@ -2,7 +2,10 @@
 
 import { useEditProfileMutation } from '@/hooks/mutations/useEditProfileMutation';
 import { useUploadProfileImage } from '@/hooks/mutations/useUploadImageMutation';
-import { useGetUserQuery } from '@/hooks/queries/useUserQuery';
+import {
+  useGetUserQuery,
+  useProfileImageQuery,
+} from '@/hooks/queries/useUserQuery';
 import { useAuthStore } from '@/providers/AuthProvider';
 import { Button } from '@/ui/shadcn/button';
 import {
@@ -18,6 +21,8 @@ import { Input } from '@/ui/shadcn/input';
 import { Label } from '@/ui/shadcn/label';
 import { useState } from 'react';
 import { UserQueryData } from '@/types/users';
+import { useToast } from '@/hooks/useToast';
+import { ImageType } from '@/types/image';
 
 const ProfileDialog = () => {
   const user = useAuthStore((state) => state.user);
@@ -30,6 +35,20 @@ const ProfileDialog = () => {
     error,
   } = useGetUserQuery(user!.id);
   const [userData, setUserData] = useState({ ...userQueryData });
+
+  const { data } = useProfileImageQuery(userData?.profile, {
+    enabled: !!userData?.profile, // userData.profile이 있을 때만 쿼리 실행
+  });
+  const { toast } = useToast();
+
+  const imageUrl = data as ImageType;
+
+  const profileImage =
+    userData?.profile?.includes('found_default') ||
+    userData?.profile?.includes('googleusercontent') ||
+    userData?.profile?.includes('kakaocdn')
+      ? userData?.profile
+      : imageUrl?.publicUrl;
 
   const defaultUserData: UserQueryData = {
     id: 0,
@@ -44,7 +63,7 @@ const ProfileDialog = () => {
   };
 
   const [profileImg, setProfileImg] = useState<File | null>(null);
-  const [preview, setPreview] = useState(user?.profile);
+  const [preview, setPreview] = useState(profileImage);
   const [filePath, setFilePath] = useState<string | null>(
     userQueryData?.profile || null,
   );
