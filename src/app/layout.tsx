@@ -23,8 +23,8 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <AuthStoreProvider>
-          <Header />
           <Providers>
+            <Header />
             <AuthListner />
             <main className="pt-14 w-screen">
               {children}
