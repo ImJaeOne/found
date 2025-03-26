@@ -87,7 +87,7 @@ export const signup = async (
 export const fetchUserIdFinding = async (sub: string) => {
   const { data, error } = await supabase
     .from(QUERY_KEY.USERS)
-    .select('id, is_finding')
+    .select('id, nickname, is_finding')
     .eq('user_id', sub)
     .single();
 
@@ -160,8 +160,6 @@ export const fetchExistingUser = async (userId: string) => {
     .maybeSingle();
 
   if (error) throw error;
-
-  console.log('fetch => existingUser ', existingUser);
 
   return existingUser;
 };
