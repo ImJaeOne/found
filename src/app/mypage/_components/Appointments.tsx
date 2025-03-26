@@ -11,8 +11,6 @@ const Appointments = () => {
   const { data: appointments } = useAppointmentQuery(user?.id || 0);
   const [selected, setSelected] = useState<'upcoming' | 'previous'>('upcoming');
 
-  console.log(appointments);
-
   return (
     <div className="flex flex-col gap-6">
       <SectionHeader selected={selected} setSelected={setSelected} />

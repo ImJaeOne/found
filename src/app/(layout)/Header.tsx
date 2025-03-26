@@ -2,6 +2,7 @@ import { PATH } from '@/constants/constants';
 import Image from 'next/image';
 import Link from 'next/link';
 import HeaderNav from './HeaderNav';
+import { Params } from '@/types/params';
 
 const Header = () => {
   return (
