@@ -1,6 +1,6 @@
 'use client';
+
 import { Avatar, AvatarFallback, AvatarImage } from '../../../ui/shadcn/avatar';
-import { useAuthStore } from '@/providers/AuthProvider';
 import { UserData } from '@/types/users';
 import ProfileDialog from './ProfileDialog';
 import { Switch } from '@/ui/shadcn/switch';
@@ -13,11 +13,16 @@ import { Button } from '@/ui/shadcn/button';
 import { ImageType } from '@/types/image';
 import { useToast } from '@/hooks/useToast';
 import { MYPAGE_TOAST_MESSAGES } from '@/constants/my-page';
+import { Props } from '../[id]/page';
 
-const UserProfile = () => {
-  const user: UserData | null = useAuthStore((state) => state.user);
-  const { mutate: updateUser } = useEditProfileMutation(user?.id || 0);
-  const { data: userData, isPending, isError } = useGetUserQuery(user?.id || 0);
+const UserProfile = ({ params }: Props) => {
+  const { mutate: updateUser } = useEditProfileMutation(params.id || 0);
+  const {
+    data: userData,
+    isPending,
+    isError,
+  } = useGetUserQuery(params.id || 0);
+
   const {
     data,
     isPending: isPendingProfile,
@@ -25,6 +30,7 @@ const UserProfile = () => {
   } = useProfileImageQuery(userData?.profile, {
     enabled: !!userData?.profile, // userData.profile이 있을 때만 쿼리 실행
   });
+
   const { toast } = useToast();
 
   const imageUrl = data as ImageType;
@@ -94,7 +100,7 @@ const UserProfile = () => {
           <div className="text-medium-gray text-sm">프로필 공개</div>
           <Switch checked={userData?.is_finding} onClick={clickHandler} />
         </div>
-        <ProfileDialog />
+        <ProfileDialog params={params} />
       </div>
     </div>
   );
