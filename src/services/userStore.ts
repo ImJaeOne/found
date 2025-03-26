@@ -11,8 +11,10 @@ export type AuthState = {
 
 export type AuthActions = {
   // setLogin: (userData: UserData) => Promise<void>;
-  loginWithZustand: (userData: Omit<UserData, 'id' | 'is_finding'>) => void;
-  setLogin: (userData: UserData) => void;
+  loginWithZustand: (
+    userData: Omit<UserData, 'id' | 'is_finding'>,
+  ) => Promise<void>;
+  setLogin: (userData: UserData) => Promise<void>;
   setLogout: () => void;
 };
 
@@ -33,15 +35,15 @@ export const createAuthStore = (initState: AuthState = defaultInitState) => {
         loginWithZustand: async (
           userData: Omit<UserData, 'id' | 'is_finding'>,
         ) => {
-          const { id, is_finding } = (await fetchUserIdFinding(
+          const { id, nickname, is_finding } = (await fetchUserIdFinding(
             userData.sub,
-          )) || { id: null, is_finding: false };
+          )) || { id: null, is_finding: false, nickname: null };
 
           set((state) => {
             state.user = {
               id,
               sub: userData.sub,
-              nickname: userData.nickname,
+              nickname,
               profile: userData.profile,
               bio: userData.bio,
               address: userData.address,
