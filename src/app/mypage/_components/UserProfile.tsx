@@ -1,5 +1,4 @@
 'use client';
-
 import { Avatar, AvatarFallback, AvatarImage } from '../../../ui/shadcn/avatar';
 import { useAuthStore } from '@/providers/AuthProvider';
 import { UserData } from '@/types/users';
@@ -12,6 +11,8 @@ import {
 } from '@/hooks/queries/useUserQuery';
 import { Button } from '@/ui/shadcn/button';
 import { ImageType } from '@/types/image';
+import { useToast } from '@/hooks/useToast';
+import { MYPAGE_TOAST_MESSAGES } from '@/constants/my-page';
 
 const UserProfile = () => {
   const user: UserData | null = useAuthStore((state) => state.user);
@@ -24,6 +25,7 @@ const UserProfile = () => {
   } = useProfileImageQuery(userData?.profile, {
     enabled: !!userData?.profile, // userData.profile이 있을 때만 쿼리 실행
   });
+  const { toast } = useToast();
 
   const defaultUserData: UserData = {
     id: 0,
@@ -37,13 +39,23 @@ const UserProfile = () => {
   };
 
   const clickHandler = () => {
-    updateUser({
-      data: {
-        ...defaultUserData,
-        ...userData,
-        is_finding: !userData?.is_finding,
+    updateUser(
+      {
+        data: {
+          ...defaultUserData,
+          ...userData,
+          is_finding: !userData?.is_finding,
+        },
       },
-    });
+      {
+        onSuccess: () => {
+          toast({ description: MYPAGE_TOAST_MESSAGES.ISFINDING });
+        },
+        onError: () => {
+          toast({ description: MYPAGE_TOAST_MESSAGES.ERROR.ISFINDING });
+        },
+      },
+    );
   };
 
   const profileImage = data as ImageType;

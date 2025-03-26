@@ -34,9 +34,9 @@ const AppointmentCard = ({ data }: { data: MyAppointment }) => {
         <div className="text-main1 px-1 font-bold text-caption">D-day</div>
       </div>
       <div className="w-full flex justify-end items-center gap-4">
-        <div className="text-title-sm font-bold">{appointment.title}</div>
+        <div className="text-title-sm font-bold">{appointment?.title}</div>
         <Button variant="label" size="label">
-          {appointment.category}
+          {appointment?.category}
         </Button>
       </div>
     </div>
