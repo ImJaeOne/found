@@ -1,5 +1,3 @@
-'use server';
-import { createClient } from './server';
 import { AuthInputs, UserData, UserMetaData } from '@/types/users';
 import { supabase } from './supabaseClient';
 import { AuthError, Session, User } from '@supabase/supabase-js';
@@ -10,9 +8,7 @@ import { toast } from '@/hooks/useToast';
 export const login = async (
   currentUser: Pick<AuthInputs, 'email' | 'password'>,
 ) => {
-  const supabaseServer = await createClient();
   const { data, error } = await supabase.auth.signInWithPassword(currentUser);
-  await supabaseServer.auth.signInWithPassword(currentUser);
 
   return { data, error };
 };
@@ -29,9 +25,9 @@ export const signup = async (
   newUserData: UserMetaData,
 ): Promise<SignupResponse> => {
   try {
-    const supabaseServer = await createClient();
+    // const supabaseServer = await createClient();
     const { data, error } = await supabase.auth.signUp(newUserData);
-    await supabaseServer.auth.signUp(newUserData);
+    // await supabaseServer.auth.signUp(newUserData);
 
     if (data) {
       const userId = data?.user?.id;
@@ -99,9 +95,7 @@ export const fetchUserIdFinding = async (sub: string) => {
 
 //-----logout 로직-----
 export const logout = async () => {
-  const supabaseServer = await createClient();
   try {
-    await supabaseServer.auth.signOut();
     await supabase.auth.signOut();
   } catch (error) {
     console.error('로그아웃 에러 : ', error);
