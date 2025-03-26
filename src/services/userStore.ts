@@ -10,7 +10,8 @@ export type AuthState = {
 };
 
 export type AuthActions = {
-  setLogin: (userData: Omit<UserData, 'id' | 'is_finding'>) => Promise<void>;
+  // setLogin: (userData: UserData) => Promise<void>;
+  setLogin: (userData: Omit<UserData, 'id' | 'is_finding'>) => void;
   setLogout: () => void;
 };
 
@@ -48,6 +49,23 @@ export const createAuthStore = (initState: AuthState = defaultInitState) => {
             state.isAuthenticated = true;
           });
         },
+        // 로그인
+        // setLogin: async (userData: UserData) => {
+        //   set((state) => {
+        //     state.user = {
+        //       id: userData?.id,
+        //       sub: userData?.sub,
+        //       nickname: userData?.nickname,
+        //       profile: userData?.profile,
+        //       bio: userData?.bio,
+        //       address: userData?.address,
+        //       categories: userData?.categories,
+        //       is_finding: userData?.is_finding,
+        //     };
+
+        //     state.isAuthenticated = true;
+        //   });
+        // },
 
         // 로그아웃
         setLogout: () => {
