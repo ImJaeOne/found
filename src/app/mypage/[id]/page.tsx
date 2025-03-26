@@ -21,7 +21,7 @@ const MyPage = ({ params }: Props) => {
   return (
     <div className="flex justify-center gap-20 mt-20">
       <UserProfile params={params} />
-      <Appointments />
+      <Appointments params={params} />
     </div>
   );
 };

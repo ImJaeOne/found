@@ -4,11 +4,10 @@ import SectionHeader from './SectionHeader';
 import { useState } from 'react';
 import AppointmentCard from './AppointmentCard';
 import { useAppointmentQuery } from '@/hooks/queries/useAppointmentQuery';
-import { useAuthStore } from '@/providers/AuthProvider';
+import { Props } from '../[id]/page';
 
-const Appointments = () => {
-  const user = useAuthStore((state) => state.user);
-  const { data: appointments } = useAppointmentQuery(user?.id || 0);
+const Appointments = ({ params }: Props) => {
+  const { data: appointments } = useAppointmentQuery(Number(params.id) || 0);
   const [selected, setSelected] = useState<'upcoming' | 'previous'>('upcoming');
 
   const formatKoreanDateString = (dateStr: string) => {
