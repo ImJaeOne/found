@@ -79,7 +79,7 @@ const UserProfile = ({ params }: Props) => {
   return (
     <div className="flex flex-col gap-5 max-w-[300px]">
       <Avatar size="150">
-        <AvatarImage src={profileImage} />
+        <AvatarImage src={profileImage} alt="profile_img" />
         <AvatarFallback>profile_image</AvatarFallback>
       </Avatar>
       <div className="text-title-lg font-bold">{userData?.nickname}</div>
