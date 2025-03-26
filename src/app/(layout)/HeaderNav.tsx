@@ -5,15 +5,20 @@ import Link from 'next/link';
 import { useAuthStore } from '@/providers/AuthProvider';
 import { logout } from '@/services/usersServices';
 import { toast } from '@/hooks/useToast';
+import { useRouter } from 'next/navigation';
 
 const HeaderNav = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const user = useAuthStore((state) => state.user);
   const setLogout = useAuthStore((state) => state.setLogout);
+  const route = useRouter();
 
   const handleLogout = async () => {
     await logout();
     setLogout();
+
+    //로그아웃시 Home으로 이동
+    route.replace(PATH.HOME);
 
     //사용자 알림
     toast({ description: '로그아웃 되었습니다!' });
