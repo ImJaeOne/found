@@ -5,6 +5,7 @@ import { useState } from 'react';
 import AppointmentCard from './AppointmentCard';
 import { useAppointmentQuery } from '@/hooks/queries/useAppointmentQuery';
 import { Props } from '../[id]/page';
+import Link from 'next/link';
 
 const Appointments = ({ params }: Props) => {
   const { data: appointments } = useAppointmentQuery(Number(params.id) || 0);
@@ -36,7 +37,9 @@ const Appointments = ({ params }: Props) => {
       <SectionHeader selected={selected} setSelected={setSelected} />
       <div>
         {filteredAppointments?.map((appointment) => (
-          <AppointmentCard key={appointment.id} data={appointment} />
+          <Link key={appointment.id} href={`/appointment/${appointment.id}`}>
+            <AppointmentCard data={appointment} />
+          </Link>
         ))}
       </div>
     </div>

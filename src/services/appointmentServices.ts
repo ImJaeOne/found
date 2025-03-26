@@ -12,14 +12,13 @@ export const sendNewAppoinment = async (newAppointmentData: Appointment) => {
 };
 
 export const fetchAppointments = async (userId: number) => {
-  // 내 userId가 포함된 채팅방 조회
+  // 내 userId가 포함된 채팅방 찾기
   const { data: chatRooms, error: chatRoomsError } = await supabase
     .from(TABLE_NAME.CHAT_ROOMS)
     .select('id, user1_id, user2_id')
     .or(`user1_id.eq.${userId},user2_id.eq.${userId}`);
   if (chatRoomsError) throw new Error(chatRoomsError.message);
   if (!chatRooms || chatRooms.length === 0) return [];
-  // 채팅방별로 다른 user id(내 userId가 아닌 쪽) 결정
   const enrichedChatRooms = chatRooms.map((room: any) => {
     const otherUserId =
       room.user1_id === userId ? room.user2_id : room.user1_id;
@@ -27,13 +26,11 @@ export const fetchAppointments = async (userId: number) => {
   });
   // 모든 채팅방 id 배열
   const chatRoomIds = enrichedChatRooms.map((room: any) => room.id);
-  // 해당 채팅방의 appointments 조회 (없는 채팅방은 빈 배열로 처리)
   const { data: appointments, error: appointmentsError } = await supabase
     .from(TABLE_NAME.APPOINTMENTS)
     .select('*')
     .in('chat_room_id', chatRoomIds);
   if (appointmentsError) throw new Error(appointmentsError.message);
-  // 그룹별로 appointments 분류 (없으면 빈 배열)
   const appointmentsMap = new Map<number, any[]>();
   chatRoomIds.forEach((id) => appointmentsMap.set(id, []));
   appointments.forEach((appointment: any) => {
@@ -41,7 +38,7 @@ export const fetchAppointments = async (userId: number) => {
     arr.push(appointment);
     appointmentsMap.set(appointment.chat_room_id, arr);
   });
-  // 상대방 user의 닉네임과 프로필 조회
+  // 상대방 정보 돌기
   const uniqueOtherUserIds = Array.from(
     new Set(enrichedChatRooms.map((room: any) => room.otherUserId)),
   );
@@ -54,21 +51,23 @@ export const fetchAppointments = async (userId: number) => {
   otherUsers.forEach((user: any) => {
     userMap.set(user.id, { nickname: user.nickname, profile: user.profile });
   });
-  // 각 채팅방에 appointments와 상대방 정보를 병합하고, 약속이 없는 채팅방은 제외
+  // appointments 테이블에서 is_confirmed가 true인 약속만 남김
   const result = enrichedChatRooms
-    .filter((room: any) => {
-      const roomAppointments = appointmentsMap.get(room.id) || [];
-      return roomAppointments.length > 0;
-    })
     .map((room: any) => {
       const roomAppointments = appointmentsMap.get(room.id) || [];
+      // 각 채팅방의 appointment 중 confirmed된 것들만 필터링
+      const confirmedAppointments = roomAppointments.filter(
+        (appointment: any) => appointment.is_confirmed,
+      );
+      if (confirmedAppointments.length === 0) return null; // confirmed 약속이 없으면 삭제
       const otherUserData = userMap.get(room.otherUserId) || null;
       return {
         ...room,
-        appointments: roomAppointments,
+        appointments: confirmedAppointments,
         other_user_nickname: otherUserData ? otherUserData.nickname : null,
         other_user_profile: otherUserData ? otherUserData.profile : null,
       };
-    });
+    })
+    .filter((room) => room !== null);
   return result;
 };
