@@ -24,6 +24,7 @@ export default function RootLayout({
       <body>
         <AuthStoreProvider>
           <Providers>
+            <Header />
             <AuthListner />
             <main className="pt-14 w-screen">
               {children}
