@@ -20,10 +20,11 @@ import { Input } from '@/ui/shadcn/input';
 import { Label } from '@/ui/shadcn/label';
 import { useState } from 'react';
 import { UserQueryData } from '@/types/users';
-import { useToast } from '@/hooks/useToast';
 import { ImageType } from '@/types/image';
 import { Props } from '../[id]/page';
+import { useToast } from '@/hooks/useToast';
 import { MYPAGE_TOAST_MESSAGES } from '@/constants/my-page';
+import { useAuthStore } from '@/providers/AuthProvider';
 
 const ProfileDialog = ({ params }: Props) => {
   const { mutate: editProfile } = useEditProfileMutation(params.id);
@@ -39,6 +40,7 @@ const ProfileDialog = ({ params }: Props) => {
   const { data } = useProfileImageQuery(userData?.profile, {
     enabled: !!userData?.profile, // userData.profile이 있을 때만 쿼리 실행
   });
+  const setLogin = useAuthStore((state) => state.setLogin);
 
   const imageUrl = data as ImageType;
 
@@ -114,6 +116,7 @@ const ProfileDialog = ({ params }: Props) => {
       {
         onSuccess: () => {
           toast({ description: MYPAGE_TOAST_MESSAGES.EDITPROFILE });
+          setLogin({ ...defaultUserData, ...userData, profile: imageUrl });
         },
         onError: () => {
           toast({ description: MYPAGE_TOAST_MESSAGES.ERROR.EDITPROFILE });

@@ -1,6 +1,6 @@
 'use client';
+
 import { Avatar, AvatarFallback, AvatarImage } from '../../../ui/shadcn/avatar';
-import { useAuthStore } from '@/providers/AuthProvider';
 import { UserData } from '@/types/users';
 import ProfileDialog from './ProfileDialog';
 import { Switch } from '@/ui/shadcn/switch';
@@ -29,6 +29,7 @@ const UserProfile = ({ params }: Props) => {
   } = useProfileImageQuery(userData?.profile, {
     enabled: !!userData?.profile, // userData.profile이 있을 때만 쿼리 실행
   });
+
   const { toast } = useToast();
 
   const imageUrl = data as ImageType;

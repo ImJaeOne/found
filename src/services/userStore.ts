@@ -11,7 +11,10 @@ export type AuthState = {
 
 export type AuthActions = {
   // setLogin: (userData: UserData) => Promise<void>;
-  setLogin: (userData: Omit<UserData, 'id' | 'is_finding'>) => void;
+  loginWithZustand: (
+    userData: Omit<UserData, 'id' | 'is_finding'>,
+  ) => Promise<void>;
+  setLogin: (userData: UserData) => Promise<void>;
   setLogout: () => void;
 };
 
@@ -28,17 +31,19 @@ export const createAuthStore = (initState: AuthState = defaultInitState) => {
       immer((set) => ({
         ...initState,
 
-        // 로그인
-        setLogin: async (userData: Omit<UserData, 'id' | 'is_finding'>) => {
-          const { id, is_finding } = (await fetchUserIdFinding(
+        // 이메일 로그인시 사용하는 로직
+        loginWithZustand: async (
+          userData: Omit<UserData, 'id' | 'is_finding'>,
+        ) => {
+          const { id, nickname, is_finding } = (await fetchUserIdFinding(
             userData.sub,
-          )) || { id: null, is_finding: false };
+          )) || { id: null, is_finding: false, nickname: null };
 
           set((state) => {
             state.user = {
               id,
               sub: userData.sub,
-              nickname: userData.nickname,
+              nickname,
               profile: userData.profile,
               bio: userData.bio,
               address: userData.address,
@@ -49,23 +54,24 @@ export const createAuthStore = (initState: AuthState = defaultInitState) => {
             state.isAuthenticated = true;
           });
         },
-        // 로그인
-        // setLogin: async (userData: UserData) => {
-        //   set((state) => {
-        //     state.user = {
-        //       id: userData?.id,
-        //       sub: userData?.sub,
-        //       nickname: userData?.nickname,
-        //       profile: userData?.profile,
-        //       bio: userData?.bio,
-        //       address: userData?.address,
-        //       categories: userData?.categories,
-        //       is_finding: userData?.is_finding,
-        //     };
 
-        //     state.isAuthenticated = true;
-        //   });
-        // },
+        // 소셜로그인시 사용하는 로직
+        setLogin: async (userData: UserData) => {
+          set((state) => {
+            state.user = {
+              id: userData?.id,
+              sub: userData?.sub,
+              nickname: userData?.nickname,
+              profile: userData?.profile,
+              bio: userData?.bio,
+              address: userData?.address,
+              categories: userData?.categories,
+              is_finding: userData?.is_finding,
+            };
+
+            state.isAuthenticated = true;
+          });
+        },
 
         // 로그아웃
         setLogout: () => {
