@@ -8,61 +8,23 @@ import {
   CarouselPrevious,
 } from '@/ui/shadcn/carousel';
 import UserCard from './UserCard';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/services/supabaseClient';
+import { UserData } from '@/types/users';
+import { useUsersCategories } from '@/hooks/queries/useUsersCategories';
+import { useAuthStore } from '@/providers/AuthProvider';
 
-type Category = {
-  category: 'string';
-};
+const UserCardList = ({ category }: { category: string }) => {
+  const user = useAuthStore((state) => state.user);
 
-type UserData = {
-  id: number;
-  created_at: string;
-  nickname: string;
-  address: string;
-  profile: string;
-  bio: string;
-  user_id: string;
-  is_finding: boolean;
-  user_categories: Category[];
-};
-
-const UserCardList = ({
-  category,
-  userId,
-}: {
-  category: string;
-  userId?: number;
-}) => {
   const {
     data: users,
     isError,
     isPending,
-  } = useQuery({
-    queryKey: ['users'],
-    queryFn: async (): Promise<UserData[]> => {
-      const { data, error } = await supabase
-        .from('users')
-        .select('*, user_categories(category)');
-
-      if (error) {
-        throw new Error('users 데이터를 불러오지 못했습니다', error);
-      }
-
-      return data as UserData[];
-    },
-  });
+  } = useUsersCategories(user ? { category, id: user.id } : { category });
 
   if (isError) return <div>Error!</div>;
   if (isPending) return <div>Loading!</div>;
 
-  const filteredUsers = users?.filter(
-    (user) =>
-      user.user_categories.some((item) => item.category === category) &&
-      user.id !== userId,
-  );
-
-  if (filteredUsers.length === 0) {
+  if (users.length === 0) {
     return (
       <div className="flex justify-center item-center">
         <h1 className="text-title-md text-main1">
@@ -81,11 +43,8 @@ const UserCardList = ({
         className="w-full pt-8"
       >
         <CarouselContent className="-ml-0 gap-2">
-          {filteredUsers.map((user: UserData, index: number) => {
-            const categories = user.user_categories
-              .map((item) => Object.values(item))
-              .flat();
-
+          {users.map((user: UserData, index: number) => {
+            const categories = user.categories;
             return (
               <CarouselItem
                 key={index}

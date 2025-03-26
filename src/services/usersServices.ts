@@ -10,6 +10,14 @@ export const login = async (
 ) => {
   const { data, error } = await supabase.auth.signInWithPassword(currentUser);
 
+  await fetch('/api/auth', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(currentUser),
+  });
+
   return { data, error };
 };
 
@@ -41,9 +49,17 @@ export const signup = async (
       if (userError) {
         console.error('signup errors - public.users 오류 : ', userError);
       }
-      //public.user_categories에 데이터 삽입
+
       const insertedUserId = userData?.[0]?.id;
 
+      // user_metaData에 id 삽입
+      await supabase.auth.updateUser({
+        data: {
+          id: insertedUserId,
+        },
+      });
+
+      //public.user_categories에 데이터 삽입
       if (categories && categories.length > 0) {
         for (const category of categories) {
           const { error } = await supabase
@@ -144,6 +160,8 @@ export const fetchExistingUser = async (userId: string) => {
     .maybeSingle();
 
   if (error) throw error;
+
+  console.log('fetch => existingUser ', existingUser);
 
   return existingUser;
 };

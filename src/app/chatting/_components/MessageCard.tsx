@@ -1,4 +1,5 @@
 import parse from 'html-react-parser';
+import Link from 'next/link';
 
 const MessageCard = ({
   content,

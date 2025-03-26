@@ -1,10 +1,11 @@
 export type Appointment = {
   title: string;
-  place: string;
+  address: string;
   content: string;
   date: string;
   category: string;
   chat_room_id: number;
+  is_confirmed: boolean;
 };
 
 export type AppointmentInputs = {
