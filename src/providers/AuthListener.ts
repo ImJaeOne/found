@@ -4,8 +4,11 @@ import { TABLE_NAME } from '@/constants/constants';
 import { supabase } from '@/services/supabaseClient';
 import { fetchExistingUser } from '@/services/usersServices';
 import { useEffect } from 'react';
+import { useAuthStore } from './AuthProvider';
 
 const AuthListner = () => {
+  const setLogin = useAuthStore((state) => state.setLogin);
+
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
@@ -33,6 +36,10 @@ const AuthListner = () => {
 
               if (socialUserUpdateError) throw socialUserUpdateError;
             }
+
+            const socialUser = await fetchExistingUser(userId);
+            console.log('AuthListener => socialUser', socialUser);
+            setLogin(socialUser);
           }
         }
       },

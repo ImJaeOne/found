@@ -1,3 +1,4 @@
+import { PATH } from '@/constants/constants';
 import { supabase } from './supabaseClient';
 
 //-----구글 로그인 로직-----
@@ -9,6 +10,7 @@ export const googleLogin = async () => {
         access_type: 'offline',
         prompt: 'consent',
       },
+      redirectTo: PATH.HOME,
     },
   });
 
@@ -27,6 +29,7 @@ export const kakaoLogin = async () => {
         access_type: 'offline',
         prompt: 'consent',
       },
+      redirectTo: PATH.HOME,
     },
   });
 
