@@ -5,6 +5,7 @@ import Header from './(layout)/Header';
 import { Toaster } from '@/ui/shadcn/toaster';
 import Providers from '@/providers/RQProviders';
 import { AuthStoreProvider } from '@/providers/AuthProvider';
+import AuthListner from '@/providers/AuthListener';
 
 export const metadata: Metadata = {
   title: 'Found',
@@ -24,6 +25,7 @@ export default function RootLayout({
         <AuthStoreProvider>
           <Header />
           <Providers>
+            <AuthListner />
             <main className="pt-14 w-screen">
               {children}
               {modal}
