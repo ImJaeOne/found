@@ -12,7 +12,7 @@ export const sendNewAppoinment = async (newAppointmentData: Appointment) => {
 };
 
 export const fetchAppointments = async (userId: number) => {
-  // 내 userId가 포함된 채팅방 조회
+  // 내 userId가 포함된 채팅방 찾기
   const { data: chatRooms, error: chatRoomsError } = await supabase
     .from(TABLE_NAME.CHAT_ROOMS)
     .select('id, user1_id, user2_id')
