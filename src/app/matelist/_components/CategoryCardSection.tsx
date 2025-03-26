@@ -1,4 +1,3 @@
-import React from 'react';
 import UserCardList from './UserCardList';
 import { Button } from '@/ui/shadcn/button';
 

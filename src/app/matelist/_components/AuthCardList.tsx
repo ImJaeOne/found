@@ -1,4 +1,3 @@
-import React from 'react';
 import CategoryCardSection from './CategoryCardSection';
 
 type AuthCardListProps = {

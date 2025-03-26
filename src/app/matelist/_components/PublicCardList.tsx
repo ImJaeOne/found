@@ -1,5 +1,4 @@
 import { CATEGORIES } from '@/constants/constants';
-import React from 'react';
 import CategoryCardSection from './CategoryCardSection';
 
 const PublicCardList = () => {
