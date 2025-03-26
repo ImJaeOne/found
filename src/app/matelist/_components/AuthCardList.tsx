@@ -12,9 +12,9 @@ const AuthCardList = ({ myCategories, notMyCategories }: AuthCardListProps) => {
         {/* 관심있는 카테고리 섹션 */}
         <div className="w-full">
           <h1 className="text-title-md text-main1 font-semibold mb-4">
-            관심있는 카테고리
+            당신의 파우니를 찾아보세요
           </h1>
-          <p className="text-sm text-gray-600 mb-6">
+          <p className="text-title-sm text-medium-gray mb-6">
             나만의 맞춤 운동 카테고리로, 내가 관심 있는 운동을 더 쉽게 찾을 수
             있어요!
           </p>
@@ -26,7 +26,7 @@ const AuthCardList = ({ myCategories, notMyCategories }: AuthCardListProps) => {
           <h1 className="text-title-md text-main1 font-semibold mb-4">
             다른 운동도 찾아보세요
           </h1>
-          <p className="text-sm text-gray-600 mb-6">
+          <p className="text-title-sm text-medium-gray mb-6">
             새로운 운동을 찾아보고, 다양한 카테고리에서 운동을 발견해보세요.
           </p>
           <CategoryCardSection categories={notMyCategories} />

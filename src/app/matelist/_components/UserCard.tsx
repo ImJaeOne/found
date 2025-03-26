@@ -32,8 +32,8 @@ const UserCard = ({
   const startChat = useStartChat();
 
   return (
-    <article className="flex flex-col min-w-80 max-w-80 h-80 bg-blue-200 rounded-3xl p-7">
-      <div className="flex flex-row w-full">
+    <article className="flex flex-col min-w-80 max-w-80 h-80 bg-white rounded-3xl p-7 border-2 border-main2">
+      <div className="flex flex-row w-full mb-4">
         <figure>
           <Avatar size="60">
             <AvatarImage src={profileImage} alt="profile_img" />
@@ -47,9 +47,11 @@ const UserCard = ({
           </p>
         </div>
       </div>
-      <p className="flex text-text-lg text-black pt-6">{user.bio}</p>
-      <div className="flex flex-col items-center flex-1 pt-3 w-full justify-between">
-        <div className="flex flex-row w-full gap-2 flex-wrap">
+      <p className="text-text-lg text-black  text-center line-clamp-1">
+        {user.bio}
+      </p>
+      <div className="flex flex-col items-center w-full justify-between gap-2 flex-1">
+        <div className="flex flex-row w-full flex-wrap justify-center gap-1 mt-2">
           {categories.map((category) => (
             <Button key={category} variant={'label'} size={'label'}>
               {category}
@@ -57,13 +59,15 @@ const UserCard = ({
           ))}
         </div>
         {userSession && (
-          <Button
-            variant={'button'}
-            size={'button'}
-            onClick={() => startChat(userSession.id, user.id)}
-          >
-            CHAT ROOM
-          </Button>
+          <div className="mt-7">
+            <Button
+              variant={'button'}
+              size={'button'}
+              onClick={() => startChat(userSession.id, user.id)}
+            >
+              CHAT ROOM
+            </Button>
+          </div>
         )}
       </div>
     </article>
