@@ -28,13 +28,17 @@ export type UserMetaData = {
 };
 
 //sub는 auth.users의 id값 입니다!
-export type UserData = {
+export interface UserData {
   id: number;
   sub: string;
   nickname: string;
   profile?: string;
   bio: string;
-  isFinding: boolean;
+  is_finding: boolean;
   address: string;
   categories: string[];
-};
+}
+
+export interface UserQueryData extends UserData {
+  user_categories: { category: string }[];
+}

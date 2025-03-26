@@ -95,7 +95,7 @@ export const useAuthValidation = (mode: string) => {
 
       if (data) {
         // 성공시 zustand state 업데이트
-        const userData: Omit<UserData, 'id' | 'isFinding'> = {
+        const userData: Omit<UserData, 'id' | 'is_finding'> = {
           sub: data.user?.user_metadata.sub,
           nickname: data.user?.user_metadata.nickname,
           bio: data.user?.user_metadata.bio,

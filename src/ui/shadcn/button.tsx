@@ -41,12 +41,12 @@ const buttonVariants = cva(
         button: 'bg-main1 !text-title-sm text-light-gray',
         subbutton: 'bg-white border !border-sub1 text-sub1',
         label:
-          'bg-sub1-30 !text-text-lg text-black border-sub1 border-2 pointer-events-none',
+          'bg-sub1-30 !text-text-md text-black font-bold border-sub1 border-2 pointer-events-none',
         logo: 'bg-main1 text-light-gray',
       },
       size: {
-        default: 'px-2 py-1',
-        label: 'px-5 py-3/2 rounded-2xl',
+        default: 'px-2 py-2',
+        label: 'px-5 py-1 rounded-full',
         button: 'px-8 py-3 rounded-2xl',
         subbutton: 'px-9 py-2 rounded-2xl',
         logo: 'px-8 py-5 rounded-2xl',
@@ -67,14 +67,17 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, children, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
+    const labelText = variant === 'label' ? `# ${children}` : children;
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
-      />
+      >
+        {labelText}
+      </Comp>
     );
   },
 );
