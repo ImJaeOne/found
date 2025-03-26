@@ -12,9 +12,12 @@ const AppointmentCard = ({ data }: { data: MyAppointment }) => {
 
   const imageUrl = image as ImageType;
 
-  const profileImage = other_user_profile.includes('found_default')
-    ? other_user_profile
-    : imageUrl?.publicUrl;
+  const profileImage =
+    other_user_profile.includes('found_default') ||
+    other_user_profile.includes('googleusercontent') ||
+    other_user_profile.includes('kakaocdn')
+      ? other_user_profile
+      : imageUrl?.publicUrl;
 
   const appointment = appointments[0];
 

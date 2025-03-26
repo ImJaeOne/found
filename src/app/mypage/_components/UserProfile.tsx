@@ -27,6 +27,15 @@ const UserProfile = () => {
   });
   const { toast } = useToast();
 
+  const imageUrl = data as ImageType;
+
+  const profileImage =
+    userData?.profile?.includes('found_default') ||
+    userData?.profile?.includes('googleusercontent') ||
+    userData?.profile?.includes('kakaocdn')
+      ? userData?.profile
+      : imageUrl?.publicUrl;
+
   const defaultUserData: UserData = {
     id: 0,
     profile: '',
@@ -58,8 +67,6 @@ const UserProfile = () => {
     );
   };
 
-  const profileImage = data as ImageType;
-
   if (isPending || isPendingProfile) return <div>Loading...</div>;
   if (isError) return <div>Error...</div>;
   if (isErrorProfile) return <div>Error...</div>;
@@ -67,7 +74,7 @@ const UserProfile = () => {
   return (
     <div className="flex flex-col gap-5 max-w-[300px]">
       <Avatar size="150">
-        <AvatarImage src={profileImage?.publicUrl} />
+        <AvatarImage src={profileImage} />
         <AvatarFallback>profile_image</AvatarFallback>
       </Avatar>
       <div className="text-title-lg font-bold">{userData?.nickname}</div>
