@@ -166,7 +166,7 @@ const AuthForm = ({ mode }: AuthFormProps) => {
         )}
 
         {/* 로그인/회원가입 이동 버튼 */}
-        <section className="w-full mb-5 pt-3 border-t-2 border-light-gray">
+        <section className="w-full my-5 pt-5 border-t-2 border-light-gray">
           {mode === AUTH_MODE.SIGNUP ? (
             <div className={PAGE_MOVE_WRAPPER}>
               <p className={PAGE_MOVE_TITLE}>FOUND 회원이신가요?</p>
@@ -194,9 +194,9 @@ const AuthForm = ({ mode }: AuthFormProps) => {
 
       {/* 소셜로그인 */}
       {mode === AUTH_MODE.LOGIN && (
-        <section className="w-full flex flex-col items-center mt-8">
-          <h6 className="text-main2 text-title-sm mb-5">OR</h6>
-          <div className="w-2/5 flex justify-center items-center gap-5">
+        <section className="w-full flex flex-col items-center mt-3">
+          <h6 className="text-main2 text-title-sm mb-3">OR</h6>
+          <div className="w-2/5 flex justify-center items-center gap-10">
             <button
               type="button"
               onClick={googleLogin}
@@ -229,7 +229,7 @@ const PAGE_MOVE_TITLE = 'text-text-md';
 const PAGE_MOVE_LINK =
   'text-text-md font-semibold text-main1 cursor-pointer duration-200 hover:scale-105';
 
-const SOCIAL_BUTTON = 'bg-sub1 p-2 rounded-full cursor-pointer';
+const SOCIAL_BUTTON = 'bg-sub1 p-1 rounded-full cursor-pointer';
 const SOCIAL_LOGO = 'text-title-md text-white';
 
 export default AuthForm;

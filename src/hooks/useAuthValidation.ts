@@ -58,7 +58,7 @@ export const useAuthValidation = (mode: string) => {
   } = useForm<AuthInputs>();
 
   // 로그인 로직
-  const loginWithZustand = useAuthStore((state) => state.setLogin);
+  const loginWithZustand = useAuthStore((state) => state.loginWithZustand);
 
   const handleSubmitLogin = async (
     data: Pick<AuthInputs, 'email' | 'password'>,
@@ -184,8 +184,29 @@ export const useAuthValidation = (mode: string) => {
       if (data.user) {
         //유저 알람
         toast({ description: AUTH_TOAST_MESSAGES.SIGNUP.SUCCESS });
-        //로그인 페이지로 이동
-        route.replace(PATH.LOGIN);
+
+        const CurrentUser = {
+          email: newUserData.email,
+          password: newUserData.password,
+        };
+        const { data: loginData, error: loginError } = await login(CurrentUser);
+
+        if (loginData) {
+          const userData: Omit<UserData, 'id' | 'is_finding'> = {
+            sub: loginData.user?.user_metadata.sub,
+            nickname: loginData.user?.user_metadata.nickname,
+            bio: loginData.user?.user_metadata.bio,
+            address: loginData.user?.user_metadata.address,
+            categories: loginData.user?.user_metadata.categories,
+            profile: loginData.user?.user_metadata.profile,
+          };
+
+          loginWithZustand(userData);
+        }
+
+        if (loginError) throw loginError;
+        //홈 페이지로 이동
+        route.replace(PATH.HOME);
       }
 
       // 회원가입 실패 오류 분기처리

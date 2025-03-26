@@ -161,5 +161,7 @@ export const fetchExistingUser = async (userId: string) => {
 
   if (error) throw error;
 
+  console.log('fetch => existingUser ', existingUser);
+
   return existingUser;
 };
