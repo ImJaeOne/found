@@ -14,7 +14,7 @@ export const useFetchChatMessages = (chatId: number) => {
 
 export const useAppointmentMessages = (chatId: number) => {
   return useQuery({
-    queryKey: [QUERY_KEY.APPOINTMENTS, chatId],
+    queryKey: [QUERY_KEY.APPOINTMENTS, 'hasAppointment', chatId],
     queryFn: () => checkAppointmentMessage(chatId),
   });
 };

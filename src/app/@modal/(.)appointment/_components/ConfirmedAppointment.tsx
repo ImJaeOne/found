@@ -1,7 +1,9 @@
 'use client';
 
 import { useConfirmAppointmentMutation } from '@/hooks/mutations/useAppointmentMutation';
+import { useProfileImageQuery } from '@/hooks/queries/useUserQuery';
 import { Appointment } from '@/types/appointments';
+import { ImageType } from '@/types/image';
 import { UserData } from '@/types/users';
 import CommonInput from '@/ui/common/CommonInput';
 import { Avatar, AvatarImage } from '@/ui/shadcn/avatar';
@@ -19,6 +21,20 @@ const ConfirmedAppointment = ({
 }) => {
   const confirmAppointmentMutation = useConfirmAppointmentMutation(chatId);
   const router = useRouter();
+
+  const { data: image } = useProfileImageQuery(chatPartner?.profile, {
+    enabled: !!chatPartner?.profile,
+  });
+
+  const imageUrl = image as ImageType;
+
+  const profileImage =
+    chatPartner.profile?.includes('found_default') ||
+    chatPartner.profile?.includes('googleusercontent') ||
+    chatPartner.profile?.includes('kakaocdn')
+      ? chatPartner.profile
+      : imageUrl?.publicUrl;
+
   return (
     <form
       className="w-full flex flex-col gap-4"
@@ -31,7 +47,7 @@ const ConfirmedAppointment = ({
       <div className="flex justify-between">
         <div className="flex justify-center items-center gap-4">
           <Avatar size="sm">
-            <AvatarImage src={chatPartner.profile} />
+            <AvatarImage src={profileImage} />
           </Avatar>
           <span className="font-bold text-title-sm">
             <span className="text-main1">{chatPartner.nickname}</span> 님과의
@@ -47,10 +63,12 @@ const ConfirmedAppointment = ({
         )}
       </div>
 
-      <div className="flex gap-2 ">
-        <section className="w-1/2">
+      <div className="flex gap-2">
+        <section className="w-1/2 flex flex-col justify-between">
           <div>
-            <h6 className="text-main1 text-title-sm font-bold">TITLE</h6>
+            <h6 className="text-main1 text-title-sm font-bold text-left">
+              TITLE
+            </h6>
             <CommonInput
               placeholder="Enter title"
               height={8}
@@ -59,7 +77,9 @@ const ConfirmedAppointment = ({
             />
           </div>
           <div>
-            <h6 className="text-main1 text-title-sm font-bold">CONTENT</h6>
+            <h6 className="text-main1 text-title-sm font-bold text-left">
+              CONTENT
+            </h6>
             <CommonInput
               placeholder="Enter content"
               isTextarea={true}
@@ -71,7 +91,9 @@ const ConfirmedAppointment = ({
         </section>
         <section className="flex flex-col w-1/2 gap-6">
           <div>
-            <h6 className="text-main1 text-title-sm font-bold mb-2">ADDRESS</h6>
+            <h6 className="text-main1 text-title-sm font-bold mb-2 text-left">
+              ADDRESS
+            </h6>
             <CommonInput
               placeholder="Enter address"
               height={8}
@@ -81,7 +103,9 @@ const ConfirmedAppointment = ({
           </div>
 
           <div>
-            <h6 className="text-main1 text-title-sm font-bold mb-2">DATE</h6>
+            <h6 className="text-main1 text-title-sm font-bold mb-2 text-left">
+              DATE
+            </h6>
             <CommonInput
               placeholder="Enter date"
               height={8}
@@ -91,10 +115,14 @@ const ConfirmedAppointment = ({
           </div>
 
           <div>
-            <h6 className="text-main1 text-title-sm font-bold ">SPORT</h6>
-            <Button variant="label" size="label" key={appointment.category}>
-              {appointment.category}
-            </Button>
+            <h6 className="text-main1 text-title-sm font-bold text-left">
+              SPORT
+            </h6>
+            <div className="flex">
+              <Button variant="label" size="label" key={appointment.category}>
+                {appointment.category}
+              </Button>
+            </div>
           </div>
         </section>
       </div>

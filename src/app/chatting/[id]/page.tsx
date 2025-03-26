@@ -2,6 +2,22 @@ import Chatting from '../_components/Chatting';
 import SectionHeader from '../_components/SectionHeader';
 import { Params } from '@/types/params';
 import ChattingUserProfile from '../_components/ChattingUserProfile';
+import { createClient } from '@/services/server';
+import { fetchChatPartner } from '@/services/usersServices';
+
+export const generateMetadata = async ({ params }: Params) => {
+  const chatId = Number(params.id);
+  const serverClient = await createClient();
+  const { data } = await serverClient.auth.getUser();
+  const chatPartner = await fetchChatPartner(
+    chatId,
+    data.user?.user_metadata.id,
+  );
+  return {
+    title: `${chatPartner.nickname}님과의 채팅`,
+    description: '운동 메이트를 쉽게 구하고 운동을 시작해보세요.',
+  };
+};
 
 const ChattingPage = async ({ params }: Params) => {
   const chatId = Number(params.id);

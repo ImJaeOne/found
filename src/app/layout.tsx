@@ -10,6 +10,7 @@ import AuthListner from '@/providers/AuthListener';
 export const metadata: Metadata = {
   title: 'Found',
   description: '운동 메이트를 쉽게 구하고 운동을 시작해보세요.',
+  icons: '/images/favicon.ico',
 };
 
 export default function RootLayout({
