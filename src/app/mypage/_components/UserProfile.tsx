@@ -1,5 +1,4 @@
 'use client';
-
 import { Avatar, AvatarFallback, AvatarImage } from '../../../ui/shadcn/avatar';
 import { useAuthStore } from '@/providers/AuthProvider';
 import { UserData } from '@/types/users';
@@ -12,11 +11,17 @@ import {
 } from '@/hooks/queries/useUserQuery';
 import { Button } from '@/ui/shadcn/button';
 import { ImageType } from '@/types/image';
+import { useToast } from '@/hooks/useToast';
+import { MYPAGE_TOAST_MESSAGES } from '@/constants/my-page';
+import { Props } from '../[id]/page';
 
-const UserProfile = () => {
-  const user: UserData | null = useAuthStore((state) => state.user);
-  const { mutate: updateUser } = useEditProfileMutation(user?.id || 0);
-  const { data: userData, isPending, isError } = useGetUserQuery(user!.id);
+const UserProfile = ({ params }: Props) => {
+  const { mutate: updateUser } = useEditProfileMutation(params.id || 0);
+  const {
+    data: userData,
+    isPending,
+    isError,
+  } = useGetUserQuery(params.id || 0);
   const {
     data,
     isPending: isPendingProfile,
@@ -24,6 +29,16 @@ const UserProfile = () => {
   } = useProfileImageQuery(userData?.profile, {
     enabled: !!userData?.profile, // userData.profile이 있을 때만 쿼리 실행
   });
+  const { toast } = useToast();
+
+  const imageUrl = data as ImageType;
+
+  const profileImage =
+    userData?.profile?.includes('found_default') ||
+    userData?.profile?.includes('googleusercontent') ||
+    userData?.profile?.includes('kakaocdn')
+      ? userData?.profile
+      : imageUrl?.publicUrl;
 
   const defaultUserData: UserData = {
     id: 0,
@@ -37,16 +52,24 @@ const UserProfile = () => {
   };
 
   const clickHandler = () => {
-    updateUser({
-      data: {
-        ...defaultUserData,
-        ...userData,
-        is_finding: !userData?.is_finding,
+    updateUser(
+      {
+        data: {
+          ...defaultUserData,
+          ...userData,
+          is_finding: !userData?.is_finding,
+        },
       },
-    });
+      {
+        onSuccess: () => {
+          toast({ description: MYPAGE_TOAST_MESSAGES.ISFINDING });
+        },
+        onError: () => {
+          toast({ description: MYPAGE_TOAST_MESSAGES.ERROR.ISFINDING });
+        },
+      },
+    );
   };
-
-  const profileImage = data as ImageType;
 
   if (isPending || isPendingProfile) return <div>Loading...</div>;
   if (isError) return <div>Error...</div>;
@@ -55,7 +78,7 @@ const UserProfile = () => {
   return (
     <div className="flex flex-col gap-5 max-w-[300px]">
       <Avatar size="150">
-        <AvatarImage src={profileImage?.publicUrl} />
+        <AvatarImage src={profileImage} />
         <AvatarFallback>profile_image</AvatarFallback>
       </Avatar>
       <div className="text-title-lg font-bold">{userData?.nickname}</div>
@@ -75,10 +98,9 @@ const UserProfile = () => {
           <div className="text-medium-gray text-sm">프로필 공개</div>
           <Switch checked={userData?.is_finding} onClick={clickHandler} />
         </div>
-        <ProfileDialog />
+        <ProfileDialog params={params} />
       </div>
     </div>
   );
 };
-
 export default UserProfile;

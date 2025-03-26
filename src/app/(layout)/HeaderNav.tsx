@@ -6,19 +6,32 @@ import { useAuthStore } from '@/providers/AuthProvider';
 import { logout } from '@/services/usersServices';
 import { toast } from '@/hooks/useToast';
 import { usePrefetchUser } from '@/hooks/queries/usePrefetchUser';
+import { usePathname, useRouter } from 'next/navigation';
 
 const HeaderNav = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const user = useAuthStore((state) => state.user);
   const setLogout = useAuthStore((state) => state.setLogout);
   const handleHover = usePrefetchUser(user ? user.id : undefined);
+  const route = useRouter();
+  const pathName = usePathname();
 
   const handleLogout = async () => {
     await logout();
     setLogout();
 
     //사용자 알림
-    toast({ description: '로그아웃 되었습니다!' });
+    if (pathName === PATH.HOME) {
+      toast({ description: '로그아웃 되었습니다!' });
+    } else {
+      //로그아웃시 Home으로 이동
+      route.push(PATH.HOME);
+
+      toast({
+        variant: 'destructive',
+        description: '로그인이 필요한 서비스입니다!',
+      });
+    }
   };
 
   return (

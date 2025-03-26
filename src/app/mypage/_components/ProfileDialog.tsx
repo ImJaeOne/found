@@ -2,8 +2,10 @@
 
 import { useEditProfileMutation } from '@/hooks/mutations/useEditProfileMutation';
 import { useUploadProfileImage } from '@/hooks/mutations/useUploadImageMutation';
-import { useGetUserQuery } from '@/hooks/queries/useUserQuery';
-import { useAuthStore } from '@/providers/AuthProvider';
+import {
+  useGetUserQuery,
+  useProfileImageQuery,
+} from '@/hooks/queries/useUserQuery';
 import { Button } from '@/ui/shadcn/button';
 import {
   Dialog,
@@ -18,18 +20,34 @@ import { Input } from '@/ui/shadcn/input';
 import { Label } from '@/ui/shadcn/label';
 import { useState } from 'react';
 import { UserQueryData } from '@/types/users';
+import { useToast } from '@/hooks/useToast';
+import { ImageType } from '@/types/image';
+import { Props } from '../[id]/page';
+import { MYPAGE_TOAST_MESSAGES } from '@/constants/my-page';
 
-const ProfileDialog = () => {
-  const user = useAuthStore((state) => state.user);
-  const { mutate: editProfile } = useEditProfileMutation(user?.id || 0);
-  const { mutate: updateProfileImage } = useUploadProfileImage(user?.id || 0);
+const ProfileDialog = ({ params }: Props) => {
+  const { mutate: editProfile } = useEditProfileMutation(params.id);
+  const { mutate: updateProfileImage } = useUploadProfileImage(params.id);
   const {
     data: userQueryData,
     isPending,
     isError,
     error,
-  } = useGetUserQuery(user!.id);
+  } = useGetUserQuery(params.id);
   const [userData, setUserData] = useState({ ...userQueryData });
+
+  const { data } = useProfileImageQuery(userData?.profile, {
+    enabled: !!userData?.profile, // userData.profile이 있을 때만 쿼리 실행
+  });
+
+  const imageUrl = data as ImageType;
+
+  const profileImage =
+    userData?.profile?.includes('found_default') ||
+    userData?.profile?.includes('googleusercontent') ||
+    userData?.profile?.includes('kakaocdn')
+      ? userData?.profile
+      : imageUrl?.publicUrl;
 
   const defaultUserData: UserQueryData = {
     id: 0,
@@ -43,8 +61,10 @@ const ProfileDialog = () => {
     sub: '',
   };
 
+  const { toast } = useToast();
   const [profileImg, setProfileImg] = useState<File | null>(null);
-  const [preview, setPreview] = useState(user?.profile);
+  const [open, setOpen] = useState(false);
+  const [preview, setPreview] = useState(profileImage);
   const [filePath, setFilePath] = useState<string | null>(
     userQueryData?.profile || null,
   );
@@ -73,27 +93,33 @@ const ProfileDialog = () => {
   };
 
   const handleSave = () => {
-    try {
-      let imageUrl = userQueryData?.profile;
+    let imageUrl = userQueryData?.profile;
 
-      // 파일이 변경되었을 경우 업로드
-      if (profileImg) {
-        updateProfileImage({
-          filePath: filePath || '',
-          file: profileImg,
-        });
-
-        // 업로드 성공 시 반환된 이미지 URL을 저장
-        imageUrl = filePath || ''; // Supabase가 반환하는 public URL 사용
-      }
-
-      // 프로필 정보 업데이트
-      editProfile({
-        data: { ...defaultUserData, ...userData, profile: imageUrl }, // 저장된 이미지 URL 사용
+    // 파일이 변경되었을 경우 업로드
+    if (profileImg) {
+      updateProfileImage({
+        filePath: filePath || '',
+        file: profileImg,
       });
-    } catch (error) {
-      console.error('프로필 수정 중 오류 발생:', error);
+      // 업로드 성공 시 반환된 이미지 URL을 저장
+      imageUrl = filePath || ''; // Supabase가 반환하는 public URL 사용
     }
+    setOpen(false);
+
+    // 프로필 정보 업데이트
+    editProfile(
+      {
+        data: { ...defaultUserData, ...userData, profile: imageUrl }, // 저장된 이미지 URL 사용
+      },
+      {
+        onSuccess: () => {
+          toast({ description: MYPAGE_TOAST_MESSAGES.EDITPROFILE });
+        },
+        onError: () => {
+          toast({ description: MYPAGE_TOAST_MESSAGES.ERROR.EDITPROFILE });
+        },
+      },
+    );
   };
 
   if (isPending)
@@ -112,7 +138,7 @@ const ProfileDialog = () => {
     );
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="button" size="button">
           EDIT
