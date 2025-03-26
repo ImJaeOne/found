@@ -10,6 +10,14 @@ export const login = async (
 ) => {
   const { data, error } = await supabase.auth.signInWithPassword(currentUser);
 
+  await fetch('/api/auth', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(currentUser),
+  });
+
   return { data, error };
 };
 
