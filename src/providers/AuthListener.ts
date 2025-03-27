@@ -38,7 +38,6 @@ const AuthListner = () => {
             }
 
             const socialUser = await fetchExistingUser(userId);
-            console.log('AuthListener => socialUser', socialUser);
             setLogin(socialUser);
           }
         }
@@ -46,7 +45,7 @@ const AuthListner = () => {
     );
 
     return () => authListener?.subscription?.unsubscribe();
-  }, []);
+  }, [setLogin]);
 
   return null;
 };

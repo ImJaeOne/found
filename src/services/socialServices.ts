@@ -37,8 +37,4 @@ export const kakaoLogin = async () => {
     console.error('카카오 로그인 error : ', error);
     return;
   }
-
-  if (data) {
-    console.log(data);
-  }
 };

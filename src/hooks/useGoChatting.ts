@@ -12,7 +12,6 @@ const useStartChat = () => {
         `and(user1_id.eq.${user1_id},user2_id.eq.${user2_id}),and(user1_id.eq.${user2_id},user2_id.eq.${user1_id})`,
       )
       .single();
-    console.log(existingChat);
     if (existingChat) {
       router.push(`${PATH.CHATTING}/${existingChat.id}`);
       return;
@@ -23,7 +22,6 @@ const useStartChat = () => {
       .insert([{ user1_id, user2_id }])
       .select()
       .single();
-    console.log(newChat);
     if (createError) {
       console.error('채팅방 생성 실패', createError);
       return;

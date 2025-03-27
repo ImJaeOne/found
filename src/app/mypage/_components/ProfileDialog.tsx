@@ -143,7 +143,7 @@ const ProfileDialog = ({ params }: Props) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="button" size="button">
+        <Button variant="button" size="button" aria-label="change-my-info">
           EDIT
         </Button>
       </DialogTrigger>
@@ -211,7 +211,7 @@ const ProfileDialog = ({ params }: Props) => {
             size="button"
             type="submit"
             onClick={handleSave}
-            aria-label="toggle-myInfo"
+            aria-label="chagne-info-button"
           >
             SAVE
           </Button>
