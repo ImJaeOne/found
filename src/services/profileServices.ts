@@ -18,7 +18,6 @@ export const editProfile = async (user_id: number, data: UserData) => {
     throw error;
   }
 
-  console.log('프로필 수정 성공');
   return data;
 };
 

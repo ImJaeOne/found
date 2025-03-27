@@ -1,6 +1,8 @@
 'use client';
 
+import { PATH } from '@/constants/constants';
 import { useConfirmAppointmentMutation } from '@/hooks/mutations/useAppointmentMutation';
+import { useAddMessageMutation } from '@/hooks/mutations/useChatMutation';
 import { useRequestedAppointment } from '@/hooks/queries/useChatQuery';
 import { useProfileImageQuery } from '@/hooks/queries/useUserQuery';
 import { useAuthStore } from '@/providers/AuthProvider';
@@ -36,6 +38,8 @@ const ConfirmedAppointment = ({
     error,
   } = useRequestedAppointment(chatId);
 
+  const { sendMessage } = useAddMessageMutation(chatId);
+
   if (isPending)
     return (
       <div className="w-full h-full flex items-center justify-center">
@@ -60,12 +64,21 @@ const ConfirmedAppointment = ({
       ? chatPartner.profile
       : imageUrl?.publicUrl;
 
+  const appointmentContent = `<p>${user?.nickname}님이 약속을 수락했어요!!</p>
+        <p>마이페이지에서 확인해주세요!</p></div>`;
+
   return (
     <form
       className="w-full flex flex-col gap-4"
       onSubmit={(e) => {
         e.preventDefault();
         confirmAppointmentMutation();
+        sendMessage({
+          chat_room_id: chatId,
+          sender_id: user!.id,
+          content: appointmentContent,
+          appointment: true,
+        });
         router.back();
       }}
     >

@@ -4,7 +4,6 @@ export async function middleware(request: NextRequest) {
   // 1. 세션 업데이트 (예: 쿠키, DB 등)
   const sessionResponse = await updateSession(request);
 
-  console.log(request);
   // 2. 보호된 라우트 접근 제어
   const token = request.cookies.get(
     'sb-svhrfldwfalevlzspmjf-auth-token.0',

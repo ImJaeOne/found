@@ -97,7 +97,11 @@ const UserProfile = ({ params }: Props) => {
       <div className="flex flex-col justify-center items-center gap-10 mt-10">
         <div className="flex items-center gap-2">
           <div className="text-medium-gray text-sm">프로필 공개</div>
-          <Switch checked={userData?.is_finding} onClick={clickHandler} />
+          <Switch
+            checked={userData?.is_finding}
+            onClick={clickHandler}
+            aria-label="toggle-myInfo"
+          />
         </div>
         <ProfileDialog params={params} />
       </div>

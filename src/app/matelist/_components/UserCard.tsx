@@ -53,7 +53,11 @@ const UserCard = ({
       <div className="flex flex-col items-center w-full justify-between gap-2 flex-1">
         <div className="flex flex-row w-full flex-wrap justify-center gap-1 mt-2">
           {categories.map((category) => (
-            <Button key={category} variant={'label'} size={'label'}>
+            <Button
+              key={`${category}-${crypto.randomUUID()}`}
+              variant={'label'}
+              size={'label'}
+            >
               {category}
             </Button>
           ))}
